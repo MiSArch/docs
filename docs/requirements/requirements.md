@@ -231,3 +231,80 @@ This document is in the making since we are still in the requirements engineerin
 #### R-A-004: Antipatterns must be avoided
 
 - Origin: Supervisors
+
+#### R-A-005: Loose Coupling
+
+- Services must be only loosely coupled.
+- Regarding time and location and structure.
+- API first: Services are only allowed to expose and work with other services' interfaces.
+- A domain-driven declaration of service responsibilities must be at hand.
+- Origin: Examiner, Supervisors, Researchers
+
+### Microservice Patterns
+
+#### R-MP-001: Database per Service
+
+- Origin: Examiner
+
+#### R-MP-002: Messaging (Asynchronous Communication)
+
+Origin: Examiner, Supervisors, Researchers
+
+#### R-MP-003: Circuit Breaker
+
+- Origin: Examiner
+
+#### R-MP-004: Gateway
+
+- Origin: Examiner
+
+#### R-MP-005: Saga
+
+- Origin: Examiner
+
+#### R-MP-006: IO Patterns
+
+- Origin: Examiner
+
+#### R-MP-007: Frontend for Backend
+
+- Origin: Examiner
+
+### Technologies
+
+#### R-T-001: Use Kubernetes
+
+- Origin: Examiner, Supervisors, Researcher
+
+#### R-T-002: No Python
+
+- Python should only be considered as a last resort.
+  - If we used Python, we would have to explain why.
+- *See R-E-003*
+- Origin: Examiner
+
+#### R-T-003: Use Go
+
+- The programming language Go should be used along with a corresponding framework.
+- Origin: Examiner
+
+#### R-T-004: Sprint Boot
+
+- Spring Boot or something similiar must be used.
+- Origin: Examiner
+
+#### R-T-005: Kafka
+
+- Kafka should be used for the middleware.
+- Origin: Examiner
+
+#### R-T-006: Dapr
+
+- Dapr should be used for the middleware.
+- Origin: Supervisors
+
+#### R-T-007: JMeter
+
+- JMeter should be used for load and elasticity tests.
+- Origin: Examiner
+
