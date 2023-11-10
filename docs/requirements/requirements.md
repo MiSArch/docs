@@ -6,6 +6,10 @@ This document is in the making since we are still in the requirements engineerin
 
 :::
 
+## To-do List and Open Questions RE this document
+
+- [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)?
+
 ## RE Wording in this Document
 
 - We use *Microservice* and *Service* interchangeably.
@@ -14,13 +18,10 @@ This document is in the making since we are still in the requirements engineerin
 
 ## Stakeholders
 
-- Prof. Dr. Steffen Becker -- The Examiner
-- Sandro Speth -- Supervisor
-- Niklas Meißner -- Supervisor
-- The Developers
-- S -- Researcher
-- F -- Researcher
-- SH -- Researcher
+- Examiner
+- Supervisors
+- Developers
+- Researchers
 
 ## Requirement Categories
 
@@ -44,22 +45,22 @@ This document is in the making since we are still in the requirements engineerin
 
 ### R-C-001: No external services
 
-- We are not allowed to use external services (e.g., external microservices).
-- We are not allowed to add functional dependencies to other services.
-- Origin: Supervisors
+- The system must not depend on external services.
+- Origin: Supervisors, Examiner
 
-### R-C-002: The use of the system must be free of charge
+### R-C-002: Free of charge
 
-- Deployment included.
-- Origin: Sarah
+- The use of the system must be free of charge.
+- Also, the deployment of the system must be free of charge.
+- Origin: Researcher
 
 ## Process
 
 ### EnPro Requirements
 
-#### R-E-001: 15 Microservices
+#### R-E-001: At least 15 Microservices
 
-- The RA should consist of at least 15 microservices.
+- The RA must consist of at least 15 microservices.
 - Origin: Supervisors
 
 #### R-E-002: Microservice Patterns
@@ -67,33 +68,40 @@ This document is in the making since we are still in the requirements engineerin
 - Microservice patterns must be used and well documented.
 - Origin: Supervisors
 
-#### R-E-003: Different Programming Languages
+#### R-E-003: Different programming languages
 
 - Different programming languages must be used for the system's implementation.
 - Python should only be considered as a last resort.
-  - If we used Python, we would have to explain why.
+  - If Python was used, an explanation would be needed.
 
 - Origin: Examiner
 
 ### Software Artefacts
 
-#### R-SArt-001: Good Documentation
+#### R-SArt-001: Documentation
 
-- A "good" documentation of the system is required.
-- The software architecture must be well documented.
-- When designing the system, we must document our design decisions using so called Architectural Design Records (ADRs).
+- The system must be well documented.
+- The software architecture of the system must be well documented.
+- Design decisions must be documented using Architectural Design Records (ADRs).
   - https://adr.github.io
   - https://github.com/joelparkerhenderson/architecture-decision-record
+  - https://adr.github.io/madr/
 - Origin: Examiner
 
-#### R-SArt-002: Clean Code
+#### R-SArt-002: Clean code
 
 - Origin: Examiner
 
-#### R-SArt-003: Clean Deployment
+#### R-SArt-003: Clean and simple deployment
 
-- The deployment must be "clean".
+- The deployment must be *clean*.
+- The doployment must be simple.
+- The term one-click deployment was used during the interviews with researchers and supervisors.
 - Origin: Examiner
+
+##### Open Questions
+
+- What exactly is a *clean* deployment? When does the examiner consider a deployment a *dirty* one?
 
 ## Product
 
@@ -106,9 +114,9 @@ This document is in the making since we are still in the requirements engineerin
 
 ##### Open Questions
 
-- Inwiefern? In der Handhabung, also bezüglich der Benutzerschnittstelle? Oder aber primär bezüglich der Systembelastung bzw. in der benötigten Rechnerinfrastruktur und Rechenleistung? In der Menge der Events und Messages zwischen den einzelnen Microservices? TODO: Translate
+- In what regard should the system be realistic? Regarding the look and feel of it -- usability? Regarding the load and usage? Or regarding the messaging traffic between the services? We have to clearify this.
 
-#### R-U-002: Usable Interface
+#### R-U-002: Usable interface
 
 - The user interface should be *good*.
 - It should be usable.
@@ -121,7 +129,7 @@ This document is in the making since we are still in the requirements engineerin
 #### R-U-003: Configurations
 
 - The user must be able to configure the system.
-- The system exposes a config file. This file must be independent of the system's technology stack.
+- The system exposes a configuration file. This file must be independent of the system's technology stack.
 - The system should expose only a single central location for configurations.
 - The number of configuration files should be limited to only one.
 - Origin: Examiner, Supervisors, Researchers
@@ -142,7 +150,7 @@ This document is in the making since we are still in the requirements engineerin
 
 - Researchers must be able to "simply quickly try something out RE experimentation".
 - It should be really easy and intuitive to quickly deploy the system.
-- The RA should not depend on other systems or services.
+- The RA should not depend on other systems or services. See R-C-001.
 - Origin: Researchers
 
 #### R-U-006: Transparency
@@ -208,6 +216,10 @@ This document is in the making since we are still in the requirements engineerin
 
 - The system must be *elastic*.
 - Origin: Examiner
+
+##### Open Question
+
+- What exactly does *elastic* mean? What is the examiner's understanding of the term?
 
 ## Design
 
