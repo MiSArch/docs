@@ -24,6 +24,7 @@ This document is in the making since we are still in the requirements engineerin
 - Researchers:
   - Researcher *Toni*
 
+- External developers *Ulm*
 
 ## Requirement Categories
 
@@ -163,7 +164,7 @@ This document is in the making since we are still in the requirements engineerin
 - The system exposes a configuration file. This file must be independent of the system's technology stack.
 - The system should expose only a single central location for configurations.
 - The number of configuration files should be limited to only one.
-- Origin: Examiner, Supervisors, Researchers
+- Origin: Examiner, Supervisors, Researchers, External Developers *Ulm*
 
 ##### Open Questions
 
@@ -247,6 +248,23 @@ This document is in the making since we are still in the requirements engineerin
 - This requirement could also be moved into the section Configurations.
 - Origin: Researcher *Toni*
 
+#### R-U-017: Measurements and Metrics
+
+- The system should make measurements related to the system's behavior, record these measurements and make them available for the user.
+- External developers said that they needed "comprehensive measurements from the system".
+- The recorded data should be as diverse and comprehensive as possible. This way researchers can decide per case which measures they need.
+- Origin: External developers *Ulm*
+
+##### Open Questions
+
+- What exactly is it that could be measured?
+
+#### R-U-018: Usage costs
+
+- The system should measure and report the costs of running and scaling the system.
+- As a user / researcher, I want to make decisions partly based on the costs of the system's usage.
+- Origin: External developers *Ulm*
+
 ### Non-functional Requirements
 
 #### R-NFR-001: Performance
@@ -297,6 +315,7 @@ See also R-U-003.
 
 - The system should offer different alternatives for scaling.
 - The system should allow the user to configure the scaling techniques in place.
+- For each scaling strategy, the system should inform about the costs of the chosen scaling strategy. -- External developers *Ulm*
 - Origin: Researcher *Toni*
 
 ##### Open Question
@@ -356,6 +375,11 @@ See also R-U-003.
 ##### Open Questions
 
 - What do these components really do?
+
+#### R-A-008: Distributed Tracing
+
+- The system must have distributed tracing available.
+- Origin: External developers *Ulm*
 
 ### Microservice Patterns
 
