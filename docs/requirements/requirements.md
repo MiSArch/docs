@@ -177,7 +177,7 @@ This document is in the making since we are still in the requirements engineerin
 - The RA must be sufficiently deterministic in order to allow the user to repeatedly carry out experiments.
 - Researchers want to do experiments using the RA.
 - It must be effortless to use the system for experimentation. -- Researcher *Toni*
-- As a researcher, I want control over my experiments. The systems must allow me to have this control. -- Researcher *Toni*
+- As a researcher, I want control over my experiments. The systems must allow me to have this control. -- Researcher *Toni*. The system must be fully controllable in order to maximize the degrees of freedom in the experimentation.
 - Origin: Supervisors, Researchers, Researcher *Toni*
 
 #### R-U-005: The RA must be *lightweight*
@@ -235,8 +235,8 @@ This document is in the making since we are still in the requirements engineerin
 
 #### R-U-015: Repeatability of experiments
 
-- The system must ensure that researchers can repeat experiments in a controlled environment as often as they wish.
-- As a researcher, I want to repeat an experminent multiple times and I need the environment to be the exact same for each repetition of the experiment.
+- The system must ensure that researchers can repeat experiments as often as they wish.
+- As a researcher, I want to repeat an experminent multiple times and I need the system to be in the exact same state at the beginning of each repetition of the experiment.
 - A stakeholder said: "If I have scaling in place, when the experiment is finished, you want the state to be just like before the experiment. This allows repeatability."
 - This requirement could also be moved into the section Configurations.
 - Origin: Researcher *Toni*
@@ -285,6 +285,7 @@ This document is in the making since we are still in the requirements engineerin
 #### R-NFR-003: Resilience
 
 - The system should be resilient.
+- The systems' microservices must not fail suddenly and without good reason.
 - Origin: Researcher *Toni*
 
 ### Configurations
@@ -327,6 +328,10 @@ See also R-U-003.
 - The system should have different variants.
 - e.g., one variant with database as a service, another variant with a shared database
 - Origin: Researcher *Toni*
+
+##### Open Questions
+
+- What other variants could be interesting?
 
 ## Design
 
