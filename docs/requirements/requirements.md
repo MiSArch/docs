@@ -8,7 +8,7 @@ This document is in the making since we are still in the requirements engineerin
 
 ## To-do List and Open Questions RE this document
 
-- [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)?
+- [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)? When adding information from another interview with another individual stakeholder, I decided to *try out* anonymization by naming the stakeholder -- a researcher -- Toni. See the section *Stakeholders.* This is up for discussion of course.
 
 ## RE Wording in this Document
 
@@ -21,7 +21,9 @@ This document is in the making since we are still in the requirements engineerin
 - Examiner
 - Supervisors
 - Developers
-- Researchers
+- Researchers:
+  - Researcher *Toni*
+
 
 ## Requirement Categories
 
@@ -34,6 +36,7 @@ This document is in the making since we are still in the requirements engineerin
   - Usability
   - Non-functional Requirements & Quality Attributes
   - Performance
+  - Configurations
 - Design
   - Architecture
   - Microservice Patterns
@@ -97,19 +100,47 @@ This document is in the making since we are still in the requirements engineerin
 - The deployment must be *clean*.
 - The doployment must be simple.
 - The term one-click deployment was used during the interviews with researchers and supervisors.
-- Origin: Examiner
+- This requirement could also be moved into the section *Usability Requirements* since an easy deployment relates to higher usability.
+- Origin: Examiner, Researcher *Toni*
 
 ##### Open Questions
 
 - What exactly is a *clean* deployment? When does the examiner consider a deployment a *dirty* one?
 
+#### R-SArt-004: Explanatory models for the end user
+
+- The end user should have access to models which support them in understanding the system.
+- Origin: Researcher *Toni*
+
+##### Open Questions
+
+- Are these models the equivalent of user manuals?
+
 ## Product
+
+### Domain
+
+#### R-D-001: The domain must be specific and self-explanatory
+
+- The domain must be a specific one.
+- Researchs must be able to understand the domain intuitively.
+- The domain must not be an obstacle under any circumstances. As long as the domain is *self-explanatory*, it doesn't matter which domain is shown.
+- The domain must not require special knowledge about it in order to be able to use the system.
+- Origin: Researchers, Researcher *Toni*
+
+#### R-D-002: The domain should not be part of the *technology world*
+
+- The domain should be clearly separated from any technology domain to avoid confusion regarding wordings and terms.
+- There should be no clashes regarding the language of the domain and the language of the system's architecture: no common wordings.
+- e.g., words like service, pipeline, container (Docker) should be avoided in the domain language
+- Origin: Researcher *Toni*
 
 ### Usability Requirements
 
 #### R-U-001: As realistic as possible
 
 - The system should be as close to a *real* system as possible.
+- See R-A-006
 - Origin: Examiner
 
 ##### Open Questions
@@ -144,7 +175,9 @@ This document is in the making since we are still in the requirements engineerin
 - There must be a configurations file for designing the experiments. See R-U-003.
 - The RA must be sufficiently deterministic in order to allow the user to repeatedly carry out experiments.
 - Researchers want to do experiments using the RA.
-- Origin: Supervisors, Researchers
+- It must be effortless to use the system for experimentation. -- Researcher *Toni*
+- As a researcher, I want control over my experiments. The systems must allow me to have this control. -- Researcher *Toni*
+- Origin: Supervisors, Researchers, Researcher *Toni*
 
 #### R-U-005: The RA must be *lightweight*
 
@@ -160,12 +193,6 @@ This document is in the making since we are still in the requirements engineerin
 - The code must be open source.
 - One researchers said that she does not like that one simply does not know exactly how the existing RAs compare to each other since their documentations lacking in quality and quantity.
 - Origin: Supervisors, Researchers
-
-#### R-U-007: The domain must be self-explanatory
-
-- The domain must not be an obstacle under any circumstances. As long as the domain is *self-explanatory*, it doesn't matter which domain is shown.
-- The domain must not require special knowledge about it in order to be able to use the system.
-- Origin: Researchers
 
 #### R-U-008: Observability
 
@@ -205,6 +232,21 @@ This document is in the making since we are still in the requirements engineerin
 - There should be a kind of demo mode so that a new user can try out the system quickly and easily: We provide test data with which the system can be directly *loaded*.
 - Origin: Developers
 
+#### R-U-015: Repeatability of experiments
+
+- The system must ensure that researchers can repeat experiments in a controlled environment as often as they wish.
+- As a researcher, I want to repeat an experminent multiple times and I need the environment to be the exact same for each repetition of the experiment.
+- A stakeholder said: "If I have scaling in place, when the experiment is finished, you want the state to be just like before the experiment. This allows repeatability."
+- This requirement could also be moved into the section Configurations.
+- Origin: Researcher *Toni*
+
+#### R-U-016: Scheduling of experiments
+
+- The system must offer the possibility to schedule experiments.
+- As a researcher, I want to be able to schedule experiments.
+- This requirement could also be moved into the section Configurations.
+- Origin: Researcher *Toni*
+
 ### Non-functional Requirements
 
 #### R-NFR-001: Performance
@@ -212,14 +254,60 @@ This document is in the making since we are still in the requirements engineerin
 - The microservices must be performant.
 - Origin: Examiner
 
-#### R-NFR-002: Elasticity
+#### R-NFR-002: Elasticity / Auto scaling
 
 - The system must be *elastic*.
-- Origin: Examiner
+- The system must scale automatically.
+- Origin: Examiner, Researcher *Toni*
 
 ##### Open Question
 
 - What exactly does *elastic* mean? What is the examiner's understanding of the term?
+
+#### R-NFR-003: Resilience
+
+- The system should be resilient.
+- Origin: Researcher *Toni*
+
+### Configurations
+
+See also R-U-003.
+
+#### R-Conf-001: Variable in size
+
+- The system's size should be configurable.
+- As a researcher, I want to be able to decide how big or small the system actually is. I want to set the system's size in order to have it fit my needs.
+- Origin: Researcher *Toni*
+
+#### R-Conf-002: Load profiles
+
+- The system must offer the possibility to use load profiles.
+- As a researcher, I want to specify load profiles to control the system when experimenting with it.
+- Advice from stakeholder: Derive the load profiles from the domain.
+- As a researcher, I want diversity in the system's load patterns because I want to know, if I deploy an elasticity policy, how will that perform?
+- Origin: Researcher *Toni*
+
+#### R-Conf-003: Elasticity policies
+
+- The system must offer the possibility to specify elasticity policies.
+- See R-Conf-002
+- Origin: Researcher *Toni*
+
+#### R-Conf-004: Scaling policies
+
+- The system should offer different alternatives for scaling.
+- The system should allow the user to configure the scaling techniques in place.
+- Origin: Researcher *Toni*
+
+##### Open Question
+
+- Is this basically requirement R-Conf-003?
+
+#### R-Conf-005: System variants
+
+- The system should have different variants.
+- e.g., one variant with database as a service, another variant with a shared database
+- Origin: Researcher *Toni*
 
 ## Design
 
@@ -250,7 +338,24 @@ This document is in the making since we are still in the requirements engineerin
 - Regarding time and location and structure.
 - API first: Services are only allowed to expose and work with other services' interfaces.
 - A domain-driven declaration of service responsibilities must be at hand.
-- Origin: Examiner, Supervisors, Researchers
+- Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
+
+#### R-A-006: Diversity in communication protocolls
+
+- The system should have diversity regarding communication protocalls.
+- A researcher said: "Just like in reality."
+- See R-U-001
+- Origin: Researcher *Toni*
+
+#### R-A-007: Exclusive components that "facilitate research"
+
+- The system should have separate components that allow for experimentation.
+- A researcher said: "Additional components have to be coded that facilitate research. For instance, injecting load into the system."
+- Origin: Researcher *Toni*
+
+##### Open Questions
+
+- What do these components really do?
 
 ### Microservice Patterns
 
@@ -260,7 +365,7 @@ This document is in the making since we are still in the requirements engineerin
 
 #### R-MP-002: Messaging (Asynchronous Communication)
 
-Origin: Examiner, Supervisors, Researchers
+Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 
 #### R-MP-003: Circuit Breaker
 
@@ -320,3 +425,8 @@ Origin: Examiner, Supervisors, Researchers
 - JMeter should be used for load and elasticity tests.
 - Origin: Examiner
 
+#### R-T-008: OpenTelemetry
+
+- OpenTelemetry should be used for monitoring.
+- https://opentelemetry.io
+- Origin: Researcher *Toni*
