@@ -24,7 +24,7 @@ This document is in the making since we are still in the requirements engineerin
 - Researchers:
   - Researcher *Toni*
 
-- External developers *Ulm*
+- *Ulm* -- a collective of developers of a similar system
 
 ## Requirement Categories
 
@@ -65,12 +65,12 @@ This document is in the making since we are still in the requirements engineerin
 #### R-E-001: At least 15 Microservices
 
 - The RA must consist of at least 15 microservices.
-- Origin: Supervisors
+- Origin: Examiner, Supervisors
 
 #### R-E-002: Microservice Patterns
 
 - Microservice patterns must be used and well documented.
-- Origin: Supervisors
+- Origin: Examiner, Supervisors
 
 #### R-E-003: Different programming languages
 
@@ -116,6 +116,13 @@ This document is in the making since we are still in the requirements engineerin
 ##### Open Questions
 
 - Are these models the equivalent of user manuals?
+
+#### R-SArt-005: Chaos testing
+
+- The system must be *ready* for chaos testing, one must be able to apply chaos testing to the system's microservices.
+- As part of the testing strategy, chaos testing should be done within the EnPro.
+- See R-Conf-006
+- Origin: Supervisors, Researcher *Toni*
 
 ## Product
 
@@ -164,7 +171,7 @@ This document is in the making since we are still in the requirements engineerin
 - The system exposes a configuration file. This file must be independent of the system's technology stack.
 - The system should expose only a single central location for configurations.
 - The number of configuration files should be limited to only one.
-- Origin: Examiner, Supervisors, Researchers, External Developers *Ulm*
+- Origin: Examiner, Supervisors, Researchers, *Ulm*
 
 ##### Open Questions
 
@@ -253,7 +260,7 @@ This document is in the making since we are still in the requirements engineerin
 - The system should make measurements related to the system's behavior, record these measurements and make them available for the user.
 - External developers said that they needed "comprehensive measurements from the system".
 - The recorded data should be as diverse and comprehensive as possible. This way researchers can decide per case which measures they need.
-- Origin: External developers *Ulm*
+- Origin: *Ulm*
 
 ##### Open Questions
 
@@ -263,7 +270,7 @@ This document is in the making since we are still in the requirements engineerin
 
 - The system should measure and report the costs of running and scaling the system.
 - As a user / researcher, I want to make decisions partly based on the costs of the system's usage.
-- Origin: External developers *Ulm*
+- Origin: *Ulm*
 
 ### Non-functional Requirements
 
@@ -316,7 +323,9 @@ See also R-U-003.
 
 - The system should offer different alternatives for scaling.
 - The system should allow the user to configure the scaling techniques in place.
-- For each scaling strategy, the system should inform about the costs of the chosen scaling strategy. -- External developers *Ulm*
+- For each scaling strategy, the system should inform about the costs of the chosen scaling strategy. -- *Ulm*
+  - The supervisors do not require this.
+
 - Origin: Researcher *Toni*
 
 ##### Open Question
@@ -332,6 +341,13 @@ See also R-U-003.
 ##### Open Questions
 
 - What other variants could be interesting?
+
+#### R-Conf-006: Configurable reliability
+
+- The system should be configurable regarding its services' reliability.
+- This would be "nice" for testing with chaos testing tools.
+- See R-Sart-005
+- Origin: Examiner
 
 ## Design
 
@@ -384,7 +400,7 @@ See also R-U-003.
 #### R-A-008: Distributed Tracing
 
 - The system must have distributed tracing available.
-- Origin: External developers *Ulm*
+- Origin: *Ulm*
 
 ### Microservice Patterns
 
@@ -400,7 +416,7 @@ Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 
 - Origin: Examiner
 
-#### R-MP-004: Gateway
+#### R-MP-004: API Gateway
 
 - Origin: Examiner
 
@@ -408,11 +424,7 @@ Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 
 - Origin: Examiner
 
-#### R-MP-006: IO Patterns
-
-- Origin: Examiner
-
-#### R-MP-007: Frontend for Backend
+#### R-MP-007: Frontends for Backends
 
 - Origin: Examiner
 
