@@ -24,7 +24,7 @@ This document is in the making since we are still in the requirements engineerin
 - Researchers:
   - Researcher *Toni*
 
-- *Ulm* -- a collective of developers of a similar system
+- *Ulm* -- a collective of experienced users of similar systems; they do metric based performance experiments and regularly have to adapt the underlying reference architecture
 
 ## Requirement Categories
 
@@ -121,7 +121,8 @@ This document is in the making since we are still in the requirements engineerin
 
 - The system must be *ready* for chaos testing, one must be able to apply chaos testing to the system's microservices.
 - As part of the testing strategy, chaos testing should be done within the EnPro.
-- See R-Conf-006
+- Depending on the toolkit for doing chaos testing, it has to be ensured that the system's reliability changes in order to test ist by applying chaos testing technique. 
+- Regarding the targeted non-functional requirement at test -- reliability --: Either the toolkit simulates unreliability or the system must enable different configurations of reliability itself.
 - Origin: Supervisors, Researcher *Toni*
 
 ## Product
@@ -222,6 +223,7 @@ This document is in the making since we are still in the requirements engineerin
 #### R-U-011: Adding services
 
 - It should be easy to add more microservices to the system.
+- See R-A-001
 - Origin: Researcher
 
 #### R-U-012: True to the term *Reference Architecture*
@@ -270,6 +272,8 @@ This document is in the making since we are still in the requirements engineerin
 
 - The system should measure and report the costs of running and scaling the system.
 - As a user / researcher, I want to make decisions partly based on the costs of the system's usage.
+- The supervisors do not require this.
+- See R-Conf-004
 - Origin: *Ulm*
 
 ### Non-functional Requirements
@@ -313,10 +317,11 @@ See also R-U-003.
 - As a researcher, I want diversity in the system's load patterns because I want to know, if I deploy an elasticity policy, how will that perform?
 - Origin: Researcher *Toni*
 
-#### R-Conf-003: Elasticity policies
+#### ~~R-Conf-003: Elasticity policies~~
 
 - The system must offer the possibility to specify elasticity policies.
-- See R-Conf-002
+- We discarded this requ. since it only serves as a high-level term for scaling and load handling. Since it could be that in the future there will be more specific requirements, we did not delete it entirely. 
+- See R-Conf-002, R-Conf-003
 - Origin: Researcher *Toni*
 
 #### R-Conf-004: Scaling policies
@@ -324,6 +329,7 @@ See also R-U-003.
 - The system should offer different alternatives for scaling.
 - The system should allow the user to configure the scaling techniques in place.
 - For each scaling strategy, the system should inform about the costs of the chosen scaling strategy. -- *Ulm*
+  - See R-U-018
   - The supervisors do not require this.
 
 - Origin: Researcher *Toni*
@@ -342,13 +348,6 @@ See also R-U-003.
 
 - What other variants could be interesting?
 
-#### R-Conf-006: Configurable reliability
-
-- The system should be configurable regarding its services' reliability.
-- This would be "nice" for testing with chaos testing tools.
-- See R-Sart-005
-- Origin: Examiner
-
 ## Design
 
 ### Architecture
@@ -356,6 +355,7 @@ See also R-U-003.
 #### R-A-001: Extendability
 
 - The RA must be expandable: Additional microservices can be added without further ado.
+- See R-U-011
 - Origin: Researcher
 
 #### R-A-002: Scale out scenario for databases
@@ -446,7 +446,7 @@ Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 - The programming language Go should be used along with a corresponding framework.
 - Origin: Examiner
 
-#### R-T-004: Sprint Boot
+#### R-T-004: Spring Boot
 
 - Spring Boot or something similiar must be used.
 - Origin: Examiner
