@@ -9,6 +9,7 @@ This document is in the making since we are still in the requirements engineerin
 ## To-do List and Open Questions RE this document
 
 - [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)? When adding information from another interview with another individual stakeholder, I decided to *try out* anonymization by naming the stakeholder -- a researcher -- Toni. See the section *Stakeholders.* This is up for discussion of course.
+- [ ] Go through the requirements after having prioritized them and adjust the usage of "should" and "must" to better reflect the requirement's importance.
 
 ## RE Wording in this Document
 
@@ -23,7 +24,8 @@ This document is in the making since we are still in the requirements engineerin
 - Developers
 - Researchers:
   - Researcher *Toni*
-
+  - Researcher *Goliath*
+  
 - *Ulm* -- a collective of experienced users of similar systems; they do metric based performance experiments and regularly have to adapt the underlying reference architecture
 
 ## Requirement Categories
@@ -78,7 +80,11 @@ This document is in the making since we are still in the requirements engineerin
 - Python should only be considered as a last resort.
   - If Python was used, an explanation would be needed.
 
-- Origin: Examiner
+- Java should be part of the mix. -- Researcher *Goliath*
+  
+- See R-T-003, R-T-009, and R-T-002
+  
+- Origin: Examiner, Researcher *Goliath*
 
 ### Software Artefacts
 
@@ -101,8 +107,9 @@ This document is in the making since we are still in the requirements engineerin
 - The deployment must be *clean*.
 - The doployment must be simple.
 - The term one-click deployment was used during the interviews with researchers and supervisors.
+- The README file referring to the deployment must be complete, well structured, informative, easy to read and to understand, and always up to date.
 - This requirement could also be moved into the section *Usability Requirements* since an easy deployment relates to higher usability.
-- Origin: Examiner, Researcher *Toni*
+- Origin: Examiner, Researcher *Toni*, Researcher *Goliath*
 
 ##### Open Questions
 
@@ -174,6 +181,12 @@ This document is in the making since we are still in the requirements engineerin
 - The number of configuration files should be limited to only one.
 - Origin: Examiner, Supervisors, Researchers, *Ulm*
 
+##### Conflicting Interpretation of the requirement:
+
+- It should be possible to configure microservices individually in order to analyze their impact on the rest of the system.
+- "If I change one service, what is the response of the rest of the system to that change." -- Researcher *Goliath*
+- Origin: Researcher *Goliath*
+
 ##### Open Questions
 
 - What exactly is it, that users can configure?
@@ -235,7 +248,11 @@ This document is in the making since we are still in the requirements engineerin
 #### R-U-013: Deterioration in performance
 
 - It should be fairly easy to control the performance of the system. A researcher should be able to decide when and how the performance deteriorates.
-- Origin: Researcher
+- "As a researcher I want to be able to a) reproduce performance issues and b) inject them into the system. I want to be able to trigger potential bottle necks." -- Researcher *Goliath*
+- Individual services should be controlled regarding their performance degradation.
+- The system should allow for *injecting* gradual performance degradation at the system level and at the microservice level.
+- It should be possible to *inject* regression by making configurations to the database (e.g., number of threads available to the database system). See R-Conf-006
+- Origin: Researcher, Researcher *Goliath*
 
 #### R-U-014: Demo mode
 
@@ -299,6 +316,12 @@ This document is in the making since we are still in the requirements engineerin
 - The systems' microservices must not fail suddenly and without good reason.
 - Origin: Researcher *Toni*
 
+#### R-NFR-004: Maintenance
+
+- In the long term, the system should be easy to maintain.
+- Not only for the developers but also for the researchers using the system.
+- Origin: Researcher *Goliath*
+
 ### Configurations
 
 See also R-U-003.
@@ -347,6 +370,14 @@ See also R-U-003.
 ##### Open Questions
 
 - What other variants could be interesting?
+
+#### R-Conf-006: Configurations scope
+
+- The system should allow for configurations on the following levels:
+  - System
+  - Microservice
+  - Database (Management System)
+- Origin: Researcher *Goliath*
 
 ## Design
 
@@ -470,4 +501,10 @@ Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 
 - OpenTelemetry should be used for monitoring.
 - https://opentelemetry.io
+- https://github.com/open-telemetry/opentelemetry-demo -- We should investigate this as recommended by Researcher *Goliath*
 - Origin: Researcher *Toni*
+
+#### R-T-009: Kotlin
+
+- The programming language Kotlin should be used.
+- Origin: Researcher *Goliath*
