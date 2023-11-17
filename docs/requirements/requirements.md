@@ -316,10 +316,12 @@ This document is in the making since we are still in the requirements engineerin
 - The systems' microservices must not fail suddenly and without good reason.
 - Origin: Researcher *Toni*
 
-#### R-NFR-004: Maintenance
+#### R-NFR-004: Maintainability
 
 - In the long term, the system should be easy to maintain.
 - Not only for the developers but also for the researchers using the system.
+- Instead of trying to support every possible deployment, only one deployment should be supported but that one should be supported very well.
+- In order to improve maintainability, things should be kept as simple as possible. Note, that this is a very general and loose requirement.
 - Origin: Researcher *Goliath*
 
 ### Configurations
