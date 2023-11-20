@@ -8,13 +8,13 @@ This document is in the making since we are still in the requirements engineerin
 
 ## To-do List and Open Questions RE this document
 
-- [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)? When adding information from another interview with another individual stakeholder, I decided to *try out* anonymization by naming the stakeholder -- a researcher -- Toni. See the section *Stakeholders.* This is up for discussion of course.
+- [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)? When adding information from another interview with another individual stakeholder, I decided to _try out_ anonymization by naming the stakeholder -- a researcher -- Toni. See the section _Stakeholders._ This is up for discussion of course.
 - [ ] Go through the requirements after having prioritized them and adjust the usage of "should" and "must" to better reflect the requirement's importance.
 
 ## RE Wording in this Document
 
-- We use *Microservice* and *Service* interchangeably.
-- We use *Reference Architecture* and *System* interchangeably.
+- We use _Microservice_ and _Service_ interchangeably.
+- We use _Reference Architecture_ and _System_ interchangeably.
 - RA = reference architecture
 
 ## Stakeholders
@@ -23,10 +23,9 @@ This document is in the making since we are still in the requirements engineerin
 - Supervisors
 - Developers
 - Researchers:
-  - Researcher *Toni*
-  - Researcher *Goliath*
-  
-- *Ulm* -- a collective of experienced users of similar systems; they do metric based performance experiments and regularly have to adapt the underlying reference architecture
+  - Researcher _Toni_
+  - Researcher _Goliath_
+- _Ulm_ -- a collective of experienced users of similar systems; they do metric based performance experiments and regularly have to adapt the underlying reference architecture
 
 ## Requirement Categories
 
@@ -78,13 +77,12 @@ This document is in the making since we are still in the requirements engineerin
 
 - Different programming languages must be used for the system's implementation.
 - Python should only be considered as a last resort.
+
   - If Python was used, an explanation would be needed.
 
-- Java should be part of the mix. -- Researcher *Goliath*
-  
+- Java should be part of the mix. -- Researcher _Goliath_
 - See R-T-003, R-T-009, and R-T-002
-  
-- Origin: Examiner, Researcher *Goliath*
+- Origin: Examiner, Researcher _Goliath_
 
 ### Software Artefacts
 
@@ -104,21 +102,21 @@ This document is in the making since we are still in the requirements engineerin
 
 #### R-SArt-003: Clean and simple deployment
 
-- The deployment must be *clean*.
+- The deployment must be _clean_.
 - The doployment must be simple.
 - The term one-click deployment was used during the interviews with researchers and supervisors.
 - The README file referring to the deployment must be complete, well structured, informative, easy to read and to understand, and always up to date.
-- This requirement could also be moved into the section *Usability Requirements* since an easy deployment relates to higher usability.
-- Origin: Examiner, Researcher *Toni*, Researcher *Goliath*
+- This requirement could also be moved into the section _Usability Requirements_ since an easy deployment relates to higher usability.
+- Origin: Examiner, Researcher _Toni_, Researcher _Goliath_
 
 ##### Open Questions
 
-- What exactly is a *clean* deployment? When does the examiner consider a deployment a *dirty* one?
+- What exactly is a _clean_ deployment? When does the examiner consider a deployment a _dirty_ one?
 
 #### R-SArt-004: Explanatory models for the end user
 
 - The end user should have access to models which support them in understanding the system.
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 ##### Open Questions
 
@@ -126,11 +124,11 @@ This document is in the making since we are still in the requirements engineerin
 
 #### R-SArt-005: Chaos testing
 
-- The system must be *ready* for chaos testing, one must be able to apply chaos testing to the system's microservices.
+- The system must be _ready_ for chaos testing, one must be able to apply chaos testing to the system's microservices.
 - As part of the testing strategy, chaos testing should be done within the EnPro.
-- Depending on the toolkit for doing chaos testing, it has to be ensured that the system's reliability changes in order to test ist by applying chaos testing technique. 
+- Depending on the toolkit for doing chaos testing, it has to be ensured that the system's reliability changes in order to test ist by applying chaos testing technique.
 - Regarding the targeted non-functional requirement at test -- reliability --: Either the toolkit simulates unreliability or the system must enable different configurations of reliability itself.
-- Origin: Supervisors, Researcher *Toni*
+- Origin: Supervisors, Researcher _Toni_
 
 ## Product
 
@@ -140,22 +138,22 @@ This document is in the making since we are still in the requirements engineerin
 
 - The domain must be a specific one.
 - Researchs must be able to understand the domain intuitively.
-- The domain must not be an obstacle under any circumstances. As long as the domain is *self-explanatory*, it doesn't matter which domain is shown.
+- The domain must not be an obstacle under any circumstances. As long as the domain is _self-explanatory_, it doesn't matter which domain is shown.
 - The domain must not require special knowledge about it in order to be able to use the system.
-- Origin: Researchers, Researcher *Toni*
+- Origin: Researchers, Researcher _Toni_
 
-#### R-D-002: The domain should not be part of the *technology world*
+#### R-D-002: The domain should not be part of the _technology world_
 
 - The domain should be clearly separated from any technology domain to avoid confusion regarding wordings and terms.
 - There should be no clashes regarding the language of the domain and the language of the system's architecture: no common wordings.
 - e.g., words like service, pipeline, container (Docker) should be avoided in the domain language
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 ### Usability Requirements
 
 #### R-U-001: As realistic as possible
 
-- The system should be as close to a *real* system as possible.
+- The system should be as close to a _real_ system as possible.
 - See R-A-006
 - Origin: Examiner
 
@@ -165,7 +163,7 @@ This document is in the making since we are still in the requirements engineerin
 
 #### R-U-002: Usable interface
 
-- The user interface should be *good*.
+- The user interface should be _good_.
 - It should be usable.
 - Origin: Examiner
 
@@ -179,13 +177,13 @@ This document is in the making since we are still in the requirements engineerin
 - The system exposes a configuration file. This file must be independent of the system's technology stack.
 - The system should expose only a single central location for configurations.
 - The number of configuration files should be limited to only one.
-- Origin: Examiner, Supervisors, Researchers, *Ulm*
+- Origin: Examiner, Supervisors, Researchers, _Ulm_
 
 ##### Conflicting Interpretation of the requirement:
 
 - It should be possible to configure microservices individually in order to analyze their impact on the rest of the system.
-- "If I change one service, what is the response of the rest of the system to that change." -- Researcher *Goliath*
-- Origin: Researcher *Goliath*
+- "If I change one service, what is the response of the rest of the system to that change." -- Researcher _Goliath_
+- Origin: Researcher _Goliath_
 
 ##### Open Questions
 
@@ -197,11 +195,11 @@ This document is in the making since we are still in the requirements engineerin
 - There must be a configurations file for designing the experiments. See R-U-003.
 - The RA must be sufficiently deterministic in order to allow the user to repeatedly carry out experiments.
 - Researchers want to do experiments using the RA.
-- It must be effortless to use the system for experimentation. -- Researcher *Toni*
-- As a researcher, I want control over my experiments. The systems must allow me to have this control. -- Researcher *Toni*. The system must be fully controllable in order to maximize the degrees of freedom in the experimentation.
-- Origin: Supervisors, Researchers, Researcher *Toni*
+- It must be effortless to use the system for experimentation. -- Researcher _Toni_
+- As a researcher, I want control over my experiments. The systems must allow me to have this control. -- Researcher _Toni_. The system must be fully controllable in order to maximize the degrees of freedom in the experimentation.
+- Origin: Supervisors, Researchers, Researcher _Toni_
 
-#### R-U-005: The RA must be *lightweight*
+#### R-U-005: The RA must be _lightweight_
 
 - Researchers must be able to "simply quickly try something out RE experimentation".
 - It should be really easy and intuitive to quickly deploy the system.
@@ -239,7 +237,7 @@ This document is in the making since we are still in the requirements engineerin
 - See R-A-001
 - Origin: Researcher
 
-#### R-U-012: True to the term *Reference Architecture*
+#### R-U-012: True to the term _Reference Architecture_
 
 - The system should be usable as a reference system in the context of education. One should be able to show, let observe, and explain what a microservice architecture is and how it reacts to load.
 - Also one should be able to observe and better understand the effects of scaling.
@@ -248,15 +246,15 @@ This document is in the making since we are still in the requirements engineerin
 #### R-U-013: Deterioration in performance
 
 - It should be fairly easy to control the performance of the system. A researcher should be able to decide when and how the performance deteriorates.
-- "As a researcher I want to be able to a) reproduce performance issues and b) inject them into the system. I want to be able to trigger potential bottle necks." -- Researcher *Goliath*
+- "As a researcher I want to be able to a) reproduce performance issues and b) inject them into the system. I want to be able to trigger potential bottle necks." -- Researcher _Goliath_
 - Individual services should be controlled regarding their performance degradation.
-- The system should allow for *injecting* gradual performance degradation at the system level and at the microservice level.
-- It should be possible to *inject* regression by making configurations to the database (e.g., number of threads available to the database system). See R-Conf-006
-- Origin: Researcher, Researcher *Goliath*
+- The system should allow for _injecting_ gradual performance degradation at the system level and at the microservice level.
+- It should be possible to _inject_ regression by making configurations to the database (e.g., number of threads available to the database system). See R-Conf-006
+- Origin: Researcher, Researcher _Goliath_
 
 #### R-U-014: Demo mode
 
-- There should be a kind of demo mode so that a new user can try out the system quickly and easily: We provide test data with which the system can be directly *loaded*.
+- There should be a kind of demo mode so that a new user can try out the system quickly and easily: We provide test data with which the system can be directly _loaded_.
 - Origin: Developers
 
 #### R-U-015: Repeatability of experiments
@@ -265,21 +263,21 @@ This document is in the making since we are still in the requirements engineerin
 - As a researcher, I want to repeat an experminent multiple times and I need the system to be in the exact same state at the beginning of each repetition of the experiment.
 - A stakeholder said: "If I have scaling in place, when the experiment is finished, you want the state to be just like before the experiment. This allows repeatability."
 - This requirement could also be moved into the section Configurations.
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### R-U-016: Scheduling of experiments
 
 - The system must offer the possibility to schedule experiments.
 - As a researcher, I want to be able to schedule experiments.
 - This requirement could also be moved into the section Configurations.
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### R-U-017: Measurements and Metrics
 
 - The system should make measurements related to the system's behavior, record these measurements and make them available for the user.
 - External developers said that they needed "comprehensive measurements from the system".
 - The recorded data should be as diverse and comprehensive as possible. This way researchers can decide per case which measures they need.
-- Origin: *Ulm*
+- Origin: _Ulm_
 
 ##### Open Questions
 
@@ -291,7 +289,7 @@ This document is in the making since we are still in the requirements engineerin
 - As a user / researcher, I want to make decisions partly based on the costs of the system's usage.
 - The supervisors do not require this.
 - See R-Conf-004
-- Origin: *Ulm*
+- Origin: _Ulm_
 
 ### Non-functional Requirements
 
@@ -302,19 +300,19 @@ This document is in the making since we are still in the requirements engineerin
 
 #### R-NFR-002: Elasticity / Auto scaling
 
-- The system must be *elastic*.
+- The system must be _elastic_.
 - The system must scale automatically.
-- Origin: Examiner, Researcher *Toni*
+- Origin: Examiner, Researcher _Toni_
 
 ##### Open Question
 
-- What exactly does *elastic* mean? What is the examiner's understanding of the term?
+- What exactly does _elastic_ mean? What is the examiner's understanding of the term?
 
 #### R-NFR-003: Resilience
 
 - The system should be resilient.
 - The systems' microservices must not fail suddenly and without good reason.
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### R-NFR-004: Maintainability
 
@@ -322,7 +320,7 @@ This document is in the making since we are still in the requirements engineerin
 - Not only for the developers but also for the researchers using the system.
 - Instead of trying to support every possible deployment, only one deployment should be supported but that one should be supported very well.
 - In order to improve maintainability, things should be kept as simple as possible. Note, that this is a very general and loose requirement.
-- Origin: Researcher *Goliath*
+- Origin: Researcher _Goliath_
 
 ### Configurations
 
@@ -332,7 +330,7 @@ See also R-U-003.
 
 - The system's size should be configurable.
 - As a researcher, I want to be able to decide how big or small the system actually is. I want to set the system's size in order to have it fit my needs.
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### R-Conf-002: Load profiles
 
@@ -340,24 +338,25 @@ See also R-U-003.
 - As a researcher, I want to specify load profiles to control the system when experimenting with it.
 - Advice from stakeholder: Derive the load profiles from the domain.
 - As a researcher, I want diversity in the system's load patterns because I want to know, if I deploy an elasticity policy, how will that perform?
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### ~~R-Conf-003: Elasticity policies~~
 
 - The system must offer the possibility to specify elasticity policies.
-- We discarded this requ. since it only serves as a high-level term for scaling and load handling. Since it could be that in the future there will be more specific requirements, we did not delete it entirely. 
+- We discarded this requ. since it only serves as a high-level term for scaling and load handling. Since it could be that in the future there will be more specific requirements, we did not delete it entirely.
 - See R-Conf-002, R-Conf-003
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### R-Conf-004: Scaling policies
 
 - The system should offer different alternatives for scaling.
 - The system should allow the user to configure the scaling techniques in place.
-- For each scaling strategy, the system should inform about the costs of the chosen scaling strategy. -- *Ulm*
+- For each scaling strategy, the system should inform about the costs of the chosen scaling strategy. -- _Ulm_
+
   - See R-U-018
   - The supervisors do not require this.
 
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 ##### Open Question
 
@@ -367,7 +366,7 @@ See also R-U-003.
 
 - The system should have different variants.
 - e.g., one variant with database as a service, another variant with a shared database
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 ##### Open Questions
 
@@ -379,7 +378,7 @@ See also R-U-003.
   - System
   - Microservice
   - Database (Management System)
-- Origin: Researcher *Goliath*
+- Origin: Researcher _Goliath_
 
 ## Design
 
@@ -411,20 +410,20 @@ See also R-U-003.
 - Regarding time and location and structure.
 - API first: Services are only allowed to expose and work with other services' interfaces.
 - A domain-driven declaration of service responsibilities must be at hand.
-- Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
+- Origin: Examiner, Supervisors, Researchers, Researcher _Toni_
 
 #### R-A-006: Diversity in communication protocolls
 
 - The system should have diversity regarding communication protocalls.
 - A researcher said: "Just like in reality."
 - See R-U-001
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 #### R-A-007: Exclusive components that "facilitate research"
 
 - The system should have separate components that allow for experimentation.
 - A researcher said: "Additional components have to be coded that facilitate research. For instance, injecting load into the system."
-- Origin: Researcher *Toni*
+- Origin: Researcher _Toni_
 
 ##### Open Questions
 
@@ -433,7 +432,7 @@ See also R-U-003.
 #### R-A-008: Distributed Tracing
 
 - The system must have distributed tracing available.
-- Origin: *Ulm*
+- Origin: _Ulm_
 
 ### Microservice Patterns
 
@@ -443,7 +442,7 @@ See also R-U-003.
 
 #### R-MP-002: Messaging (Asynchronous Communication)
 
-Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
+Origin: Examiner, Supervisors, Researchers, Researcher _Toni_
 
 #### R-MP-003: Circuit Breaker
 
@@ -471,7 +470,7 @@ Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 
 - Python should only be considered as a last resort.
   - If we used Python, we would have to explain why.
-- *See R-E-003*
+- _See R-E-003_
 - Origin: Examiner
 
 #### R-T-003: Use Go
@@ -503,10 +502,10 @@ Origin: Examiner, Supervisors, Researchers, Researcher *Toni*
 
 - OpenTelemetry should be used for monitoring.
 - https://opentelemetry.io
-- https://github.com/open-telemetry/opentelemetry-demo -- We should investigate this as recommended by Researcher *Goliath*
-- Origin: Researcher *Toni*
+- https://github.com/open-telemetry/opentelemetry-demo -- We should investigate this as recommended by Researcher _Goliath_
+- Origin: Researcher _Toni_
 
 #### R-T-009: Kotlin
 
 - The programming language Kotlin should be used.
-- Origin: Researcher *Goliath*
+- Origin: Researcher _Goliath_
