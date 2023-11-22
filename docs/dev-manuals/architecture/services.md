@@ -1,30 +1,32 @@
-# Required services
-1. Catalog/Product
-    - stores concrete product information (name, description, ref to image) for each product
-    - not a concrete instance, but the type
+# Services
+1. Product
+    - stores concrete product information - name, description, image locations, and product variants, i.e. XXL T-Shirt in red - for each product
+    - does not store individual instances but the overall descriptions of an item. For that see `inventory`
     - APIs: CRUD for products
 1. Inventory
-    - how many of each product is available
+    - stores each available product digitally
     - handles state of item (blocked when sold but not yet delivered)
-    - APIs: CRUD for amounts per product, (un-)blocking an item
+    - APIs: CRUD per instance of any product, (un-)blocking an item
+    - Depends on `Product` service
 1. Shipping
-    - 
-    - idea: ship in different packages
-        - could be configurable
-1. Order/Checkout
-    - an order knows what is ordered
-    - has state of order (e.g. shipping, payment)
-    - order is initally a set of CartItems, which are then removed from the cart
+    - any order is sent in x shipments ("cartons")
+    - stores the delivery status for every order and where it should be delivered to
+    - CRUD to register/manage arbitrary shipment provider
+    - Dependency on `Order` and `User` service
+1. Order
+    - stores items that have been ordered simultaneously
+    - Dependency on `Product` and `Inventory` service
 1. Cart
-    - shopping cart functionality
-    - has a list of CartItems, which can then be ordered in the order service
+    - stores items that are in the pending order (the next one to be bought)
+    - Depends on `Product` service
+    - Might depend on `Inventory` service (displaying if the item is actually available at the moment)
 1. Media
     - file/object storage/db
-    - user upload functionaility
+    - seller can upload images and retrieve URL of / delete the uploaded image
 1. Payment
-    - mostly a state
-    - can be changed externally
-    - handles discounts
+    - CRUD to register/manage arbitrary payment provider
+    - handles payment of any order
+    - handles discounts as well
 1. Search
     - search for items
         - by text
@@ -35,25 +37,26 @@
         - by price
         - by search text match
 1. User
-    - user management
-    - settings
-    - auth
+    - user settings (address, billing)
+    - Dependency on `Payment` service
+1. Auth (Keycloak)
+    - authenticates users and manages their sessions
 1. Notification
     - mail replacement
     - everything user should be notified about
     - each user has notifications
     - potentially boolean flag read/unread
-1. Pricing
-    - Determines the price 
-1. Review/Rating
+1. Rating
     - associates a user review with a product
-    - provides aggregated data
-    - idea: NLP
+    - provides summary data
+    - Depends on `User` and `Product` service
 1. Wishlist
     - APIs: CRUD for items on a wishlist, CRUD for wishlists themself
-    - wishlist is a shopping cart without shopping cart
+    - wishlist is a shopping cart with two exceptions: it does not store an amount of items to buy, and items on a wishlist will not be bought with the next order
     - any user can have multiple wishlists
     - wishlists can potentially be used for recommendations
+    - Depends on `Product` service
+    - Might depend on `Inventory` service (displaying if the item is actually available at the moment)
 
 # Optional services
 1. Support
