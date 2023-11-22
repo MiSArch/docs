@@ -1,0 +1,374 @@
+classDiagram {
+    enum = {
+        (name, fields) = args
+        noedit {
+            class(name, keywords = list("enum")) {
+                sections += fields.map { "+" + it }
+            }
+        }
+    }
+
+    enum("UserRole", list("ADMIN", "CUSTOMER", "EMPLOYEE")) layout {
+        pos = apos(1390, 360)
+    }
+
+    enum("PaymentStatus", list("COMPLETED", "PENDING", "RESERVED")) layout {
+        pos = apos(1390, 170)
+    }
+
+    enum(
+        "ShippingStatus",
+        list("PENDING", "IN_PROGRESS", "DELIVERED")
+    ) layout {
+        pos = apos(1390, 540)
+    }
+
+    enum("ReturnStatus", list("COMPLETED", "IN_PROGRESS")) layout {
+        pos = apos(1390, 10)
+    }
+
+    class("AuthCredential") layout {
+        pos = apos(-240, 500)
+    }
+
+    class("User") {
+        public {
+            role : UserRole
+            username : string
+        }
+    } layout {
+        pos = apos(-240, 620)
+    }
+
+    class("Customer") {
+
+    } layout {
+        height = 117.594513591
+        pos = apos(-240, 830)
+    }
+
+    class("Address") {
+        public {
+            street1 : string
+            street2 : string
+            city : string
+            postalCode : string
+            country : string
+        }
+    } styles {
+        class += "v-center"
+    } layout {
+        pos = apos(-240, 1110)
+    }
+
+    class("PaymentProvider") {
+        public {
+            name : string
+            description : string
+            fees : int
+        }
+    } styles {
+        class += "v-center"
+    } layout {
+        pos = apos(1270, 1300)
+    }
+
+    class("PaymentInformation") styles {
+        class += "v-center"
+    } layout {
+        pos = apos(820, 1300)
+    }
+
+    class("Payment") {
+        public {
+            totalCost : int
+            status : PaymentStatus
+        }
+    } styles {
+        class += "v-center"
+    } layout {
+        pos = apos(280, 1300)
+    }
+
+    class("ShipmentProvider") {
+        public {
+            name : string
+            description : string
+            fees : int
+        }
+    } styles {
+        class += "v-center"
+    } layout {
+        pos = apos(1270, 1110)
+    }
+
+    class("Shipment") {
+        public {
+            status : ShipmentStatus
+        }
+    } styles {
+        class += "v-center"
+    } layout {
+        pos = apos(810, 1110)
+    }
+
+    class("Product") {
+        public {
+            internalName : string
+            averageReview : double
+        }
+    } layout {
+        pos = apos(810, 200)
+    }
+
+    class("VariantTag", keywords = list("dataType")) {
+        public {
+            key : string
+            value : string
+        }
+    } layout {
+        pos = apos(1390, 730)
+    }
+
+    class("ProductVariant") layout {
+        pos = apos(810, 380)
+    }
+
+    class("ProductVariantVersion") {
+        public {
+            name : string
+            description : string
+            version : int
+            price : int
+        }
+    } layout {
+        pos = apos(810, 510)
+    }
+
+    class("Image") layout {
+        width = 196.500137712
+        pos = apos(810, 710)
+    }
+
+    class("ShoppingCart") layout {
+        pos = apos(280, 380)
+    }
+
+    class("ShoppingCartItem") {
+        public {
+            count : int
+        }
+    } layout {
+        pos = apos(280, 500)
+    }
+
+    class("Wishlist") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(280, 200)
+    }
+
+    class("Order") layout {
+        pos = apos(280, 950)
+    }
+
+    class("OrderItem") layout {
+        pos = apos(810, 950)
+    }
+
+    class("Review") {
+        public {
+            body : string
+            rating : int
+            date : Date
+        }
+    } layout {
+        pos = apos(810, 10)
+    }
+
+    class("Return") {
+        public {
+            status : ReturnStatus
+        }
+    } layout {
+        pos = apos(280, 690)
+    }
+
+    showRelations = true
+
+    if(showRelations) {
+        Customer extends User with {
+            over = start(0.75).line(end(0.25))
+        }
+
+        User --> AuthCredential with {
+            label("1..* : credentials", 1, 0)
+            label("1 : user", 0, 0)
+            over = start(0.75).line(end(0.25))
+        }
+
+        Payment --> PaymentInformation with {
+            label("1 : paymentInformation", 1, 0)
+            label("0..* : payments", 0, 0)
+            over = start(1).line(end(0.5))
+        }
+
+        Shipment --> ShipmentProvider with {
+            label("1 : provider", 1, 0)
+            label("0..* : shipments", 0, 0)
+            over = start(0).line(end(0.5))
+        }
+
+        PaymentInformation --> PaymentProvider with {
+            label("1 : provider", 1, 0)
+            label("0..* : payments", 0, 1.8)
+            over = start(1).line(end(0.5))
+        }
+
+        Customer --> Address with {
+            label("0..* : addresses", 1, 0)
+            label("1 : customer", 0, 0)
+            over = start(0.25).line(end(0.75))
+        }
+
+        Shipment --> Address with {
+            label("1 : address", 1, 0)
+            label("0..* : shipments", 0, 0)
+            over = start(0.5).line(end(1))
+        }
+
+        Customer --> PaymentInformation with {
+            label("0..* : paymentInformations", 0.9375, 112.5)
+            label("1 : customer", 0, 0)
+            over = start(0.5).axisAligned(1, apos(-470, 1390), -1, end(0.3125))
+        }
+
+        Product --> ProductVariant with {
+            label("1..* : variants", 0.6875, -62)
+            label("1 : product", 0, 0)
+            over = start(0.1875).line(end(0.8125))
+        }
+
+        Product !--> ProductVariant with {
+            label("1 : defaultVariant", 0.75, 71.3)
+            over = start(0.25).line(end(0.75))
+        }
+
+        ProductVariant --> ProductVariantVersion with {
+            label("1..* : versions", 0.75, -64.2)
+            label("1 : variant", 0.0625, -40.1)
+            over = start(0.1875).line(end(0.8125))
+        }
+
+        ProductVariant --> ProductVariantVersion with {
+            label("1 : currentVersion", 0.6875, 77.3)
+            over = start(0.25).line(end(0.75))
+        }
+
+        ProductVariantVersion --> Image with {
+            label("1..* : images", 1, 0)
+            over = start(0.25).line(end(0.75))
+        }
+
+        ShoppingCart --> ShoppingCartItem with {
+            label("0..* : items", 1, 0)
+            label("1 : shoppingCart", 0, 0)
+            over = start(0.25).line(end(0.75))
+        }
+
+        Customer --> ShoppingCart with {
+            label("1 : cart", 1, 0)
+            label("1 : customer", 0.125, 7.8)
+            over = start(0.0625).axisAligned(0.83, end(0.5))
+        }
+
+        ShoppingCartItem --> ProductVariant with {
+            label("1 : variant", 0.9375, 17.6)
+            label("0..* : inCarts", 0, 0)
+            over = start(0).axisAligned(0.48, end(0.375))
+        }
+
+        Customer --> Wishlist with {
+            label("0..* : wishlists", 1, 0)
+            label("1 : customer", 0.125, 8.5)
+            over = start(1).axisAligned(0.68, end(0.5))
+        }
+
+        Wishlist --> ProductVariant with {
+            label("0..* : productVariants", 0.875, -39.3)
+            label("0..* : inWishlists", 0, 0)
+            over = start(0.0625).axisAligned(0.47, end(0.625))
+        }
+
+        Order --> OrderItem with {
+            label("1..* : items", 1, 0)
+            label("1 : order", 0, 0)
+            over = start(0).line(end(0.5))
+        }
+
+        Order --> Payment with {
+            label("1 : payment", 1, 0)
+            label("1 : order", 0, 0)
+            over = start(0.25).line(end(0.75))
+        }
+
+        Order --> Shipment with {
+            label("1..* : shipments", 1, 0)
+            label("1 : order", 0, 0)
+            over = start(0.1875).axisAligned(-0.51, end(0.6875))
+        }
+
+        Customer --> Order with {
+            label("0..* : orders", 1, 0)
+            label("1 : customer", 0, 0)
+            over = start(0.1875).axisAligned(0, end(0.5))
+        }
+
+        Order --> Return with {
+            label("0..* : returns", 1, 0)
+            label("1 : order", 0, 0)
+            over = start(0.75).line(end(0.25))
+        }
+
+        Return --> OrderItem with {
+            label("0..* : items", 1, 0)
+            label("0..1 : returnedIn", 0, 0)
+            over = start(0.125).axisAligned(-0.51, end(0.6875))
+        }
+
+        Product --> Review with {
+            label("0..* : reviews", 1, 0)
+            label("1 : order", 0, 0)
+            over = start(0.75).line(end(0.25))
+        }
+
+        Customer --> Review with {
+            label("0..* : reviews", 1, 0)
+            label("1 : customer", 0.125, 3.5)
+            over = start(0.9375).axisAligned(0.16, end(0.5))
+        }
+
+        OrderItem !--> ProductVariantVersion with {
+            label("1 : productVariantVersion", 1, 0)
+            over = start(0.875).line(end(0.125))
+        }
+
+        Shipment --> OrderItem with {
+            label("0..* : sentItems", 1, 0)
+            label("1 : sentWith", 0, 0)
+            over = start(0.75).line(end(0.25))
+        }
+    }
+
+    styles {
+        cls("class-element") {
+            vAlign = VAlign.Top
+        }
+        cls("v-center") {
+            vAlign = VAlign.Center
+        }
+    }
+}
