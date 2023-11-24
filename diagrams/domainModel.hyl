@@ -14,7 +14,7 @@ classDiagram {
         pos = apos(470, -560)
     }
 
-    enum("PaymentStatus", list("COMPLETED", "PENDING", "RESERVED")) layout {
+    enum("PaymentStatus", list("COMPLETED", "RESERVED")) layout {
         pos = apos(830, -560)
     }
 
@@ -59,6 +59,7 @@ classDiagram {
             city : string
             postalCode : string
             country : string
+            companyName : string
         }
     } layout {
         pos = apos(-240, 1140)
@@ -109,25 +110,15 @@ classDiagram {
         public {
             internalName : string
             averageReview : double
+            isPubliclyVisible : boolean
         }
     } layout {
         pos = apos(810, -130)
     }
 
-    class("VariantTag", keywords = list("dataType")) {
-        public {
-            key : string
-            value : string
-        }
-    } styles {
-        class += "v-top"
-    } layout {
-        pos = apos(1180, -560)
-    }
-
     class("ProductVariant") {
         public {
-            tags : "List<VariantTag>"
+            isPubliclyVisible : boolean
         }
     } layout {
         pos = apos(810, 50)
@@ -228,7 +219,7 @@ classDiagram {
             isInInventory : boolean
         }
     } layout {
-        pos = apos(1380, 50)
+        pos = apos(1480, 370)
     }
 
     class("Return") {
@@ -289,7 +280,7 @@ classDiagram {
     }
 
     class("TaxRate") layout {
-        pos = apos(1320, 280)
+        pos = apos(1370, 600)
     }
 
     class("TaxRateVersion") {
@@ -297,7 +288,58 @@ classDiagram {
             rate : double
         }
     } layout {
-        pos = apos(1320, 510)
+        pos = apos(1370, 830)
+    }
+
+    class("Category") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1470, -510)
+    }
+
+    class("CategoryTag", abstract = true) {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1470, -330)
+    }
+
+    class("NumericalCategoryTag") {
+        public {
+            unit : string
+        }
+    } layout {
+        pos = apos(1690, -140)
+    }
+
+    class("CategorialCategoryTag") layout {
+        pos = apos(1270, -140)
+    }
+
+    class("CategorialCategoryTagValue") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1270, 60)
+    }
+
+    class("NumericalCategoryTagValue") {
+        public {
+            value : double
+        }
+    } layout {
+        pos = apos(1690, 60)
+    }
+
+    class("CategoryTagValue", abstract = true) layout {
+        pos = apos(1470, 210)
     }
 
     showRelations = true
@@ -335,7 +377,7 @@ classDiagram {
 
         User --> Address with {
             label("0..* : addresses", 0.77, 67.7)
-            label("1 : user", 0.03, 48.2)
+            label("0..1 : user", 0.03, 48.2)
             over = start(0.25).line(end(0.75))
         }
 
@@ -373,14 +415,14 @@ classDiagram {
             over = start(0.1875).line(end(0.8125))
         }
 
-        ProductVariant !--> ProductVariantVersion with {
+        ProductVariant --> ProductVariantVersion with {
             label("1 : currentVersion", 0.665, 77.3)
             over = start(0.25).line(end(0.75))
         }
 
         ProductVariantVersion !--> Media with {
-            label("1..* : medias", 0.665, 60.9)
-            over = start(0.25).line(end(0.75))
+            label("1..* : medias", 0.695, 70)
+            over = start(0.31).line(end(0.66))
         }
 
         ShoppingCart --> ShoppingCartItem with {
@@ -450,7 +492,7 @@ classDiagram {
         }
 
         OrderItem !--> ProductVariantVersion with {
-            label("1 : productVariantVersion", 0.985, 115.2)
+            label("1 : productVariantVersion", 0.975, -102)
             over = start(0.875).line(end(0.125))
         }
 
@@ -467,9 +509,9 @@ classDiagram {
         }
 
         ProductVariant --> ProductItem with {
-            label("0..* : instances", 0.795, -35.4)
-            label("1 : productVariant", 0.245, 5.1)
-            over = start(0.015).line(end(0.485))
+            label("0..* : instances", 0.935, 13)
+            label("1 : productVariant", 0.115, -27)
+            over = start(0.015).axisAligned(0.511, apos(1160, 190), 0, end(Position.Left))
         }
 
         OrderItem !--> ProductItem with {
@@ -556,7 +598,54 @@ classDiagram {
 
         ProductVariantVersion !--> TaxRate with {
             label("1 : taxRate", 0.76, 12.6)
-            over = start(Position.Right).line(end(Position.Left))
+            over = start(0.08).axisAligned(0.386, end(Position.Left))
+        }
+
+        list(CategorialCategoryTag, NumericalCategoryTag).forEach {
+            it extends CategoryTag with {
+                over = start(Position.Top).axisAligned(
+                    -0.5,
+                    end(Position.Bottom)
+                )
+            }
+        }
+        list(CategorialCategoryTagValue, NumericalCategoryTagValue).forEach {
+            it extends CategoryTagValue with {
+                over = start(Position.Bottom).axisAligned(
+                    -0.5,
+                    end(Position.Top)
+                )
+            }
+        }
+
+        Category --> CategoryTag with {
+            label("0..* : tags", 0.73, -50.8)
+            label("1 : category", 0.025, -48.9)
+            over = start(0.25).line(end(0.75))
+        }
+
+        NumericalCategoryTag --> NumericalCategoryTagValue with {
+            label("0..* : values", 0.77, -56)
+            label("1 : tag", 0.075, -33)
+            over = start(Position.Bottom).line(end(Position.Top))
+        }
+
+        CategorialCategoryTag --> CategorialCategoryTagValue with {
+            label("0..* : values", 0.77, -56)
+            label("1 : tag", 0.075, -33)
+            over = start(Position.Bottom).line(end(Position.Top))
+        }
+
+        Product --> Category with {
+            label("0..* : categories", 0.93, 12.7)
+            label("0..* : products", 0.195, 5.4)
+            over = start(Position.Right).axisAligned(0.248, end(Position.Left))
+        }
+
+        ProductVariantVersion --> CategoryTagValue with {
+            label("0..* : tagValues", 0.845, 15)
+            label("0..* productVersions", 0.225, 6.8)
+            over = start(0.92).line(end(Position.Left))
         }
     }
 
