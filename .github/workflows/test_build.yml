@@ -14,6 +14,8 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Render HyLiMo diagrams
+        run: npm run render-diagrams
       - name: Check formatting
         run: npm run format:check
       - name: Build website
