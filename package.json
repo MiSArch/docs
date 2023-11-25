@@ -29,7 +29,7 @@
     },
     "devDependencies": {
         "@docusaurus/module-type-aliases": "3.0.0",
-        "@hylimo/cli": "file:../../hylimo/packages/cli",
+        "@hylimo/cli": "^0.0.1",
         "prettier": "^3.1.0"
     },
     "browserslist": {

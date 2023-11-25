@@ -3,7 +3,7 @@ const path = require("path");
 const { execSync } = require("child_process");
 
 const inputFolder = "diagrams";
-const outputFolder = "renderedDiagrams";
+const outputFolder = "static/renderedDiagrams";
 
 fs.readdir(inputFolder, (err, files) => {
     if (err) {
@@ -14,7 +14,7 @@ fs.readdir(inputFolder, (err, files) => {
     files.forEach((file) => {
         if (file.endsWith(".hyl")) {
             const inputFilePath = path.join(inputFolder, file);
-            const outputFileName = file.replace(/\.hyl$/, ".svg");
+            const outputFileName = file.replace(/\.hyl$/, "-light.svg");
             const outputFilePath = path.join(outputFolder, outputFileName);
 
             const command = `npx @hylimo/cli -f ${inputFilePath} -o ${outputFilePath}`;
