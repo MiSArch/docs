@@ -1,5 +1,5 @@
 showRelations = true
-showBoundexContexts = false
+showBoundexContexts = true
 highlightBoundedContexts = true
 highlightBoundedContextsMore = true
 highlightCrossContextRelations = false
