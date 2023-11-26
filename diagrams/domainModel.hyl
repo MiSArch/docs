@@ -1,5 +1,5 @@
 showRelations = true
-showBoundexContexts = false
+showBoundedContexts = false
 highlightBoundedContexts = true
 highlightBoundedContextsMore = true
 highlightCrossContextRelations = false
@@ -22,7 +22,7 @@ classDiagram {
         left
     }
 
-    if(showBoundexContexts) {
+    if(showBoundedContexts) {
         package("Account") layout {
             width = 355.194290034
             height = 322.755733225
