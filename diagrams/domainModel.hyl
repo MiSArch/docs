@@ -678,7 +678,7 @@ classDiagram {
 
         Coupon <--> Discount with {
             label("1 : discount", 0.62, 21, 90)
-            label("0..1 : filterByCoupon", 0.425, 13, 90)
+            label("0..* : filterByCoupon", 0.425, 13, 90)
             over = start(Position.Right).axisAligned(1, end(0.74))
         }
 
