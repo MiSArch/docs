@@ -1,8 +1,8 @@
 import { useColorMode } from "@docusaurus/theme-common";
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import useBaseUrl from "@docusaurus/useBaseUrl";
 import Lightbox from "./Lightbox";
 
-export default function HylimoDiagram({name, alt, width, height}) {
+export default function HylimoDiagram({ name, alt, width, height }) {
     const { colorMode } = useColorMode();
     const image = {
         url: useBaseUrl(`/renderedDiagrams/${name}-${colorMode}.svg`),
@@ -10,8 +10,6 @@ export default function HylimoDiagram({name, alt, width, height}) {
         width,
         height
     };
-    
-    return (
-        <Lightbox image={image} />
-    );
+
+    return <Lightbox image={image} />;
 }

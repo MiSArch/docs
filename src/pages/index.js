@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
-import HylimoDiagram from "@site/src/components/HylimoDiagram"
+import HylimoDiagram from "@site/src/components/HylimoDiagram";
 
 import styles from "./index.module.css";
 
@@ -24,7 +24,7 @@ export default function Home() {
         <Layout title={`Hello from ${siteConfig.title}`} description="Description will go into a meta tag in <head />">
             <HomepageHeader />
             <main>
-                <HylimoDiagram name="domainModelBC" width="2820.5" height="2398.5"/>
+                <HylimoDiagram name="domainModelBC" width="2820.5" height="2398.5" />
             </main>
         </Layout>
     );
