@@ -1,0 +1,860 @@
+showRelations = true
+showBoundedContexts = true
+highlightBoundedContexts = true
+highlightBoundedContextsMore = true
+highlightCrossContextRelations = false
+
+classDiagram {
+    enum = {
+        (name, fields) = args
+        noedit {
+            class(name, keywords = list("enum")) {
+                sections += fields.map { "+" + it }
+            } withClass "v-top"
+        }
+    }
+
+    withClass = {
+        (left, right) = args
+        left styles {
+            class += right
+        }
+        left
+    }
+
+    if(showBoundedContexts) {
+        package("Account") layout {
+            width = 355.194290034
+            height = 322.755733225
+            pos = apos(-420, 390)
+        }
+
+        package("User") layout {
+            width = 458.277241987
+            height = 226.188750551
+            pos = apos(-450, 715)
+        }
+
+        package("Notification") layout {
+            width = 400.684089512
+            height = 200.416947984
+            pos = apos(-897.5, 710)
+        }
+
+        package("Wishlist") layout {
+            width = 441.928174373
+            height = 176.762252255
+            pos = apos(10, -320)
+        }
+
+        package("Order") layout {
+            width = 1068.304112146
+            height = 188.268161325
+            pos = apos(32.5, 882.5)
+        }
+
+        package("Invoice") layout {
+            width = 463
+            height = 204.75
+            pos = apos(7.5, 1212.5)
+        }
+
+        package("Discount") layout {
+            width = 517.631207732
+            height = 603.745921541
+            pos = apos(115, 200)
+        }
+
+        package("ShoppingCart") layout {
+            width = 456.628520717
+            height = 300.381207732
+            pos = apos(65, -125)
+        }
+
+        package("Address") layout {
+            width = 411
+            height = 295.75
+            pos = apos(-417.5, 972.5)
+        }
+
+        package("Payment") layout {
+            width = 1968.505925949
+            height = 210.771098401
+            pos = apos(-402.5, 1537.5)
+        }
+
+        package("Tax") layout {
+            width = 388.553476318
+            height = 384.195737877
+            pos = apos(1177.5, 515)
+        }
+
+        package("Shipment") layout {
+            width = 1071.601554688
+            height = 200.878770777
+            pos = apos(517.5, 1342.5)
+        }
+
+        package("Category") layout {
+            height = 878.75
+            width = 772
+            pos = apos(1147.5, -617.5)
+        }
+
+        package("Inventory") layout {
+            height = 136.124698055
+            width = 351.555106076
+            pos = apos(1305, 287.5)
+        }
+
+        package("Product") layout {
+            height = 600.727183394
+            width = 389.766537637
+            pos = apos(627.5, -222.5)
+        }
+
+        package("Media") layout {
+            width = 266.640813716
+            height = 126.420207499
+            pos = apos(660, 415)
+        }
+
+        package("Review") layout {
+            width = 360.32266988
+            height = 198.264144528
+            pos = apos(625, -430)
+        }
+
+        package("Return") layout {
+            height = 141.403065971
+            width = 407.962457429
+            pos = apos(352.5, 1075)
+        }
+    }
+
+    enum("UserRole", list("ADMIN", "CUSTOMER", "EMPLOYEE")) layout {
+        pos = apos(470, -560)
+    }
+
+    enum(
+        "DeliveryStatus",
+        list(
+            "PENDING",
+            "IN_PROGRESS",
+            "DELIVERED",
+            "RETURNED",
+            "RETURN_IN_PROGRESS"
+        )
+    ) layout {
+        pos = apos(110, -560)
+    }
+
+    enum (
+        "Gender",
+        list("MALE", "FEMALE", "DIVERSE", "OTHER")
+    ) layout {
+        pos = apos(-257.5, -560)
+
+    }
+
+    class("AuthCredential") layout {
+        width = 144.728151114
+        pos = apos(-240, 460)
+    }
+
+    class("Account") {
+        public {
+            role : UserRole
+            username : string
+        }
+    } layout {
+        pos = apos(-240, 620)
+    }
+
+    class("User") {
+        public {
+            dateJoined : Date
+            birthday : Date
+            gender : "Gender?"
+        }
+    } layout {
+        height = 117.594513591
+        pos = apos(-240, 830)
+    }
+
+    class("Address") {
+        public {
+            street1 : string
+            street2 : string
+            city : string
+            postalCode : string
+            country : string
+            companyName : string
+        }
+    } layout {
+        pos = apos(-240, 1140)
+    }
+
+    class("PaymentMethod") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1390, 1670)
+    }
+
+    class("PaymentInformation") layout {
+        pos = apos(820, 1670)
+    }
+
+    class("Payment") {
+        public {
+            payedAt : "Date?"
+            amount : int
+        }
+    } layout {
+        pos = apos(280, 1670)
+    }
+
+    class("ShipmentMethod") {
+        public {
+            name : string
+            description : string
+            calculateFees(TODO) : int
+        }
+    } layout {
+        pos = apos(1390, 1460)
+    }
+
+    class("Shipment") {
+        public {
+            status : DeliveryStatus
+        }
+    } layout {
+        pos = apos(810, 1460)
+    }
+
+    class("Product") {
+        public {
+            internalName : string
+            averageReview : double
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(810, -130)
+    }
+
+    class("ProductVariant") {
+        public {
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(810, 50)
+    }
+
+    class("ProductVariantVersion") {
+        public {
+            name : string
+            description : string
+            version : int
+            retailPrice : int
+            price : int
+            createdAt : Date
+            canBeReturnedForDays : "double?"
+        }
+    } layout {
+        pos = apos(810, 280)
+    }
+
+    class("Media") layout {
+        width = 196.500137712
+        pos = apos(810, 500)
+    }
+
+    class("ShoppingCart") {
+        public {
+            lastUpdatedAt : Date
+        }
+    } layout {
+        pos = apos(280, -40)
+    }
+
+    class("ShoppingCartItem") {
+        public {
+            count : int
+            addedAt : Date
+        }
+    } layout {
+        pos = apos(280, 110)
+    }
+
+    class("Wishlist") {
+        public {
+            name : string
+            createdAt : Date
+            lastUpdatedAt : Date
+        }
+    } layout {
+        pos = apos(280, -220)
+    }
+
+    class("Order") {
+        public {
+            date : Date
+        }
+    } layout {
+        pos = apos(280, 970)
+    }
+
+    class("OrderItem") {
+        public {
+            compensatableAmount : int
+        }
+    } layout {
+        pos = apos(810, 970)
+    }
+
+    class("Review") {
+        public {
+            body : string
+            rating : int
+            date : Date
+            isHidden : boolean
+        }
+    } layout {
+        pos = apos(810, -320)
+    }
+
+    class("Notification") {
+        public {
+            title : string
+            body : string
+            isRead : boolean
+            dateSent : Date
+            dateRead : Date
+        }
+    } layout {
+        pos = apos(-730, 824)
+    }
+
+    class("ProductItem") {
+        public {
+            isInInventory : boolean
+        }
+    } layout {
+        pos = apos(1517.5, 372.5)
+    }
+
+    class("Return") {
+        public {
+            refundedAmount : int
+            reason : string
+        }
+    } layout {
+        pos = apos(520, 1150)
+    }
+
+    class("Invoice") {
+        public {
+            totalInvoiceAmount : int
+            dateIssued : Date
+        }
+    } styles {
+
+    } layout {
+        pos = apos(280, 1350)
+    }
+
+    class("Receipt") {
+
+    } layout {
+        pos = apos(-230, 1670)
+    }
+
+    class("Coupon") {
+        public {
+            usages : "int"
+            maxUsages : "int?"
+            validUntil : Date
+            validFrom : Date
+            code : string
+        }
+    } layout {
+        pos = apos(280, 330)
+    }
+
+    class("Discount") {
+        public {
+            discount : double
+            maxUsagesPerUser : "int?..."
+            validUntil : Date
+            validFrom : Date
+            minOrderAmount : "int?"
+            maxDiscountableAmount : "int?"
+        }
+    } layout {
+        pos = apos(470, 700)
+    }
+
+    class("TaxRate") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1370, 600)
+    }
+
+    class("TaxRateVersion") {
+        public {
+            rate : double
+            version : int
+            createdAt : Date
+        }
+    } layout {
+        pos = apos(1370, 830)
+    }
+
+    class("Category") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1507.5, -507.5)
+    }
+
+    class("CategoryCharacteristic", abstract = true) {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1507.5, -330)
+    }
+
+    class("NumericalCategoryCharacteristic") {
+        public {
+            unit : string
+        }
+    } layout {
+        pos = apos(1727.5, -137.5)
+    }
+
+    class("CategorialCategoryCharacteristic") layout {
+        pos = apos(1307.5, -140)
+    }
+
+    class("CategorialCategoryCharacteristicValue") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1307.5, 60)
+    }
+
+    class("NumericalCategoryCharacteristicValue") {
+        public {
+            value : double
+        }
+    } layout {
+        pos = apos(1727.5, 60)
+    }
+
+    class("CategoryCharacteristicValue", abstract = true) layout {
+        pos = apos(1507.5, 210)
+    }
+
+    if(showRelations) {
+        User --> Account with {
+            label("1 : account", 0.905, 62.5)
+            label("1 : user", 0.195, 32.1)
+            over = start(0.75).line(end(0.25))
+        } withClass "ccr"
+
+        Account --> AuthCredential with {
+            label("1..* : credentials", 0.945, 73.4)
+            label("1 : user", 0.25, 34.6)
+            over = start(0.75).line(end(0.25))
+        }
+
+        Payment --> PaymentInformation with {
+            label("1 : paymentInformation", 0.65, 12.1)
+            label("0..* : payments", 0.24, -26.1)
+            over = start(1).line(end(0.5))
+        }
+
+        Shipment !--> ShipmentMethod with {
+            label("1 : method", 0.795, 14.4)
+            label("0..*", 0.15, -23.6)
+            over = start(0).line(end(0.5))
+        }
+
+        PaymentInformation !--> PaymentMethod with {
+            label("1 : method", 0.775, 11.4)
+            label("0..*", 0.075, 16.6)
+            over = start(1).line(end(0.5))
+        }
+
+        User --> Address with {
+            label("0..* : addresses", 0.77, 67.7)
+            label("0..1 : user", 0.03, 48.2)
+            over = start(0.25).line(end(0.75))
+        } withClass "ccr"
+
+        Shipment !--> Address with {
+            label("1 : address", 0.66, 57.8)
+            label("0..*", 0.015, -6)
+            over = start(0.485).axisAligned(1, end(0.375))
+        } withClass "ccr"
+
+        User --> PaymentInformation with {
+            label("0..* : paymentInformations", 0.975, 114.3)
+            label("1 : user", 0.065, 24.9)
+            over = start(0.415).axisAligned(
+                1,
+                apos(-470, 1760),
+                -1,
+                end(0.3125)
+            )
+        } withClass "ccr"
+
+        Product --> ProductVariant with {
+            label("1..* : variants", 0.6875, -62)
+            label("1 : product", 0.06, -43.1)
+            over = start(0.1875).line(end(0.8125))
+        }
+
+        Product !--> ProductVariant with {
+            label("1 : defaultVariant", 0.75, 71.3)
+            label("0..1", 0.065, -29.8)
+            over = start(0.25).line(end(0.75))
+        }
+
+        ProductVariant --> ProductVariantVersion with {
+            label("1..* : versions", 0.65, -59.9)
+            label("1 : variant", 0.065, -41.9)
+            over = start(0.1875).line(end(0.8125))
+        }
+
+        ProductVariant !--> ProductVariantVersion with {
+            label("1 : currentVersion", 0.665, 77.3)
+            label("0..1", 0.055, -33.1)
+            over = start(0.25).line(end(0.75))
+        }
+
+        ProductVariantVersion !--> Media with {
+            label("1..* : medias", 0.795, -62.3)
+            over = start(0.31).line(end(0.66))
+        } withClass "ccr"
+
+        ShoppingCart --> ShoppingCartItem with {
+            label("0..* : items", 0.71, -54.2)
+            label("1 : shoppingCart", 0.035, -64)
+            over = start(0.25).line(end(0.75))
+        }
+
+        User --> ShoppingCart with {
+            label("1 : cart", 0.695, -32)
+            label("1 : user", 0.085, 4.9)
+            over = start(0.0625).axisAligned(0.83, end(0.5))
+        } withClass "ccr"
+
+        ShoppingCartItem --> ProductVariant with {
+            label("1 : variant", 0.93, 15.2)
+            label("0..* : inCarts", 0.335, 10.2)
+            over = start(0).axisAligned(0.176, end(0.54))
+        } withClass "ccr"
+
+        User --> Wishlist with {
+            label("0..* : wishlists", 0.725, -35.3)
+            label("1 : user", 0.105, 3.4)
+            over = start(1).axisAligned(0.644, end(0.5))
+        } withClass "ccr"
+
+        Wishlist --> ProductVariant with {
+            label("0..* : productVariants", 0.85, -35)
+            label("0..* : inWishlists", 0.435, 8, 90)
+            over = start(0.0625).axisAligned(0.213, end(0.625))
+        } withClass "ccr"
+
+        Order --> OrderItem with {
+            label("1..* : items", 0.82, 15.8)
+            label("1 : order", 0.145, 7.7)
+            over = start(0).line(end(0.5))
+        }
+
+        Invoice --> Payment with {
+            label("0..1 : payment", 0.895, -70.3)
+            label("0..1 : invoice", 0.04, -55)
+            over = start(0.315).line(end(0.685))
+        } withClass "ccr"
+
+        Order --> Shipment with {
+            label("1..* : shipments", 0.95, 74.6)
+            label("0..1 : order", 0.02, -48.1)
+            over = start(0.235).axisAligned(-0.404, end(0.655))
+        } withClass "ccr"
+
+        User --> Order with {
+            label("0..* : orders", 0.95, 13.4)
+            label("1 : user", 0.35, -30.2)
+            over = start(0.1875).axisAligned(0, end(0.5))
+        } withClass "ccr"
+
+        ProductVariant --> Review with {
+            label("0..* : reviews", 0.94, -17)
+            label("1 : orderedProductVariant", 0.105, 4.2)
+            over = start(0.885).axisAligned(1, rpos(ProductVariant, 300, -197.5), 0, end(0.075))
+        } withClass "ccr"
+
+        Product !--> Review with {
+            label("0..* : reviews", 0.97, 60)
+            label("1", 0.39, 23)
+            over = start(0.75).line(end(0.25))
+        } withClass "ccr"
+
+        User --> Review with {
+            label("0..* : reviews", 0.975, 13.4)
+            label("1 : user", 0.17, 2)
+            over = start(0.9375).axisAligned(0.124, end(0.5))
+        } withClass "ccr"
+
+        OrderItem !--> ProductVariantVersion with {
+            label("1 : productVariantVersion", 0.79, 33, 90)
+            label("0..*", 0.08, 16.3)
+            over = start(0.875).line(end(0.125))
+        } withClass "ccr"
+
+        Shipment !--> OrderItem with {
+            label("0..* : sentItems", 0.93, 62.4)
+            label("1..*", 0.12, 20)
+            over = start(0.875).line(end(0.12))
+        } withClass "ccr"
+
+        Shipment <--! OrderItem with {
+            label("1 : sentWith", 0.17, -27.9, -90)
+            label("0..1", 0.94, -18.6)
+            over = start(0.85).line(end(0.15))
+        } withClass "ccr"
+
+        User --> Notification with {
+            label("0..* : notifications", 0.63, -13.5)
+            label("1 : user", 0.155, 24.8)
+            over = start(0.59).line(end(0.94))
+        } withClass "ccr"
+
+        ProductVariant --> ProductItem with {
+            label("0..* : instances", 0.935, 13)
+            label("1 : productVariant", 0.115, -27)
+            over = start(0.125).axisAligned(
+                0.511,
+                apos(1160, 190),
+                0,
+                end(Position.Left)
+            )
+        } withClass "ccr"
+
+        OrderItem !--> ProductItem with {
+            label("1 : instance", 0.66, 59)
+            label("0..1", 0.02, -20.5)
+            over = start(0.08).axisAligned(1, end(0.13))
+        } withClass "ccr"
+
+        Return --> OrderItem with {
+            label("1..* : returnedItems", 0.97, 81.9)
+            label("0..1 : returnedWith", 0.625, 37.9)
+            over = start(0.835).axisAligned(-0.425, end(0.34))
+        } withClass "ccr"
+
+        Order --> Return with {
+            label("0..* : returns", 0.815, -60)
+            label("1 : order", 0.09, -37)
+            over = start(0.125).line(end(0.675))
+        } withClass "ccr"
+
+        Order --> Invoice with {
+            over = start(0.32).line(end(0.68))
+            label("1 : invoice", 0.935, -52)
+            label("1 : order", 0.02, -39)
+        } withClass "ccr"
+
+        Invoice --> Address with {
+            over = start(0.485).axisAligned(1, end(0.27))
+            label("1 : invoiceAddress", 0.65, 86)
+            label("0..* : invoicesAsCustomer", 0.08, -6.5)
+        } withClass "ccr"
+
+        Invoice --> Address with {
+            over = start(0.585).axisAligned(1, end(0.125))
+            label("1 : vendorAddress", 0.65, 83.6)
+            label("0..* : invoicesAsVendor", 0.125, -5.9)
+        } withClass "ccr"
+
+        Payment --> Receipt with {
+            label("1 : receipt", 0.85, -16)
+            label("1 : payment", 0.205, -6)
+            over = start(0.5).line(end(0))
+        }
+
+        Return --> Shipment with {
+            label("1 : shipment", 0.97, -58.8)
+            label("0..1 : return", 0.46, 12.1)
+            over = start(0.035).axisAligned(-1, end(0.73))
+        } withClass "ccr"
+
+        Return --> Payment with {
+            label("0..1 : payment", 0.96, -64)
+            label("0..1 : return", 0.01, -51)
+            over = start(0.275).axisAligned(-0.425, end(0.835))
+        } withClass "ccr"
+
+        User --> Coupon with {
+            label("0..* : coupons", 0.99, 64.3)
+            label("1 : user", 0.39, 6.1)
+            over = start(0.125).axisAligned(-1, end(0.335))
+        } withClass "ccr"
+
+        Coupon <--> Discount with {
+            label("1 : discount", 0.62, 21, 90)
+            label("0..* : filterByCoupon", 0.425, 13, 90)
+            over = start(Position.Right).axisAligned(1, end(0.74))
+        }
+
+        Discount --> Product with {
+            label("0..* : filterByProduct", 0.72, -23.1, 0)
+            label("0..* : discounts", 0.36, -13, 90)
+            over = start(0.805).axisAligned(0, end(0.49))
+        } withClass "ccr"
+
+        Discount --> ProductVariant with {
+            label("0..* : filterByProductVariant", 0.845, 4.2, 0)
+            label("0..* : discounts", 0.37, 26.1, 90)
+            over = start(0.82).axisAligned(0, end(0.37))
+        } withClass "ccr"
+
+        Discount --> Category with {
+            label("0..* : filterByCategory", 0.965, -19)
+            label("0..* : discounts", 0.125, 4.3)
+            over = start(0).axisAligned(
+                -1,
+                apos(1130, 1030),
+                1,
+                apos(1902, 332),
+                0,
+                end(0)
+            )
+        } withClass "ccr"
+
+        TaxRate --> TaxRateVersion with {
+            label("1..* : versions", 0.865, -64.4)
+            label("1 : taxRate", 0.025, -44.2)
+            over = start(0.205).line(end(0.795))
+        }
+
+        TaxRate !--> TaxRateVersion with {
+            label("1 : currentVersion", 0.805, -79.9)
+            label("0..1", 0.07, -35.5)
+            over = start(0.345).line(end(0.655))
+        }
+
+        OrderItem !--> TaxRateVersion with {
+            label("1 : taxRateVersion", 0.665, -79.8)
+            label("0..*", 0.035, -21)
+            over = start(0.955).axisAligned(1, end(Position.Bottom))
+        } withClass "ccr"
+
+        ProductVariantVersion !--> TaxRate with {
+            label("1 : taxRate", 0.76, 12.6)
+            label("0..*", 0.145, -24.4)
+            over = start(0.08).axisAligned(0.386, end(Position.Left))
+        } withClass "ccr"
+
+        list(CategorialCategoryCharacteristic, NumericalCategoryCharacteristic).forEach {
+            it extends CategoryCharacteristic with {
+                over = start(Position.Top).axisAligned(
+                    -0.5,
+                    end(Position.Bottom)
+                )
+            }
+        }
+        list(CategorialCategoryCharacteristicValue, NumericalCategoryCharacteristicValue).forEach {
+            it extends CategoryCharacteristicValue with {
+                over = start(Position.Bottom).axisAligned(
+                    -0.5,
+                    end(Position.Top)
+                )
+            }
+        }
+
+        Category --> CategoryCharacteristic with {
+            label("0..* : characteristic", 0.71, -82)
+            label("1 : category", 0.025, -48.9)
+            over = start(0.25).line(end(0.75))
+        }
+
+        NumericalCategoryCharacteristic --> NumericalCategoryCharacteristicValue with {
+            label("0..* : values", 0.77, -56)
+            label("1 : characteristic", 0.07, -66.8)
+            over = start(Position.Bottom).line(end(Position.Top))
+        }
+
+        CategorialCategoryCharacteristic --> CategorialCategoryCharacteristicValue with {
+            label("0..* : values", 0.77, -56)
+            label("1 : characteristic", 0.07, -66.8)
+            over = start(Position.Bottom).line(end(Position.Top))
+        }
+
+        Product --> Category with {
+            label("0..* : categories", 0.93, 12.7)
+            label("0..* : products", 0.195, 5.4)
+            over = start(Position.Right).axisAligned(0.248, end(Position.Left))
+        } withClass "ccr"
+
+        ProductVariantVersion --> CategoryCharacteristicValue with {
+            label("0..* : tagValues", 0.845, 15)
+            label("0..* productVersions", 0.225, 6.8)
+            over = start(0.905).line(end(Position.Left))
+        } withClass "ccr"
+
+        OrderItem --> Discount with {
+            label("0..* : discounts", 0.88, -19.5)
+            label("0..* : usedWith", 0.415, -54.2)
+            over = start(Position.Top).axisAligned(0, end(0.085))
+        } withClass "ccr"
+    }
+
+    styles {
+        cls("class-element") {
+            vAlign = VAlign.Center
+        }
+        cls("v-top") {
+            vAlign = VAlign.Top
+        }
+        cls("package-element") {
+            if(highlightBoundedContexts) {
+                vars {
+                    primary = "blue"
+                }
+            }
+            if(highlightBoundedContextsMore) {
+                any {
+                    type("rect") {
+                        fill = "blue"
+                        fillOpacity = 0.2
+                    }
+                }
+            }
+        }
+        if(highlightCrossContextRelations) {
+            cls("ccr") {
+                variables.primary = "red"
+                vars {
+                    primary = "red"
+                }
+            }
+        }
+    }
+}
