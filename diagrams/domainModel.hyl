@@ -623,7 +623,8 @@ classDiagram {
         } withClass "ccr"
 
         OrderItem !--> ProductVariantVersion with {
-            label("1 : productVariantVersion", 0.975, -102)
+            label("1 : productVariantVersion", 0.79, 33, 90)
+            label("0..*", 0.08, 16.3)
             over = start(0.875).line(end(0.125))
         } withClass "ccr"
 
@@ -658,6 +659,7 @@ classDiagram {
 
         OrderItem !--> ProductItem with {
             label("1 : instance", 0.66, 59)
+            label("0..1", 0.02, -20.5)
             over = start(0.08).axisAligned(1, end(0.13))
         } withClass "ccr"
 
@@ -754,11 +756,13 @@ classDiagram {
 
         TaxRate !--> TaxRateVersion with {
             label("1 : currentVersion", 0.805, -79.9)
+            label("0..1", 0.07, -35.5)
             over = start(0.345).line(end(0.655))
         }
 
         OrderItem !--> TaxRateVersion with {
             label("1 : taxRateVersion", 0.665, -79.8)
+            label("0..*", 0.035, -21)
             over = start(0.955).axisAligned(1, end(Position.Bottom))
         } withClass "ccr"
 
