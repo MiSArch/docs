@@ -1,6 +1,7 @@
 import { useColorMode } from "@docusaurus/theme-common";
 import useBaseUrl from "@docusaurus/useBaseUrl";
 import Lightbox from "./Lightbox";
+import BrowserOnly from "@docusaurus/BrowserOnly";
 
 export default function HylimoDiagram({ name, alt, width, height }) {
     const { colorMode } = useColorMode();
@@ -11,5 +12,5 @@ export default function HylimoDiagram({ name, alt, width, height }) {
         height
     };
 
-    return <Lightbox image={image} />;
+    return <BrowserOnly>{() => <Lightbox image={image} />}</BrowserOnly>;
 }
