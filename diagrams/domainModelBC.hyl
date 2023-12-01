@@ -486,14 +486,15 @@ classDiagram {
             over = start(1).line(end(0.5))
         }
 
-        Shipment --> ShipmentMethod with {
+        Shipment !--> ShipmentMethod with {
             label("1 : method", 0.795, 14.4)
-            label("0..* : shipments", 0.225, -24.2)
+            label("0..*", 0.15, -23.6)
             over = start(0).line(end(0.5))
         }
 
         PaymentInformation !--> PaymentMethod with {
             label("1 : method", 0.775, 11.4)
+            label("0..*", 0.075, 16.6)
             over = start(1).line(end(0.5))
         }
 
@@ -503,9 +504,9 @@ classDiagram {
             over = start(0.25).line(end(0.75))
         } withClass "ccr"
 
-        Shipment --> Address with {
+        Shipment !--> Address with {
             label("1 : address", 0.66, 57.8)
-            label("0..* : shipments", 0.025, -8.4)
+            label("0..*", 0.015, -6)
             over = start(0.485).axisAligned(1, end(0.375))
         } withClass "ccr"
 
@@ -528,6 +529,7 @@ classDiagram {
 
         Product !--> ProductVariant with {
             label("1 : defaultVariant", 0.75, 71.3)
+            label("0..1", 0.065, -29.8)
             over = start(0.25).line(end(0.75))
         }
 
@@ -539,6 +541,7 @@ classDiagram {
 
         ProductVariant !--> ProductVariantVersion with {
             label("1 : currentVersion", 0.665, 77.3)
+            label("0..1", 0.055, -33.1)
             over = start(0.25).line(end(0.75))
         }
 
@@ -597,7 +600,7 @@ classDiagram {
 
         User --> Order with {
             label("0..* : orders", 0.95, 13.4)
-            label("1 : user", 0.72, -21.6)
+            label("1 : user", 0.35, -30.2)
             over = start(0.1875).axisAligned(0, end(0.5))
         } withClass "ccr"
 
@@ -609,6 +612,7 @@ classDiagram {
 
         Product !--> Review with {
             label("0..* : reviews", 0.97, 60)
+            label("1", 0.39, 23)
             over = start(0.75).line(end(0.25))
         } withClass "ccr"
 
@@ -760,6 +764,7 @@ classDiagram {
 
         ProductVariantVersion !--> TaxRate with {
             label("1 : taxRate", 0.76, 12.6)
+            label("0..*", 0.145, -24.4)
             over = start(0.08).axisAligned(0.386, end(Position.Left))
         } withClass "ccr"
 
