@@ -34,3 +34,7 @@
 .pswp__img {
   background: var(--background-color);
 }
+
+.pswp.pswp--open {
+  display: block;
+}
