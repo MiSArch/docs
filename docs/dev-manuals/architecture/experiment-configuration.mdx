@@ -9,7 +9,7 @@ import CustomImage from "@site/src/components/CustomImage";
 MisArch is intended as a microservice reference architecture.
 As such, it is possible to deterministically require certain conditions, i.e. a specific memory usage per pod.
 The problem is here that every service can be deployed \<x\> times simultaenously in the form of replicas.
-As such, the architecture to achieve this cannot be as simple as offering an endpoint to configure these limits on each service.
+As such, the architecture to achieve this cannot be as simple as offering an endpoint to configure these limits on each service as the load balancer would only forward this request to **a single random pod**, not all of them.
 
 Here's how we solved this problem:
 
