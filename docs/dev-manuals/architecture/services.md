@@ -2,7 +2,21 @@
 1. Product
     - stores concrete product information - name, description, image locations, and product variants, i.e. XXL T-Shirt in red - for each product
     - does not store individual instances but the overall descriptions of an item. For that see `inventory`
-    - APIs: CRUD for products
+    - APIs: CRUD for products, base path `/products`
+1. Account
+    - Handles session information for a user, including login/registration
+    - In our case, most likely a Keycloak
+    - base path `/account`
+    - routes `/account/register`, `/account/login`, \<TODO: Path to query JWT token of a user\>
+1. User
+    - user settings (whenJoined, birthday, gender)
+    - basepath `/user/<username>`
+    - CRUD on `/user/<username>/settings` \<TODO: Or simply /settings? \>
+1. Notification
+    - Provides notfications to show a user
+    - mail replacement
+    - supposed to cover everything found under a typical bell icon
+    - basepath `/notifications`
 1. Inventory
     - stores each available product digitally
     - handles state of item (blocked when sold but not yet delivered)
@@ -36,16 +50,9 @@
         - by relevance
         - by price
         - by search text match
-1. User
-    - user settings (address, billing)
-    - Dependency on `Payment` service
 1. Auth (Keycloak)
     - authenticates users and manages their sessions
 1. Notification
-    - mail replacement
-    - everything user should be notified about
-    - each user has notifications
-    - potentially boolean flag read/unread
 1. Rating
     - associates a user review with a product
     - provides summary data
