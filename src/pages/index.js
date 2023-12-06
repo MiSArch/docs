@@ -2,6 +2,7 @@ import React from "react";
 import clsx from "clsx";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
 import Layout from "@theme/Layout";
+import CustomImage from "@site/src/components/CustomImage";
 
 import styles from "./index.module.css";
 
@@ -22,7 +23,9 @@ export default function Home() {
     return (
         <Layout title={`Hello from ${siteConfig.title}`} description="Description will go into a meta tag in <head />">
             <HomepageHeader />
-            <main></main>
+            <main>
+                <CustomImage path="/renderedDiagrams/domainModelBC" width="2837" height="2398.5" />
+            </main>
         </Layout>
     );
 }
