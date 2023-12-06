@@ -6,13 +6,12 @@ sidebar_position: 2
 
 :::caution
 
-This document is in the making since we are still in the requirements engineering phase.
+Although we are no longer in the requirements engineering phase, this document may still change in the near future.
 
 :::
 
 ## To-do List and Open Questions RE this document
 
-- [ ] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)? When adding information from another interview with another individual stakeholder, I decided to _try out_ anonymization by naming the stakeholder -- a researcher -- Toni. See the section _Stakeholders._ This is up for discussion of course.
 - [ ] Go through the requirements after having prioritized them and adjust the usage of "should" and "must" to better reflect the requirement's importance.
 
 ## RE Wording in this Document
@@ -98,6 +97,8 @@ This document is in the making since we are still in the requirements engineerin
   - https://adr.github.io
   - https://github.com/joelparkerhenderson/architecture-decision-record
   - https://adr.github.io/madr/
+- The endpoints of the system must be clearly and comprehensively documented.
+- See R-U-019
 - Origin: Examiner
 
 #### R-SArt-002: Clean code
@@ -115,16 +116,12 @@ This document is in the making since we are still in the requirements engineerin
 
 ##### Open Questions
 
-- What exactly is a _clean_ deployment? When does the examiner consider a deployment a _dirty_ one?
+- What exactly is a _clean_ deployment?
 
 #### R-SArt-004: Explanatory models for the end user
 
 - The end user should have access to models which support them in understanding the system.
 - Origin: Researcher _Toni_
-
-##### Open Questions
-
-- Are these models the equivalent of user manuals?
 
 #### R-SArt-005: Chaos testing
 
@@ -170,10 +167,6 @@ This document is in the making since we are still in the requirements engineerin
 - The user interface should be _good_.
 - It should be usable.
 - Origin: Examiner
-
-##### Open Questions
-
-- What is klee frontend? The examiner mentioned it.
 
 #### R-U-003: Configurations
 
@@ -295,6 +288,13 @@ This document is in the making since we are still in the requirements engineerin
 - See R-Conf-004
 - Origin: _Ulm_
 
+#### R-U-019: JMeter readiness
+
+- Using JMeter to test the performance of the RA must be a) possible and b) easy and intuitive.
+- How can the likelihood of achieving this requirement be maximized? By providing a comprehensive documentation detailing the architecture, endpoints, expected behaviors, and data formats of the RA. The documentation should guide performance engineers in setting up test scenarios accurately within JMeter. In addition, by defining clear API contracts or specifications (such as Swagger/OpenAPI documentation) for the RA's endpoints, request formats, and responses. This helps in accurately configuring JMeter's HTTP Request samplers and assertions. Also, see R-SArt-001.
+- See R-T-007
+- Origin: Derived from R-T-007
+
 ### Non-functional Requirements
 
 #### R-NFR-001: Performance
@@ -336,6 +336,10 @@ See also R-U-003.
 - As a researcher, I want to be able to decide how big or small the system actually is. I want to set the system's size in order to have it fit my needs.
 - Origin: Researcher _Toni_
 
+##### Open Questions
+
+- What is a small system? What is a big system? How should size be measured?
+
 #### R-Conf-002: Load profiles
 
 - The system must offer the possibility to use load profiles.
@@ -361,10 +365,6 @@ See also R-U-003.
   - The supervisors do not require this.
 
 - Origin: Researcher _Toni_
-
-##### Open Question
-
-- Is this basically requirement R-Conf-003?
 
 #### R-Conf-005: System variants
 
@@ -416,9 +416,9 @@ See also R-U-003.
 - A domain-driven declaration of service responsibilities must be at hand.
 - Origin: Examiner, Supervisors, Researchers, Researcher _Toni_
 
-#### R-A-006: Diversity in communication protocolls
+#### R-A-006: Diversity in communication protocols
 
-- The system should have diversity regarding communication protocalls.
+- The system should have diversity regarding communication protocols.
 - A researcher said: "Just like in reality."
 - See R-U-001
 - Origin: Researcher _Toni_
@@ -500,6 +500,8 @@ Origin: Examiner, Supervisors, Researchers, Researcher _Toni_
 #### R-T-007: JMeter
 
 - JMeter should be used for load and elasticity tests.
+- https://jmeter.apache.org
+- See R-U-019
 - Origin: Examiner
 
 #### R-T-008: OpenTelemetry
