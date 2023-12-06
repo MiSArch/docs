@@ -39,7 +39,7 @@ Note, that entities of the domain model are formatted like this: `Entity`. A bou
 ### Regarding `TaxRate`
 
 - The store can only serve one country, to be more precise: one tax rate region. That means that every country where the store should be available needs to set up the store individually. The reason for that is that a single `ProductVariantVersion` must have exactly one `TaxRate`; it cannot have multiple. The domain model does not account for the fact that tax rates actually vary from country to country.
-- A tax rate does not depend on the user's status.
+- A tax rate does not depend on the user's status. Tax refunds / deduction are not supported by the system. The payment `Receipt` can be used to get tax refunds / deduction at the responsible authorities if possible.
 
 ### Regarding `Notification`
 
