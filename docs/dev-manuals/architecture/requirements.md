@@ -12,7 +12,6 @@ Although we are no longer in the requirements engineering phase, this document m
 
 ## To-do List and Open Questions RE this document
 
-- [x] Should we differentiate between the individual stakeholders? Or is it sufficient if we just document their perspective or role (e.g., supervisor, researcher, instead of supervisor XYZ or researcher ABC)? When adding information from another interview with another individual stakeholder, I decided to _try out_ anonymization by naming the stakeholder -- a researcher -- Toni. See the section _Stakeholders._ This is up for discussion of course.
 - [ ] Go through the requirements after having prioritized them and adjust the usage of "should" and "must" to better reflect the requirement's importance.
 
 ## RE Wording in this Document
