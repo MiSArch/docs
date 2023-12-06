@@ -510,7 +510,7 @@ Origin: Examiner, Supervisors, Researchers, Researcher _Toni_
 
 - JMeter should be used for load and elasticity tests.
 - https://jmeter.apache.org
-- TODO: Refer to a requirement which says "The system must be compatible with JMeter"
+- See R-U-019
 - Origin: Examiner
 
 #### R-T-008: OpenTelemetry
