@@ -16,7 +16,7 @@ import CustomImage from "@site/src/components/CustomImage";
 
 ## Implications of the Domain Model
 
-Note, that entities of the domain model are formatted like this: `Entity`. A bounded context on the other hand has the following format: *Bounded Context*.
+Note, that entities of the domain model are formatted like this: `Entity`. A bounded context on the other hand has the following format: _Bounded Context_.
 
 ### Regarding `User`, `Account`, `Wishlist` and `Address`
 
@@ -27,7 +27,7 @@ Note, that entities of the domain model are formatted like this: `Entity`. A bou
 
 ### Regarding `ShoppingCart`
 
-- The *Inventory* contains `ProductItems`. These `ProductItems` do not know anything about existing `ShoppingCarts`. That means a `ProductItem` does not know whether or not it has been added to a `ShoppingCart` in form of a `ShoppingCartItem`. This implies that when the user wants to *finish* the order, the system must check once again whether or not the `ProductItem` is actually still available because it could have been ordered by a "faster" user in the meantime. In a nutshell, the user cannot reserve items by putting them in the shopping cart.
+- The _Inventory_ contains `ProductItems`. These `ProductItems` do not know anything about existing `ShoppingCarts`. That means a `ProductItem` does not know whether or not it has been added to a `ShoppingCart` in form of a `ShoppingCartItem`. This implies that when the user wants to _finish_ the order, the system must check once again whether or not the `ProductItem` is actually still available because it could have been ordered by a "faster" user in the meantime. In a nutshell, the user cannot reserve items by putting them in the shopping cart.
 - A user can have exactly one shopping cart at a time accross their devices. The shopping cart is independent of the client device used.
 
 ### Regarding `Discount`
@@ -43,20 +43,20 @@ Note, that entities of the domain model are formatted like this: `Entity`. A bou
 
 ### Regarding `Notification`
 
-- Notifications are *in-house* meaning within-the-system notifications and they are not emails or text messages or anything else.
+- Notifications are _in-house_ meaning within-the-system notifications and they are not emails or text messages or anything else.
 - For the user, notifications are read-only. Users can only receive notifications, they cannot reply to them.
 - A notification can only be sent to exactly one user, it cannot be sent to multiple users at once.
 
-### Regarding `Invoice` and *Payment*
+### Regarding `Invoice` and _Payment_
 
 - An `Invoice` can only refer to exactly one `Order` and to nothing else.
 - If an `Invoice` has an associated `Payment`, then the payment has been made -- the store has received the money. If not, then the payment is still due. This implies that the association between `Invoice` and `Payment` fully models the payment's status.
 - The store exclusively supports payment methods which result in the payment being processed before the shipping of any ordered items. This implies that the user must always pay first before they can receive the order.
 
-### Regarding *Inventory*
+### Regarding _Inventory_
 
-Since the domain model does not account for returned items, this implies that returned items will simply be thrown away after they have been returned to the *Inventory*.
+Since the domain model does not account for returned items, this implies that returned items will simply be thrown away after they have been returned to the _Inventory_.
 
-### Regarding *Category*
+### Regarding _Category_
 
 The store has only one level of categories but a product can be part of multiple categories.
