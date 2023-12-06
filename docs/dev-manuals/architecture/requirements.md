@@ -123,10 +123,6 @@ Although we are no longer in the requirements engineering phase, this document m
 - The end user should have access to models which support them in understanding the system.
 - Origin: Researcher _Toni_
 
-##### Open Questions
-
-- ~~Are these models the equivalent of user manuals?~~
-
 #### R-SArt-005: Chaos testing
 
 - The system must be _ready_ for chaos testing, one must be able to apply chaos testing to the system's microservices.
@@ -171,10 +167,6 @@ Although we are no longer in the requirements engineering phase, this document m
 - The user interface should be _good_.
 - It should be usable.
 - Origin: Examiner
-
-##### Open Questions
-
-- ~~What is klee frontend? The examiner mentioned it.~~
 
 #### R-U-003: Configurations
 
