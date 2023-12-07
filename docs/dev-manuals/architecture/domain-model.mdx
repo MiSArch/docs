@@ -13,3 +13,51 @@ import CustomImage from "@site/src/components/CustomImage";
 ## Domain Model with Bounded Contexts
 
 <CustomImage path="/renderedDiagrams/domainModelBC" width="2837" height="2398.5" />
+
+## Implications of the Domain Model
+
+Note, that entities of the domain model are formatted like this: `Entity`. A bounded context on the other hand has the following format: _Bounded Context_.
+
+### Regarding `User`, `Account`, `Wishlist` and `Address`
+
+- To be able to order something from the store, a user needs an account. See: `User` has one `Account`. This implies that the store does not support something like "checkout as guest".
+- Addresses stored by the system do not have to be distinct regarding their actual physical address. The system may store multiple instances of the same physical address. One `Address` cannot be related to multiple `User` instances.
+- A user's wishlists are private and cannot be seen by other users.
+- Reviews can only be viewed. No further interactions with them are possible. Reviews do not have medias.
+
+### Regarding `ShoppingCart`
+
+- The _Inventory_ contains `ProductItems`. These `ProductItems` do not know anything about existing `ShoppingCarts`. That means a `ProductItem` does not know whether or not it has been added to a `ShoppingCart` in form of a `ShoppingCartItem`. This implies that when the user wants to _finish_ the order, the system must check once again whether or not the `ProductItem` is actually still available because it could have been ordered by a "faster" user in the meantime. In a nutshell, the user cannot reserve items by putting them in the shopping cart.
+- A user can have exactly one shopping cart at a time accross their devices. The shopping cart is independent of the client device used.
+
+### Regarding `Discount`
+
+- The store only offers discounts -- see `Discount` -- in percentages. The store does not have gift cards with a credit (money).
+  In order to have the option to apply a discount to a product, the user needs a coupon -- see `Coupon`. A coupon is associated with a fixed discount.
+- In general, a `Discount` can be applied to every product of the store. In order to exclude products from a `Discount`, a "filter" needs to be set up. A filter serves as a whitelist. There are three filter options: filter by `Product`, filter by `Product Variant`, and filter by `Category` -- see the corresponding associations in the domain model: `filterByProduct`, `filterByProductVariant`, and `filterByCategory`. As soon as one of these has been set up, only the explicitly filtered products / variants / products of the category are part of the discount's scope. Filters can be combined which means that the `Discount` can be used for a product if the product "is part of" one of the filters. To clearify things: If one has set up three filters, then if the product can be found in the first filter or if the product can be found in the second filter or if the product can be found in the third filter, then the discount is applicable to the product. If the product can be found in multiple of the three filters, then the discount is of course also applicable to the product. Only if it cannot be found in any of the three, then the discount cannot be used for the product.
+
+### Regarding `TaxRate`
+
+- The store can only serve one country, to be more precise: one tax rate region. That means that every country where the store should be available needs to set up the store individually. The reason for that is that a single `ProductVariantVersion` must have exactly one `TaxRate`; it cannot have multiple. The domain model does not account for the fact that tax rates actually vary from country to country.
+- A tax rate does not depend on the user's status. Tax refunds / deduction are not supported by the system. The payment `Receipt` can be used to get tax refunds / deduction at the responsible authorities if possible.
+
+### Regarding `Notification`
+
+- Notifications are _in-house_ meaning within-the-system notifications and they are not emails or text messages or anything else.
+- For the user, notifications are read-only. Users can only receive notifications, they cannot reply to them.
+- A notification can only be sent to exactly one user, it cannot be sent to multiple users at once.
+
+### Regarding `Invoice` and _Payment_
+
+- An `Invoice` can only refer to exactly one `Order` and to nothing else.
+- If an `Invoice` has an associated `Payment`, then the payment has been made -- the store has received the money. If not, then the payment is still due. This implies that the association between `Invoice` and `Payment` fully models the payment's status.
+- The store exclusively supports payment methods which result in the payment being processed before the shipping of any ordered items. This implies that the user must always pay first before they can receive the order.
+
+### Regarding _Inventory_
+
+Since the domain model does not account for returned items, this implies that returned items will simply be thrown away after they have been returned to the _Inventory_.
+
+### Regarding _Category_
+
+The store has no category inheritance.
+All categories are separate.
