@@ -191,3 +191,52 @@ journey
         Click on "Add to wishlist" : 5
         Choose wishlist : 5
 ```
+
+## Adding a new product that only has one variant
+
+```mermaid
+journey
+    title Adding a new product that only has one variant
+    section Enter online shop
+        Visit website somehow: 4: Employee
+        Log in as employee: 3: Employee
+    section Add new product
+        Click "Add Product": Content Manager : 4: Employee
+        Provide name: 4: Employee
+        Set visibility: 4: Employee
+        Write description: 4: Employee
+        Set retail price: 4: Employee
+        Set current price (optional): 4: Employee
+        Add images: 4: Employee
+        Add product to categories: 4: Employee
+        Click "Submit": 4: Employee
+```
+
+## Adding a new product that has multiple variants
+
+```mermaid
+journey
+    title Adding a new product that has multiple variants
+    section Enter online shop
+        Visit website somehow: 4: Employee
+        Log in as employee: 3: Employee
+    section Add new product
+        Click "Add Product": 4: Employee
+        Click "Add Variant": 4: Employee
+    section Add variant (iteratively)
+        Provide name: 4: Employee
+        Set visibility: 4: Employee
+        Write description: 4: Employee
+        Set retail price: 4: Employee
+        Set current price (optional): 4: Employee
+        Add images: 4: Employee
+    section Finish adding product
+        Select default variant: 4: Employee
+        Add product to categories: 4: Employee
+        Click "Submit": 4: Employee
+```
+
+### Remarks
+
+- The section "Add variant (iteratively)"" can be repeated _n_ times depending on how many variants should be added.
+- It might be that the user (Employee) can also put the various variants in a specific order.
