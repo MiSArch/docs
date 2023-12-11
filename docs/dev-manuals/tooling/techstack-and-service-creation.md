@@ -16,7 +16,7 @@ A user client sends a request to Nginx to retrieve the frontend. The frontend th
 
 Dapr acts as a middleware abstracting communication between services. This enables metric and trace collection via Open Telemetry. Services communicate via Dapr sidecars. Each sidecar is associated with one service and known by the Dapr placement / master service, also known as Dapr Operator Service. The Dapr Operator feeds the Open Telemetry collector with metrics and traces.
 
-A full Zipkin stack stores and displays traces, while metrics are collected by Grafana / Prometheus. Each Service involved in GraphQL queries needs to expose a GraphQL compatible API. Each services needs to be registered in the GraphQL gateway.
+A full Zipkin stack stores and displays traces, while metrics are collected by Grafana / Prometheus. Each Service involved in GraphQL queries needs to expose a GraphQL Federation 2 compatible API. Services involved in GraphQL queries need to be registered in the GraphQL gateway.
 
 ### Infastructure (as Code)
 
@@ -24,7 +24,7 @@ The current plan is to support two deployments:
 
 1. Kubernetes
 
-   - State-of-the-art container orchestration. Widely used for microservices in science and the industry. Powerful but tedious to set up. Supports multi-node deployments, key stores, load balancing, auto scaling, etc.
+   - State-of-the-art container orchestration. Widely used for microservices in science and the industry. Powerful but tedious to set up (without infrastructure as code tools). Supports multi-node deployments, key stores, load balancing, auto scaling, etc.
 
 2. Docker Compose
    - Single-node deployments. Good portability + easy setup. Declarative multi-container app tool. Packaged with Docker
@@ -35,7 +35,7 @@ Docker Compose assists development by enabling faster code + deployment iteratio
 
 **(as Code)?**
 
-We plan on using Terraform for Kubernetes to deploy in a declarative way, which enables to version our deployments according to the infrastructure as code paradigm. Docker Compose might also benefit from Terraform as it enables configuration manipulation while abstracting boiler-plate code. This can for example reduce port mapping conflicts.
+We plan on using Terraform for Kubernetes to deploy in a declarative way, which enables to version our deployments according to the infrastructure as code paradigm.
 
 # Creating a service
 
@@ -52,8 +52,6 @@ Services can be written in the language of choice if the languages ecosystem sup
 1. Integrate the service with Docker Compose & Kubernetes
    1. Containerize the service
    1. Set up service container Dapr sidecar
-   1. (Set up database)
-   1. (Set up database Dapr sidecar)
 1. Implement service logic
 1. Add service to GraphQL gateway
 
