@@ -238,5 +238,5 @@ journey
 
 ### Remarks
 
-- The section "Add variant (iteratively)"" can be repeated _n_ times depending on how many variants should be added.
+- The section "Add variant (iteratively)" can be repeated _n_ times depending on how many variants should be added.
 - It might be that the user (Employee) can also put the various variants in a specific order.
