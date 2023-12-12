@@ -6,7 +6,7 @@ import CustomImage from "@site/src/components/CustomImage";
 
 # Techstack and service creation
 
-### Techstack pverview
+### Techstack overview
 
 This is a general overview of some of the technologies used in MiSArch and which services / components they involve.
 
