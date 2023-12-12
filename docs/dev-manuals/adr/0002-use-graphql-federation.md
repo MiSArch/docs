@@ -27,7 +27,7 @@ Chosen option: "GraphQL Federation", because
 
 ## Pros and Cons of the Options
 
-### GraphQL Mesh / Schema stichting
+### GraphQL Mesh / Schema stitching
 
 GraphQL Mesh is a library allowing to combine multiple data sources into one unified GraphQL API.
 Supported data formats include other GraphQL APIs, REST APIs, gRPC APIs, and more.
@@ -36,7 +36,7 @@ Supported data formats include other GraphQL APIs, REST APIs, gRPC APIs, and mor
 - Good, because allows to transform API schemas before combining them
 - Neutral, because only provides significant benefits when used with non-GraphQL APIs, but e.g. using REST APIs results in challenges, in particular with respect to combining types
 - Bad, because more complex to use compared to GraphQL federation
-- Bad, because combining the same type from one service only partially supported, however this is often required when using REST, e.g. because same service provides a `Product` and `ProductWithDetails`
+- Bad, because combining the same type from one service is only partially supported. However, this is often required when using REST, e.g. because same service provides a `Product` and `ProductWithDetails`
 
 ### GraphQL Federation
 
