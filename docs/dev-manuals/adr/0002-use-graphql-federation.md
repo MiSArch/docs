@@ -10,7 +10,7 @@ As we decided to use GraphQL for the API gateway, we need a technology which all
 
 ## Considered Options
 
-- GraphQL Mesh / Schema stichting
+- GraphQL Mesh / Schema stitching
 - GraphQL Federation
 
 ## Decision Outcome

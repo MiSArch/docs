@@ -22,6 +22,9 @@ Chosen option: "monolithic frontend", because
 ### Consequences
 
 - Good, because we do not need to consider requirements of a micro frontend with respect to the API gateway
+- Neutral, because there is a single repository for the frontend.
+- Good, because the frontend tech stack can be chosen rather _freely_. We decided to use Vue with Vuetify to create a single page web application.
+- Neutral, because all services have to support the API gateway for the frontend.
 
 ## Pros and Cons of the Options
 

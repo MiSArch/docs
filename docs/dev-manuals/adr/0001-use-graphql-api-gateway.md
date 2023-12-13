@@ -35,7 +35,7 @@ Chosen option: "GraphQL", because
 - Good, because built-in strict type system
 - Good, because GraphiQL allows users to explore the API, including with a graphical interface to build requests
 - Good, because allows client to define which data should be fetched, reducing overfetching
-- Good, because allows to solve N+1 problem of requests, as instead of multiple consequitive requests, a single request can define all data which needs to be fetched
+- Good, because allows to solve N+1 problem of requests, as instead of multiple consecutive requests, a single request can define all data which needs to be fetched
 - Bad, because more difficult to implement, in particular regarding authorization
 
 ### REST
@@ -52,6 +52,6 @@ Chosen option: "GraphQL", because
 - Good, because allows streaming
 - Good, because built-in type system
 - Good, because binary protocol is more efficient
-- Neutral, because binary format is more difficult to understand in web environment, in particular form users of the reference architecture, but text-based protocol could also be used
+- Neutral, because binary format is more difficult to understand in web environment, in particular form users of the reference architecture, but text-based protocol could also be used. JSON could also be used, but it is non-standard.
 - Bad, because less common in web environments compared to other options
 - Bad, because compared to GraphQL, does not provide unified way for client to define which data should be fetched
