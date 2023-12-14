@@ -1,5 +1,5 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 # Merge Category and Product Service
@@ -15,25 +15,27 @@ A category can only be deleted if no product points to it. Should a category aut
 
 ## Considered Options
 
-1. Save shared information in product service and let category service request the needed information
-1. Save shared information in product service and let category service request the needed information
-1. Data duplication in both services
-1. Merge category and product service
-1. ~Shared database~ (not up to discussion)
+- Save characteristic values of product variants in product service and let category service request the needed information
+- Save characteristic values of product variants in category service and let product service request the needed information
+- Data duplication in both services
+- Merge category and product service
+- ~Shared database~ (not up to discussion)
 
 ## Decision Outcome
 
-We decided to merge the category and product service into a product-catalog service. We have enough services to fulfill our requirement of 15 services. We do not see a clear cut that would still allow us to implement the functionality we want out of the system.
+Chosen option: "Merge category and product service", because
+
+we have enough services to fulfill our requirement of 15 services. We do not see a clear cut that would still allow us to implement the functionality we want out of the system.
 
 ## Pros and Cons of the Options
 
-### Save shared information in product service
+### Save characteristic values of product variants in product service and let category service request the needed information
 
 - Good, querying products / product variants does not require querying the category service
 - Bad, vice versa
 - Bad, queries induce overhead
 
-### Save shared information in category service
+### Save characteristic values of product variants in category service and let product service request the needed information
 
 - Good, filtering products / product variants for categories does not require querying the product service
 - Bad, vice versa
