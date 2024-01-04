@@ -31,11 +31,6 @@ Chosen option: "spelling it `Id`", because allows us to have consistency in the 
 - Good, as consistent with style guide for acronyms in some programming languages
 - Neutral, because personal preference of some team members
 
-### spelling it `Id`
-
-- Good, because consistency: required by VueJS frontend due to how naming conversions are handled between snake and camel case
-- Neutral, because personal preference of some team members
-
 ### spelling it either `Id` or `ID` depending on service/context
 
 - Good, because developer of each service can decide based on personal preference
