@@ -96,15 +96,21 @@ classDiagram {
         }
 
         package("Category") layout {
-            height = 878.75
-            width = 772
-            pos = apos(1147.5, -617.5)
+            height = 545.708303319
+            width = 749.240052092
+            pos = apos(1150, -617.5)
+        }
+
+        package("CategoryValue") layout {
+            height = 324.779653045
+            width = 750.566623481
+            pos = apos(1142.5, -57.5)
         }
 
         package("Inventory") layout {
             height = 136.124698055
             width = 351.555106076
-            pos = apos(1305, 287.5)
+            pos = apos(1340, 290)
         }
 
         package("Product") layout {
@@ -442,11 +448,11 @@ classDiagram {
         pos = apos(1727.5, -137.5)
     }
 
-    class("CategorialCategoryCharacteristic") layout {
+    class("CategoricalCategoryCharacteristic") layout {
         pos = apos(1307.5, -140)
     }
 
-    class("CategorialCategoryCharacteristicValue") {
+    class("CategoricalCategoryCharacteristicValue") {
         public {
             name : string
             description : string
@@ -719,24 +725,24 @@ classDiagram {
 
         Coupon <--> Discount with {
             label("1 : discount", 0.62, 21, 90)
-            label("0..* : filterByCoupon", 0.425, 13, 90)
+            label("0..* : discountAppliesToCoupon", 0.445, -22.3, 90)
             over = start(Position.Right).axisAligned(1, end(0.74))
         }
 
         Discount --> Product with {
-            label("0..* : filterByProduct", 0.72, -23.1, 0)
+            label("0..* : \ndiscountAppliesTo\nProduct", 0.83, -58.3, 0)
             label("0..* : discounts", 0.36, -13, 90)
             over = start(0.805).axisAligned(0, end(0.49))
         } withClass "ccr"
 
         Discount --> ProductVariant with {
-            label("0..* : filterByProductVariant", 0.845, 4.2, 0)
+            label("0..* : \ndiscountAppliesTo\nProductVariant", 0.885, 6.6, 0)
             label("0..* : discounts", 0.37, 26.1, 90)
             over = start(0.82).axisAligned(0, end(0.37))
         } withClass "ccr"
 
         Discount --> Category with {
-            label("0..* : filterByCategory", 0.965, -19)
+            label("0..* : discountAppliesToCategory", 0.945, -14.5)
             label("0..* : discounts", 0.125, 4.3)
             over = start(0).axisAligned(
                 -1,
@@ -772,7 +778,7 @@ classDiagram {
             over = start(0.08).axisAligned(0.386, end(Position.Left))
         } withClass "ccr"
 
-        list(CategorialCategoryCharacteristic, NumericalCategoryCharacteristic).forEach {
+        list(CategoricalCategoryCharacteristic, NumericalCategoryCharacteristic).forEach {
             it extends CategoryCharacteristic with {
                 over = start(Position.Top).axisAligned(
                     -0.5,
@@ -780,7 +786,7 @@ classDiagram {
                 )
             }
         }
-        list(CategorialCategoryCharacteristicValue, NumericalCategoryCharacteristicValue).forEach {
+        list(CategoricalCategoryCharacteristicValue, NumericalCategoryCharacteristicValue).forEach {
             it extends CategoryCharacteristicValue with {
                 over = start(Position.Bottom).axisAligned(
                     -0.5,
@@ -801,7 +807,7 @@ classDiagram {
             over = start(Position.Bottom).line(end(Position.Top))
         }
 
-        CategorialCategoryCharacteristic --> CategorialCategoryCharacteristicValue with {
+        CategoricalCategoryCharacteristic --> CategoricalCategoryCharacteristicValue with {
             label("0..* : values", 0.77, -56)
             label("1 : characteristic", 0.07, -66.8)
             over = start(Position.Bottom).line(end(Position.Top))
