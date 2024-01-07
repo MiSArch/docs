@@ -16,7 +16,7 @@ A user client sends a request to Nginx to retrieve the frontend. The frontend th
 
 Dapr acts as a middleware abstracting communication between services. This enables metric and trace collection via Open Telemetry. Services communicate via Dapr sidecars. Each sidecar is associated with one service and known by the Dapr placement / master service, also known as Dapr Operator Service. The Dapr Operator feeds the Open Telemetry collector with metrics and traces.
 
-A full Zipkin stack stores and displays traces, while metrics are collected by Grafana / Prometheus. Each Service involved in GraphQL queries needs to expose a GraphQL Federation 2 compatible API. Services involved in GraphQL queries need to be registered in the GraphQL gateway.
+A full Zipkin stack stores and displays traces, while metrics are collected by Grafana / Prometheus. Each Service involved in GraphQL queries needs to expose a [GraphQL Federation 2 compatible API](https://www.apollographql.com/docs/federation/building-supergraphs/supported-subgraphs/). Services involved in GraphQL queries need to be registered in the GraphQL gateway.
 
 ### Infastructure (as Code)
 
@@ -24,7 +24,7 @@ The current plan is to support two deployments:
 
 1. Kubernetes
 
-   - State-of-the-art container orchestration. Widely used for microservices in science and the industry. Powerful but tedious to set up (without infrastructure as code tools). Supports multi-node deployments, key stores, load balancing, auto scaling, etc.
+   - State-of-the-art container orchestration. Widely used for microservices in science and the industry. Supports multi-node deployments, key stores, load balancing, auto scaling, etc.
 
 2. Docker Compose
    - Single-node deployments. Good portability + easy setup. Declarative multi-container app tool. Packaged with Docker
@@ -42,9 +42,7 @@ We plan on using Terraform for Kubernetes to deploy in a declarative way, which 
 A developer needs to take the following steps when writing a new service for MiSArch.
 This is due to the extensive tech-stack that the project supports.
 
-Services can be written in the language of choice if the languages ecosystem supports:
-
-- GraphQL Federation 2 support: https://www.apollographql.com/docs/federation/building-supergraphs/supported-subgraphs/
+Services can be written in the language of choice if the languages ecosystem supports [GraphQL Federation 2](https://www.apollographql.com/docs/federation/building-supergraphs/supported-subgraphs/).
 
 ### Writing a new service step by step
 
