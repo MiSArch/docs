@@ -18,9 +18,11 @@ As such, we need a numerical definition of `low`, `medium`, and `high`.
 
 ## Decision Outcome
 
-- Expected option
+- We use storypoints as effort measurement. 1 Storypoint = 4 hours of work. `low` = effort $\leq 1$ storypoint. `medium` = $1 <$ effort $\geq 3$ storypoints. `high` = effort $> 3$ storypoints.
 
-## Pros and Cons of the Option
+## Pros and Cons of the Options
+
+### 1 Storypoint = 4 hours of work. `low` = effort $\leq 1$ storypoint. `medium` = $1 <$ effort $\geq 3$ storypoints. `high` = effort $> 3$ storypoints.
 
 - Good, easily verifiable definition
 - Good, makes it possible to create diagrams where we miscalculated
