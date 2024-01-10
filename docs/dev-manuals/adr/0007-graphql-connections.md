@@ -70,6 +70,26 @@ enum EntityOrderField {
 }
 ```
 
+If the entity type of the connection is managed by a different service, knowledge of the entities is limited (typically only the id of the referenced entity is available).
+Thus, ordering support is limited to ID.
+To prevent conflicts between GraphQL type names, the following types MUST be used instead of `EntityOrderInput`:
+
+```graphql
+"Common order"
+input CommonOrderInput {
+ "The field to order by"
+ field: CommonOrderField
+ "The direction to order by"
+ direction: OrderDirection
+}
+
+"Common order fields"
+enum CommonOrderField {
+ "Order entities by their id"
+ ID
+}
+```
+
 ## Pros and Cons of the Options
 
 ### cursor-based pagination (according to connection specification)
