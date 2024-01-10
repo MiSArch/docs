@@ -11,7 +11,8 @@ In GraphQL, two approaches are popular: offset based pagination, where one speci
 
 ## Considered Options
 
-- cursor-based pagination (according to connection specification)
+- cursor-based pagination (according to connection specification) with totalCount support
+- cursor-based pagination (according to connection specification) without totalCount support
 - offset-based pagination with totalCount support
 - offset-based pagination without totalCount support
 
@@ -92,13 +93,21 @@ enum CommonOrderField {
 
 ## Pros and Cons of the Options
 
-### cursor-based pagination (according to connection specification)
+### cursor-based pagination (according to connection specification) with totalCount support
 
 - Good, because hides away technical implementation (can be offset based or different)
 - Good, because standardized: https://relay.dev/graphql/connections.htm
 - Good, because includes totalCount support, allowing clients to display the amount of pages
 - Bad, because difficult to implement: cursors have to encode values of all fields used in ordering
 - Bad, because does not easily allow to start at an arbitrary offset
+
+### cursor-based pagination (according to connection specification) without totalCount support
+
+- Good, because hides away technical implementation (can be offset based or different)
+- Good, because standardized: https://relay.dev/graphql/connections.htm
+- Bad, because difficult to implement: cursors have to encode values of all fields used in ordering
+- Bad, because does not easily allow to start at an arbitrary offset
+- Bad, because clients cannot fetch the total amount of elements, which is necessary for some frontend designs
 
 ### offset-based pagination with totalCount support
 
@@ -112,6 +121,6 @@ enum CommonOrderField {
 
 - Good, because allows to start at arbitrary offset
 - Good, because easiest to implement (in particular with SQL databases), due to missing totalCount support
-- Bad, because clients cannot fetch the total amount of pages, which is necessary for some frontend designs
+- Bad, because clients cannot fetch the total amount of elements, which is necessary for some frontend designs
 - Bad, because less flexible than cursor-based pagination
 - Bad, because non-standard
