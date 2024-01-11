@@ -1,12 +1,15 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-const { themes } = require("prism-react-renderer");
+import { themes } from "prism-react-renderer";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
 
 /** @type {import('@docusaurus/types').Config} */
-const config = {
+export default {
     title: "MiSArch",
     tagline: "A representable microservice reference architecture",
     url: "https://misarch.github.io",
@@ -25,7 +28,9 @@ const config = {
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
-                    sidebarPath: require.resolve("./sidebars.js")
+                    sidebarPath: require.resolve("./sidebars.js"),
+                    remarkPlugins: [remarkMath],
+                    rehypePlugins: [rehypeKatex]
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css")
@@ -63,7 +68,13 @@ const config = {
     },
     markdown: {
         mermaid: true
-    }
+    },
+    stylesheets: [
+        {
+            href: "https://cdn.jsdelivr.net/npm/katex@0.13.24/dist/katex.min.css",
+            type: "text/css",
+            integrity: "sha384-odtC+0UGzzFL/6PNoE8rX/SPcQDXBJ+uRepguP4QkPCm2LBxH3FA3y+fKSiJ+AmM",
+            crossorigin: "anonymous"
+        }
+    ]
 };
-
-module.exports = config;
