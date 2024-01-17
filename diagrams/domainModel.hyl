@@ -3,6 +3,9 @@ showBoundedContexts = false
 highlightBoundedContexts = true
 highlightBoundedContextsMore = true
 highlightCrossContextRelations = false
+highlightCompletionStatus = false
+
+boundedContexts = []
 
 classDiagram {
     enum = {
@@ -23,126 +26,126 @@ classDiagram {
     }
 
     if(showBoundedContexts) {
-        package("Account") layout {
+        boundedContexts.account = package("Account") layout {
             width = 355.194290034
             height = 322.755733225
             pos = apos(-420, 390)
         }
 
-        package("User") layout {
+        boundedContexts.user = package("User") layout {
             width = 458.277241987
             height = 226.188750551
             pos = apos(-450, 715)
         }
 
-        package("Notification") layout {
+        boundedContexts.notification = package("Notification") layout {
             width = 400.684089512
             height = 200.416947984
             pos = apos(-897.5, 710)
         }
 
-        package("Wishlist") layout {
+        boundedContexts.wishlist = package("Wishlist") layout {
             width = 441.928174373
             height = 176.762252255
             pos = apos(10, -320)
         }
 
-        package("Order") layout {
+        boundedContexts.order = package("Order") layout {
             width = 1068.304112146
             height = 188.268161325
             pos = apos(32.5, 882.5)
         }
 
-        package("Invoice") layout {
+        boundedContexts.invoice = package("Invoice") layout {
             width = 463
             height = 204.75
             pos = apos(7.5, 1212.5)
         }
 
-        package("Discount") layout {
+        boundedContexts.discount = package("Discount") layout {
             width = 517.631207732
             height = 603.745921541
             pos = apos(115, 200)
         }
 
-        package("ShoppingCart") layout {
+        boundedContexts.shopping = package("ShoppingCart") layout {
             width = 456.628520717
             height = 300.381207732
             pos = apos(65, -125)
         }
 
-        package("Address") layout {
+        boundedContexts.address = package("Address") layout {
             width = 411
             height = 295.75
             pos = apos(-417.5, 972.5)
         }
 
-        package("Payment") layout {
+        boundedContexts.payment = package("Payment") layout {
             width = 1968.505925949
             height = 210.771098401
             pos = apos(-402.5, 1537.5)
         }
 
-        package("Tax") layout {
+        boundedContexts.tax = package("Tax") layout {
             width = 388.553476318
             height = 384.195737877
             pos = apos(1177.5, 515)
         }
 
-        package("Shipment") layout {
+        boundedContexts.shipment = package("Shipment") layout {
             width = 1071.601554688
             height = 200.878770777
             pos = apos(517.5, 1342.5)
         }
 
-        package("Category") layout {
+        boundedContexts.category = package("Category") layout {
             height = 545.708303319
             width = 749.240052092
             pos = apos(1150, -617.5)
         }
 
-        package("CategoryValue") layout {
+        boundedContexts.categoryvalue = package("CategoryValue") layout {
             height = 324.779653045
             width = 750.566623481
             pos = apos(1142.5, -57.5)
         }
 
-        package("Inventory") layout {
+        boundedContexts.inventory = package("Inventory") layout {
             height = 136.124698055
             width = 351.555106076
             pos = apos(1340, 290)
         }
 
-        package("Product") layout {
+        boundedContexts.product = package("Product") layout {
             height = 600.727183394
             width = 389.766537637
             pos = apos(627.5, -222.5)
         }
 
-        package("Media") layout {
+        boundedContexts.media = package("Media") layout {
             width = 266.640813716
             height = 126.420207499
             pos = apos(660, 415)
         }
 
-        package("Review") layout {
+        boundedContexts.review = package("Review") layout {
             width = 360.32266988
             height = 198.264144528
             pos = apos(625, -430)
         }
 
-        package("Return") layout {
+        boundedContexts.return = package("Return") layout {
             height = 141.403065971
             width = 407.962457429
             pos = apos(352.5, 1075)
         }
     }
 
-    enum("UserRole", list("ADMIN", "CUSTOMER", "EMPLOYEE")) layout {
+    boundedContexts.userroles = enum("UserRole", list("ADMIN", "CUSTOMER", "EMPLOYEE")) layout {
         pos = apos(470, -560)
     }
 
-    enum(
+    boundedContexts.deliverystatuses = enum(
         "DeliveryStatus",
         list(
             "PENDING",
@@ -155,7 +158,7 @@ classDiagram {
         pos = apos(110, -560)
     }
 
-    enum (
+    boundedContexts.genders = enum (
         "Gender",
         list("MALE", "FEMALE", "DIVERSE", "OTHER")
     ) layout {
@@ -830,6 +833,47 @@ classDiagram {
             label("0..* : usedWith", 0.415, -54.2)
             over = start(Position.Top).axisAligned(0, end(0.085))
         } withClass "ccr"
+
+        if(highlightCompletionStatus) {
+            // Legend
+            element(rect {
+                vbox {
+                    hbox {
+                        ellipse(class = list("completed-package"), fill = "green", fillOpacity = 0.4, stroke = "transparent")
+                        text {
+                            span(text = "Completed", fontSize = 64)
+                        }
+                    }
+                    hbox {
+                        ellipse(class = list("wip-package"), fill = "yellow", fillOpacity = 0.4, stroke = "transparent")
+                        text {
+                            span(text = "Work in progress ", fontSize = 64)
+                        }
+                    }
+                    hbox {
+                        ellipse(class = list("package"), fill = "blue", fillOpacity = 0.4, stroke = "transparent")
+                        text {
+                            span(text = "Yet to be done", fontSize = 64)
+                        }
+                    }
+                }
+            }) layout {
+                pos = apos(-800, -200)
+            } styles {
+                any {
+                    stroke = var("primary")
+                    vAlign = VAlign.Center
+                }
+                type("ellipse") {
+                    width = 64
+                    height = 64
+                    margin = 25
+                }
+                type("vbox") {
+                    margin = 25
+                }
+            }
+        }
     }
 
     styles {
@@ -854,6 +898,30 @@ classDiagram {
                 }
             }
         }
+        if(highlightCompletionStatus) {
+            cls("completed-package") {
+                vars {
+                    primary = "green"
+                }
+                any {
+                    type("rect") {
+                        fill = "green"
+                        fillOpacity = 0.2
+                    }
+                }
+            }
+            cls("wip-package") {
+                vars {
+                    primary = "yellow"
+                }
+                any {
+                    type("rect") {
+                        fill = "yellow"
+                        fillOpacity = 0.2
+                    }
+                }
+            }
+        }
         if(highlightCrossContextRelations) {
             cls("ccr") {
                 variables.primary = "red"
@@ -863,4 +931,16 @@ classDiagram {
             }
         }
     }
+
+    if(highlightCompletionStatus) {
+        boundedContexts.account withClass "completed-package"
+        boundedContexts.notification withClass "wip-package"
+        boundedContexts.wishlist withClass "wip-package"
+        boundedContexts.inventory withClass "wip-package"
+        boundedContexts.product withClass "completed-package"
+        boundedContexts.category withClass "completed-package"
+        boundedContexts.categoryvalue withClass "completed-package"
+        boundedContexts.userroles withClass "completed-package"
+    }
+
 }

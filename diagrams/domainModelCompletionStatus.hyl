@@ -3,7 +3,7 @@ showBoundedContexts = true
 highlightBoundedContexts = true
 highlightBoundedContextsMore = true
 highlightCrossContextRelations = false
-highlightCompletionStatus = false
+highlightCompletionStatus = true
 
 boundedContexts = []
 
