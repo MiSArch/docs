@@ -833,6 +833,46 @@ classDiagram {
             label("0..* : usedWith", 0.415, -54.2)
             over = start(Position.Top).axisAligned(0, end(0.085))
         } withClass "ccr"
+
+
+    // Legend
+    element(rect {
+        vbox {
+            hbox {
+                ellipse(class = list("completed-package"), fill = "green", fillOpacity = 0.4, stroke = "transparent")
+                text {
+                    span(text = "Completed", fontSize = 64)
+                }
+            }
+            hbox {
+                ellipse(class = list("wip-package"), fill = "yellow", fillOpacity = 0.4, stroke = "transparent")
+                text {
+                    span(text = "Work in progress ", fontSize = 64)
+                }
+            }
+            hbox {
+                ellipse(class = list("package"), fill = "blue", fillOpacity = 0.4, stroke = "transparent")
+                text {
+                    span(text = "Yet to be done", fontSize = 64)
+                }
+            }
+        }
+    }) layout {
+        pos = apos(-800, -200)
+    } styles {
+        any {
+            stroke = var("primary")
+            vAlign = VAlign.Center
+        }
+        type("ellipse") {
+            width = 64
+            height = 64
+            margin = 25
+        }
+        type("vbox") {
+            margin = 25
+        }
+    }
     }
 
     styles {
@@ -901,9 +941,4 @@ classDiagram {
     boundedContexts.categoryvalue withClass "completed-package"
     boundedContexts.userroles withClass "completed-package"
 
-    rect(class = list("completed-package")) layout {
-        width = 500
-        height = 20
-        pos = apos(-100, -100)
-    }
 }
