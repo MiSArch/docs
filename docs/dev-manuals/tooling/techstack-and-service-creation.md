@@ -10,7 +10,7 @@ import CustomImage from "@site/src/components/CustomImage";
 
 This is a general overview of some of the technologies used in MiSArch and which services / components they involve.
 
-<CustomImage path="/images/techstack-overview" width="2803" height="2341" />
+<CustomImage path="/images/techstack-overview" width="1148" height="596" />
 
 A user client sends a request to Nginx to retrieve the frontend. The frontend then communicates with the backend through Nginx. Nginx acts both as a web-server and reverse proxy. The frontend creates requests in GraphQL. The GraphQL gateway resolves the request by querying the respective services.
 

@@ -10,8 +10,8 @@ In the following, the most important business processes are modelled using BPMN.
 
 ## Buy Process
 
-<CustomImage path="/diagrams/buyBPMN" width="2803" height="2341" />
+<CustomImage path="/diagrams/buyBPMN" width="1910" height="1365" />
 
 ## Return Process
 
-<CustomImage path="/diagrams/returnBPMN" width="2803" height="2341" />
+<CustomImage path="/diagrams/returnBPMN" width="1668" height="828" />
