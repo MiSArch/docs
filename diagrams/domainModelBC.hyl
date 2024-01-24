@@ -934,13 +934,15 @@ classDiagram {
 
     if(highlightCompletionStatus) {
         boundedContexts.account withClass "completed-package"
-        boundedContexts.notification withClass "wip-package"
-        boundedContexts.wishlist withClass "wip-package"
-        boundedContexts.inventory withClass "wip-package"
-        boundedContexts.product withClass "completed-package"
         boundedContexts.category withClass "completed-package"
         boundedContexts.categoryvalue withClass "completed-package"
+        boundedContexts.inventory withClass "completed-package"
+        boundedContexts.notification withClass "completed-package"
+        boundedContexts.product withClass "completed-package"
+        boundedContexts.shoppingCart withClass "wip-package"
+        boundedContexts.user withClass "wip-package"
         boundedContexts.userroles withClass "completed-package"
+        boundedContexts.wishlist withClass "completed-package"
     }
 
 }
