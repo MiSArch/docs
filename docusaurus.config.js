@@ -42,6 +42,10 @@ export default {
     themeConfig: {
         navbar: {
             title: "MiSArch",
+            logo: {
+                src: "icons/misarch-logo.svg",
+                srcDark: "icons/misarch-logo-dark.svg"
+            },
             items: [
                 {
                     type: "docSidebar",
