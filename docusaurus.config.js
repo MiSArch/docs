@@ -13,6 +13,7 @@ export default {
     title: "MiSArch",
     tagline: "A representable microservice reference architecture",
     url: "https://misarch.github.io",
+    favicon: "icons/misarch-logo.svg",
     baseUrl: "/",
     organizationName: "misarch",
     projectName: "misarch.github.io",
@@ -42,6 +43,10 @@ export default {
     themeConfig: {
         navbar: {
             title: "MiSArch",
+            logo: {
+                src: "icons/misarch-logo.svg",
+                srcDark: "icons/misarch-logo-dark.svg"
+            },
             items: [
                 {
                     type: "docSidebar",
