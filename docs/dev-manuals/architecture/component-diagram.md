@@ -6,4 +6,4 @@ import CustomImage from "@site/src/components/CustomImage";
 
 # Component Diagram
 
-<CustomImage path="/diagrams/componentDiagram" width="2000" height="2800" />
+<CustomImage path="/diagrams/componentDiagram" width="2430" height="2751" />

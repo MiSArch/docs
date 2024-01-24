@@ -24,7 +24,7 @@ export default function Home() {
         <Layout title={`Hello from ${siteConfig.title}`} description="Description will go into a meta tag in <head />">
             <HomepageHeader />
             <main>
-                <CustomImage path="/renderedDiagrams/domainModelBC" width="2837" height="2398.5" />
+                <CustomImage path="/renderedDiagrams/domainModelBC" width="2820.5" height="2398.5" />
             </main>
         </Layout>
     );
