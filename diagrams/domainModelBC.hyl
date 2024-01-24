@@ -936,7 +936,7 @@ classDiagram {
         boundedContexts.account withClass "completed-package"
         boundedContexts.category withClass "completed-package"
         boundedContexts.categoryvalue withClass "completed-package"
-        boundedContexts.inventory withClass "completed-package"
+        boundedContexts.inventory withClass "wip-package"
         boundedContexts.notification withClass "completed-package"
         boundedContexts.product withClass "completed-package"
         boundedContexts.shopping withClass "wip-package"
