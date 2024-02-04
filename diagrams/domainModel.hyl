@@ -182,12 +182,13 @@ classDiagram {
 
     class("User") {
         public {
-            dateJoined : Date
-            birthday : Date
+            dateJoined : DateTime
+            birthday : "Date?"
             gender : "Gender?"
+            firstName: String
+            lastName: String
         }
     } layout {
-        height = 117.594513591
         pos = apos(-240, 830)
     }
 
@@ -269,7 +270,7 @@ classDiagram {
             version : int
             retailPrice : int
             price : int
-            createdAt : Date
+            createdAt : DateTime
             canBeReturnedForDays : "double?"
         }
     } layout {
@@ -283,7 +284,7 @@ classDiagram {
 
     class("ShoppingCart") {
         public {
-            lastUpdatedAt : Date
+            lastUpdatedAt : DateTime
         }
     } layout {
         pos = apos(280, -40)
@@ -292,7 +293,7 @@ classDiagram {
     class("ShoppingCartItem") {
         public {
             count : int
-            addedAt : Date
+            addedAt : DateTime
         }
     } layout {
         pos = apos(280, 110)
@@ -301,8 +302,8 @@ classDiagram {
     class("Wishlist") {
         public {
             name : string
-            createdAt : Date
-            lastUpdatedAt : Date
+            createdAt : DateTime
+            lastUpdatedAt : DateTime
         }
     } layout {
         pos = apos(280, -220)
@@ -310,7 +311,7 @@ classDiagram {
 
     class("Order") {
         public {
-            date : Date
+            date : DateTime
         }
     } layout {
         pos = apos(280, 970)
@@ -328,7 +329,7 @@ classDiagram {
         public {
             body : string
             rating : int
-            date : Date
+            date : DateTime
             isHidden : boolean
         }
     } layout {
@@ -340,11 +341,11 @@ classDiagram {
             title : string
             body : string
             isRead : boolean
-            dateSent : Date
-            dateRead : Date
+            dateSent : DateTime
+            dateRead : "DateTime?"
         }
     } layout {
-        pos = apos(-730, 824)
+        pos = apos(-730, 814)
     }
 
     class("ProductItem") {
@@ -385,8 +386,8 @@ classDiagram {
         public {
             usages : "int"
             maxUsages : "int?"
-            validUntil : Date
-            validFrom : Date
+            validUntil : DateTime
+            validFrom : DateTime
             code : string
         }
     } layout {
@@ -397,8 +398,8 @@ classDiagram {
         public {
             discount : double
             maxUsagesPerUser : "int?..."
-            validUntil : Date
-            validFrom : Date
+            validUntil : DateTime
+            validFrom : DateTime
             minOrderAmount : "int?"
             maxDiscountableAmount : "int?"
         }
@@ -419,7 +420,7 @@ classDiagram {
         public {
             rate : double
             version : int
-            createdAt : Date
+            createdAt : DateTime
         }
     } layout {
         pos = apos(1370, 830)
@@ -457,8 +458,7 @@ classDiagram {
 
     class("CategoricalCategoryCharacteristicValue") {
         public {
-            name : string
-            description : string
+            value : string
         }
     } layout {
         pos = apos(1307.5, 60)
@@ -544,7 +544,7 @@ classDiagram {
 
         ProductVariant --> ProductVariantVersion with {
             label("1..* : versions", 0.65, -59.9)
-            label("1 : variant", 0.065, -41.9)
+            label("1 : productVariant", 0.1375, -67.8)
             over = start(0.1875).line(end(0.8125))
         }
 
@@ -656,7 +656,7 @@ classDiagram {
         } withClass "ccr"
 
         ProductVariant --> ProductItem with {
-            label("0..* : instances", 0.935, 13)
+            label("0..* : productItems", 0.9375, 13)
             label("1 : productVariant", 0.115, -27)
             over = start(0.125).axisAligned(
                 0.511,
@@ -776,7 +776,7 @@ classDiagram {
         } withClass "ccr"
 
         ProductVariantVersion !--> TaxRate with {
-            label("1 : taxRate", 0.76, 12.6)
+            label("1 : taxRate", 0.8625, 11.1)
             label("0..*", 0.145, -24.4)
             over = start(0.08).axisAligned(0.386, end(Position.Left))
         } withClass "ccr"
@@ -799,20 +799,20 @@ classDiagram {
         }
 
         Category --> CategoryCharacteristic with {
-            label("0..* : characteristic", 0.71, -82)
+            label("0..* : characteristics", 0.71, -82)
             label("1 : category", 0.025, -48.9)
             over = start(0.25).line(end(0.75))
         }
 
-        NumericalCategoryCharacteristic --> NumericalCategoryCharacteristicValue with {
-            label("0..* : values", 0.77, -56)
-            label("1 : characteristic", 0.07, -66.8)
+        NumericalCategoryCharacteristic <--! NumericalCategoryCharacteristicValue with {
+            label("0..*", 0.775, -30.9)
+            label("1 : characteristic", 0.075, -71.7)
             over = start(Position.Bottom).line(end(Position.Top))
         }
 
-        CategoricalCategoryCharacteristic --> CategoricalCategoryCharacteristicValue with {
+        CategoricalCategoryCharacteristic <--> CategoricalCategoryCharacteristicValue with {
             label("0..* : values", 0.77, -56)
-            label("1 : characteristic", 0.07, -66.8)
+            label("1 : characteristic", 0.075, -75.2)
             over = start(Position.Bottom).line(end(Position.Top))
         }
 
@@ -822,9 +822,9 @@ classDiagram {
             over = start(Position.Right).axisAligned(0.248, end(Position.Left))
         } withClass "ccr"
 
-        ProductVariantVersion --> CategoryCharacteristicValue with {
-            label("0..* : tagValues", 0.845, 15)
-            label("0..* productVersions", 0.225, 6.8)
+        ProductVariantVersion !--> CategoryCharacteristicValue with {
+            label("0..* : characteristicValues", 0.7625, 12.3)
+            label("1", 0.1, 7.7)
             over = start(0.905).line(end(Position.Left))
         } withClass "ccr"
 
