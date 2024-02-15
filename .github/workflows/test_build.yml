@@ -18,6 +18,8 @@ jobs:
         run: npm ci
       - name: Render HyLiMo diagrams
         run: npm run render-diagrams
+      - name: Update GraphQL docs
+        run: npm run update-graphql-docs
       - name: Check formatting
         run: npm run format:check
       - name: Build website
