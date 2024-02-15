@@ -28,3 +28,25 @@ for (const doc of graphqlDocs) {
         `
     );
 }
+const output = execSync(`npx docusaurus graphql-to-doc:supergraph -f`, { encoding: "utf-8" });
+console.log(output);
+writeFileSync(
+    `docs/graphql/supergraph/generated.md`,
+    dedent`
+        ---
+        id: schema
+        slug: /docs/graphql/supergraph
+        title: GraphQL API (Gateway)
+        sidebar_position: 1
+        pagination_prev: null
+        sidebar_class_name: navbar__toggle
+        ---
+        import GraphQLDocCardList from "@site/src/components/GraphQLDocCardList";
+        
+        This is the documentation for the GraphQL API provided by the gateway.
+        It is a supergraph composed of the schemas of all the services.
+        This documentation has been automatically generated from the GraphQL schema.
+
+        <GraphQLDocCardList />
+    `
+);
