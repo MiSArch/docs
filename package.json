@@ -38,7 +38,7 @@
     },
     "devDependencies": {
         "@docusaurus/module-type-aliases": "^3.1.1",
-        "@hylimo/cli": "^1.1.0",
+        "@hylimo/cli": "^1.1.1",
         "prettier": "^3.2.5"
     },
     "browserslist": {
