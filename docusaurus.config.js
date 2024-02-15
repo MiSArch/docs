@@ -4,6 +4,8 @@
 import { themes } from "prism-react-renderer";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import graphqlDocs from "./graphql.mjs";
+import { buildSchema } from "graphql";
 
 const lightTheme = themes.github;
 const darkTheme = themes.dracula;
@@ -29,7 +31,7 @@ export default {
             /** @type {import('@docusaurus/preset-classic').Options} */
             ({
                 docs: {
-                    sidebarPath: require.resolve("./sidebars.js"),
+                    sidebarPath: require.resolve("./sidebars.mjs"),
                     remarkPlugins: [remarkMath],
                     rehypePlugins: [rehypeKatex]
                 },
@@ -50,9 +52,15 @@ export default {
             items: [
                 {
                     type: "docSidebar",
-                    sidebarId: "tutorialSidebar",
+                    sidebarId: "docsSidebar",
                     position: "left",
                     label: "Docs"
+                },
+                {
+                    type: "docSidebar",
+                    sidebarId: "graphqlSidebar",
+                    position: "left",
+                    label: "GraphQL (services)"
                 },
                 {
                     href: "https://github.com/MiSArch",
@@ -71,6 +79,42 @@ export default {
             additionalLanguages: ["bash"]
         }
     },
+    plugins: [
+        ...graphqlDocs.map((doc) => [
+            "@graphql-markdown/docusaurus",
+            {
+                id: doc.id,
+                schema: doc.path,
+                rootPath: ".",
+                baseURL: `docs/graphql/${doc.id}`,
+                docOptions: {
+                    index: true
+                },
+                loaders: {
+                    GraphQLFileLoader: {
+                        module: "@graphql-tools/graphql-file-loader",
+                        options: {
+                            schemas: [
+                                buildSchema(`
+                                    scalar FieldSet
+                                    scalar link__Purpose
+                                    scalar link__Import
+                                    directive @key(fields: FieldSet!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
+                                    directive @shareable on FIELD_DEFINITION | OBJECT
+                                    directive @link(
+                                        url: String!,
+                                        as: String,
+                                        for: link__Purpose,
+                                        import: [link__Import]
+                                    ) repeatable on SCHEMA
+                                `)
+                            ]
+                        }
+                    }
+                }
+            }
+        ])
+    ],
     markdown: {
         mermaid: true
     },
