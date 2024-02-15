@@ -58,6 +58,12 @@ export default {
                 },
                 {
                     type: "docSidebar",
+                    sidebarId: "graphqlSupergraphSidebar",
+                    position: "left",
+                    label: "GraphQL"
+                },
+                {
+                    type: "docSidebar",
                     sidebarId: "graphqlSidebar",
                     position: "left",
                     label: "GraphQL (services)"
@@ -113,7 +119,22 @@ export default {
                     }
                 }
             }
-        ])
+        ]),
+        [
+            "@graphql-markdown/docusaurus",
+            {
+                id: "supergraph",
+                schema: "supergraph.graphql",
+                rootPath: ".",
+                baseURL: `docs/graphql/schema`,
+                docOptions: {
+                    index: true
+                },
+                loaders: {
+                    GraphQLFileLoader: "@graphql-tools/graphql-file-loader"
+                }
+            }
+        ]
     ],
     markdown: {
         mermaid: true
