@@ -1,0 +1,2102 @@
+schema
+  @link(url: "https://specs.apollo.dev/link/v1.0")
+  @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+{
+  query: Query
+  mutation: Mutation
+}
+
+directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
+
+directive @join__field(graph: join__Graph, requires: join__FieldSet, provides: join__FieldSet, type: String, external: Boolean, override: String, usedOverridden: Boolean) repeatable on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @join__graph(name: String!, url: String!) on ENUM_VALUE
+
+directive @join__implements(graph: join__Graph!, interface: String!) repeatable on OBJECT | INTERFACE
+
+directive @join__type(graph: join__Graph!, key: join__FieldSet, extension: Boolean! = false, resolvable: Boolean! = true, isInterfaceObject: Boolean! = false) repeatable on OBJECT | INTERFACE | UNION | ENUM | INPUT_OBJECT | SCALAR
+
+directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on UNION
+
+directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
+
+input AddReviewInput
+  @join__type(graph: REVIEW)
+{
+  """UUID of user owning the review."""
+  userId: UUID!
+
+  """UUID of product variant in review."""
+  productVariantId: UUID!
+
+  """Body of Review."""
+  body: String!
+
+  """Rating of Review in 1-5 stars."""
+  rating: Rating!
+
+  """Flag if review is visible, by default set to true."""
+  isVisible: Boolean
+}
+
+input AddShoppingCartItemInput
+  @join__type(graph: SHOPPINGCART)
+{
+  """UUID of user owning the shopping cart."""
+  id: UUID!
+
+  """ShoppingCartItem in shoppingcart to update"""
+  shoppingCartItem: ShoppingCartItemInput!
+}
+
+input AddWishlistInput
+  @join__type(graph: WISHLIST)
+{
+  """UUID of user owning the wishlist."""
+  userId: UUID!
+
+  """UUIDs of product variants in wishlist."""
+  productVariantIds: [UUID!]!
+
+  """Wishlist name."""
+  name: String!
+}
+
+"""A categorical characteristic of a category."""
+type CategoricalCategoryCharacteristic implements CategoryCharacteristic & Node
+  @join__implements(graph: CATALOG, interface: "CategoryCharacteristic")
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: true)
+{
+  """The Category this item belongs to."""
+  category: Category!
+
+  """The description of the CategoryCharacteristic."""
+  description: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The name of the CategoryCharacteristic."""
+  name: String!
+
+  """Get all associated values"""
+  values(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CategoricalCategoryCharacteristicValueOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CategoricalCategoryCharacteristicValueConnection!
+}
+
+"""Input to create a CategoricalCategoryCharacteristic for a Category"""
+input CategoricalCategoryCharacteristicInput
+  @join__type(graph: CATALOG)
+{
+  """The description of the CategoricalCategoryCharacteristic"""
+  description: String!
+
+  """The name of the CategoricalCategoryCharacteristic"""
+  name: String!
+}
+
+"""A possible value for a categorical characteristic."""
+type CategoricalCategoryCharacteristicValue implements CategoryCharacteristicValue
+  @join__implements(graph: CATALOG, interface: "CategoryCharacteristicValue")
+  @join__type(graph: CATALOG)
+{
+  """The associated CategoryCharacteristic this is a value of."""
+  characteristic: CategoryCharacteristic!
+
+  """The value of the characteristic."""
+  value: String!
+}
+
+"""
+A connection to a list of `CategoricalCategoryCharacteristicValue` values.
+"""
+type CategoricalCategoryCharacteristicValueConnection
+  @join__type(graph: CATALOG)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [CategoricalCategoryCharacteristicValue!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Input for creating a CategoricalCategoryCharacteristicValue."""
+input CategoricalCategoryCharacteristicValueInput
+  @join__type(graph: CATALOG)
+{
+  """The id of the CategoryCharacteristic."""
+  characteristicId: UUID!
+
+  """The value of the CategoricalCategoryCharacteristicValue."""
+  value: String!
+}
+
+"""CategoricalCategoryCharacteristicValue order fields"""
+enum CategoricalCategoryCharacteristicValueOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order CategoricalCategoryCharacteristicValue by their id"""
+  VALUE @join__enumValue(graph: CATALOG)
+}
+
+"""CategoricalCategoryCharacteristicValue order"""
+input CategoricalCategoryCharacteristicValueOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: CategoricalCategoryCharacteristicValueOrderField
+}
+
+"""A category"""
+type Category implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: true)
+{
+  """Get characteristics for the category"""
+  characteristics(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CategoryCharacteristicOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CategoryCharacteristicConnection!
+
+  """The description of the category."""
+  description: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The name of the category."""
+  name: String!
+
+  """Get all associated products"""
+  products(
+    """Filtering"""
+    filter: ProductFilterInput
+
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: ProductOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ProductConnection!
+}
+
+"""A characteristic of a Category."""
+interface CategoryCharacteristic implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG)
+{
+  """The Category this item belongs to."""
+  category: Category!
+
+  """The description of the CategoryCharacteristic."""
+  description: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The name of the CategoryCharacteristic."""
+  name: String!
+}
+
+"""A connection to a list of `CategoryCharacteristic` values."""
+type CategoryCharacteristicConnection
+  @join__type(graph: CATALOG)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [CategoryCharacteristic!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""CategoryCharacteristic order fields"""
+enum CategoryCharacteristicOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order categoryCharacteristics by their id"""
+  ID @join__enumValue(graph: CATALOG)
+}
+
+"""CategoryCharacteristic order"""
+input CategoryCharacteristicOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: CategoryCharacteristicOrderField
+}
+
+"""A value for a CategoryCharacteristic."""
+interface CategoryCharacteristicValue
+  @join__type(graph: CATALOG)
+{
+  """The associated CategoryCharacteristic this is a value of."""
+  characteristic: CategoryCharacteristic!
+}
+
+"""A connection to a list of `CategoryCharacteristicValue` values."""
+type CategoryCharacteristicValueConnection
+  @join__type(graph: CATALOG)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [CategoryCharacteristicValue!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""CategoryCharacteristicValue order fields"""
+enum CategoryCharacteristicValueOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order categoryCharacteristicValues by their id"""
+  ID @join__enumValue(graph: CATALOG)
+}
+
+"""CategoryCharacteristicValue order"""
+input CategoryCharacteristicValueOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: CategoryCharacteristicValueOrderField
+}
+
+"""A connection to a list of `Category` values."""
+type CategoryConnection
+  @join__type(graph: CATALOG)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [Category!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Category order fields"""
+enum CategoryOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order categories by their id"""
+  ID @join__enumValue(graph: CATALOG)
+
+  """Order categories by their name"""
+  NAME @join__enumValue(graph: CATALOG)
+}
+
+"""Category order"""
+input CategoryOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: CategoryOrderField
+}
+
+"""
+Describes the fields that a foreign types can be ordered by.
+
+Only the Id valid at the moment.
+"""
+enum CommonOrderField
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: WISHLIST)
+{
+  """Orders by "id"."""
+  ID @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
+}
+
+"""Specifies the order of foreign types."""
+input CommonOrderInput
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: WISHLIST)
+{
+  """Order direction of shoppingcarts."""
+  direction: OrderDirection
+
+  """Field that shoppingcarts should be ordered by."""
+  field: CommonOrderField
+}
+
+"""Input for the createCategoricalCategoryCharacteristic mutation"""
+input CreateCategoricalCategoryCharacteristicInput
+  @join__type(graph: CATALOG)
+{
+  """The Category that the CategoricalCategoryCharacteristicI belongs to"""
+  categoryId: UUID!
+
+  """The description of the CategoricalCategoryCharacteristic"""
+  description: String!
+
+  """The name of the CategoricalCategoryCharacteristic"""
+  name: String!
+}
+
+"""Input for the createCategory mutation"""
+input CreateCategoryInput
+  @join__type(graph: CATALOG)
+{
+  """The CategoricalCategoryCharacteristics of the Category"""
+  categoricalCharacteristics: [CategoricalCategoryCharacteristicInput!]!
+
+  """The description of the Category"""
+  description: String!
+
+  """The name of the Category"""
+  name: String!
+
+  """The NumericalCategoryCharacteristics of the Category"""
+  numericalCharacteristics: [NumericalCategoryCharacteristicInput!]!
+}
+
+"""Input for the createNotification mutation"""
+input CreateNotificationInput
+  @join__type(graph: NOTIFICATION)
+{
+  """body of the notification to create"""
+  body: String!
+
+  """title of the notification to create"""
+  title: String!
+
+  """id of the user the notification should be sent to"""
+  userId: UUID!
+}
+
+"""Input for the createNumericalCategoryCharacteristic mutation"""
+input CreateNumericalCategoryCharacteristicInput
+  @join__type(graph: CATALOG)
+{
+  """The Category that the NumericalCategoryCharacteristic belongs to"""
+  categoryId: UUID!
+
+  """The description of the NumericalCategoryCharacteristic"""
+  description: String!
+
+  """The name of the NumericalCategoryCharacteristic"""
+  name: String!
+
+  """The unit of the NumericalCategoryCharacteristic"""
+  unit: String!
+}
+
+"""Input for the createProduct mutation"""
+input CreateProductInput
+  @join__type(graph: CATALOG)
+{
+  """The Categories this product is associated with."""
+  categoryIds: [UUID!]!
+
+  """The default ProductVariant of the Product."""
+  defaultVariant: ProductVariantInput!
+
+  """An internal name to identify the Product, not visible to customers."""
+  internalName: String!
+
+  """If true, the Product is visible to customers."""
+  isPubliclyVisible: Boolean!
+}
+
+"""The input of a product item batch creation"""
+input CreateProductItemBatchInput
+  @join__type(graph: INVENTORY)
+{
+  """The product variant id of the product item"""
+  productVariantId: UUID!
+
+  """The number of products to add"""
+  number: Int!
+}
+
+"""Input for the createProductVariant mutation"""
+input CreateProductVariantInput
+  @join__type(graph: CATALOG)
+{
+  """The initial ProductVariantVersion of the ProductVariant."""
+  initialVersion: ProductVariantVersionInput!
+
+  """If true, the ProductVariant is visible to customers."""
+  isPubliclyVisible: Boolean!
+
+  """The id of the Product this ProductVariant belongs to."""
+  productId: UUID!
+}
+
+"""Input for the createProductVariantVersion mutation"""
+input CreateProductVariantVersionInput
+  @join__type(graph: CATALOG)
+{
+  """
+  The amount of days for which an instance of the ProductVariant can be returned after purchase
+  """
+  canBeReturnedForDays: Float
+
+  """
+  The CategoricalCategoryCharacteristicValues of the ProductVariant, must be compatible with the Categories of the associated Product.
+  """
+  categoricalCharacteristicValues: [CategoricalCategoryCharacteristicValueInput!]!
+
+  """The description of the ProductVariant."""
+  description: String!
+
+  """The name of the ProductVariant."""
+  name: String!
+
+  """
+  The NumericalCategoryCharacteristicValues of the ProductVariant, must be compatible with the Categories of the associated Product.
+  """
+  numericalCharacteristicValues: [NumericalCategoryCharacteristicValueInput!]!
+
+  """The id of the ProductVariant this ProductVariantVersion belongs to."""
+  productVariantId: UUID!
+
+  """The retail price of the ProductVariant."""
+  retailPrice: Int!
+
+  """The associated TaxRate"""
+  taxRateId: UUID!
+}
+
+"""Input for the createTaxRate mutation"""
+input CreateTaxRateInput
+  @join__type(graph: TAX)
+{
+  """The description of the created TaxRate"""
+  description: String!
+
+  """The initial version of the created TaxRate"""
+  initialVersion: TaxRateVersionInput!
+
+  """The name of the created TaxRate"""
+  name: String!
+}
+
+"""Input for the createTaxRateVersion mutation"""
+input CreateTaxRateVersionInput
+  @join__type(graph: TAX)
+{
+  """The rate of the created TaxRateVersion"""
+  rate: Float!
+
+  """The id of the TaxRate the created TaxRateVersion belongs to"""
+  taxRateId: UUID!
+}
+
+"""An RFC-3339 compliant Full Date Scalar"""
+scalar Date
+  @join__type(graph: USER)
+
+"""A slightly refined version of RFC-3339 compliant DateTime Scalar"""
+scalar DateTime
+  @join__type(graph: CATALOG)
+  @join__type(graph: NOTIFICATION)
+  @join__type(graph: REVIEW)
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: TAX)
+  @join__type(graph: USER)
+  @join__type(graph: WISHLIST)
+
+"""The gender of a user"""
+enum Gender
+  @join__type(graph: USER)
+{
+  """Diverse gender"""
+  DIVERSE @join__enumValue(graph: USER)
+
+  """Female gender"""
+  FEMALE @join__enumValue(graph: USER)
+
+  """Male gender"""
+  MALE @join__enumValue(graph: USER)
+
+  """Other gender"""
+  OTHER @join__enumValue(graph: USER)
+}
+
+scalar join__FieldSet
+
+enum join__Graph {
+  CATALOG @join__graph(name: "catalog", url: "http://localhost:3500/v1.0/invoke/catalog/method/graphql")
+  INVENTORY @join__graph(name: "inventory", url: "http://localhost:3500/v1.0/invoke/inventory/method/graphql")
+  NOTIFICATION @join__graph(name: "notification", url: "http://localhost:3500/v1.0/invoke/notification/method/graphql")
+  REVIEW @join__graph(name: "review", url: "http://localhost:3500/v1.0/invoke/review/method/")
+  SHOPPINGCART @join__graph(name: "shoppingcart", url: "http://localhost:3500/v1.0/invoke/shoppingcart/method/")
+  TAX @join__graph(name: "tax", url: "http://localhost:3500/v1.0/invoke/tax/method/graphql")
+  USER @join__graph(name: "user", url: "http://localhost:3500/v1.0/invoke/user/method/graphql")
+  WISHLIST @join__graph(name: "wishlist", url: "http://localhost:3500/v1.0/invoke/wishlist/method/")
+}
+
+scalar link__Import
+
+enum link__Purpose {
+  """
+  `SECURITY` features provide metadata necessary to securely resolve fields.
+  """
+  SECURITY
+
+  """
+  `EXECUTION` features provide metadata necessary for operation execution.
+  """
+  EXECUTION
+}
+
+type Mutation
+  @join__type(graph: CATALOG)
+  @join__type(graph: INVENTORY)
+  @join__type(graph: NOTIFICATION)
+  @join__type(graph: REVIEW)
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: TAX)
+  @join__type(graph: USER)
+  @join__type(graph: WISHLIST)
+{
+  """
+  Create a new value for a characteristic whose values have no further meaning
+  """
+  createCategoricalCategoryCharacteristic(
+    """Input for the createCategoricalCategoryCharacteristic mutation"""
+    input: CreateCategoricalCategoryCharacteristicInput!
+  ): CategoricalCategoryCharacteristic! @join__field(graph: CATALOG)
+
+  """Create a new category"""
+  createCategory(
+    """Input for the createCategory mutation"""
+    input: CreateCategoryInput!
+  ): Category! @join__field(graph: CATALOG)
+
+  """Create a new numerical category characteristic"""
+  createNumericalCategoryCharacteristic(
+    """Input for the createNumericalCategoryCharacteristic mutation"""
+    input: CreateNumericalCategoryCharacteristicInput!
+  ): NumericalCategoryCharacteristic! @join__field(graph: CATALOG)
+
+  """Create a new product"""
+  createProduct(
+    """Input for the createProduct mutation"""
+    input: CreateProductInput!
+  ): Product! @join__field(graph: CATALOG)
+
+  """Create a new product variant"""
+  createProductVariant(
+    """Input for the createProductVariant mutation"""
+    input: CreateProductVariantInput!
+  ): ProductVariant! @join__field(graph: CATALOG)
+
+  """Create a new product variant version"""
+  createProductVariantVersion(
+    """Input for the createProductVariantVersion mutation"""
+    input: CreateProductVariantVersionInput!
+  ): ProductVariantVersion! @join__field(graph: CATALOG)
+
+  """Update a product"""
+  updateProduct(
+    """Input for the updateProduct mutation"""
+    input: UpdateProductInput!
+  ): Product! @join__field(graph: CATALOG)
+
+  """Update a product variant"""
+  updateProductVariant(
+    """Input for the updateProductVariant mutation"""
+    input: UpdateProductVariantInput!
+  ): ProductVariant! @join__field(graph: CATALOG)
+
+  """
+  Adds a batch of product items with the specified productVartiantId of size number
+  """
+  createProductItemBatch(input: CreateProductItemBatchInput!): [ProductItem!]! @join__field(graph: INVENTORY)
+
+  """
+  Updates storage state, productVariant of a specific product item referenced with an Id
+  """
+  updateProductItem(input: UpdateProductItemInput!): ProductItem! @join__field(graph: INVENTORY)
+
+  """Deletes a product item by id"""
+  deleteProductItem(
+    """UUID of product item to delete"""
+    id: UUID!
+  ): ProductItem! @join__field(graph: INVENTORY)
+
+  """Reserves a batch of product items of a chosen product variant"""
+  reserveProductItemBatch(input: ReserveProductItemsBatchInput!): [ProductItem!]! @join__field(graph: INVENTORY)
+
+  """Create a new notification"""
+  createNotification(
+    """Input for the createNotification mutation"""
+    input: CreateNotificationInput!
+  ): Notification! @join__field(graph: NOTIFICATION)
+
+  """Update a notification"""
+  updateNotification(
+    """Input for the updateNotification mutation"""
+    input: UpdateNotificationInput!
+  ): Notification! @join__field(graph: NOTIFICATION)
+
+  """Adds a review."""
+  addReview(
+    """AddReviewInput"""
+    input: AddReviewInput!
+  ): Review! @join__field(graph: REVIEW)
+
+  """Updates a specific review referenced with an id."""
+  updateReview(
+    """UpdateReviewInput"""
+    input: UpdateReviewInput!
+  ): Review! @join__field(graph: REVIEW)
+
+  """Deletes review of id."""
+  deleteReview(
+    """UUID of review to delete."""
+    id: UUID!
+  ): Boolean! @join__field(graph: REVIEW)
+
+  """
+  Updates shoppingcart_items of a specific shoppingcart referenced with an id.
+  
+  Formats UUIDs as hyphenated lowercase Strings.
+  """
+  updateShoppingcart(
+    """UpdateShoppingCartInput"""
+    input: UpdateShoppingCartInput!
+  ): ShoppingCart! @join__field(graph: SHOPPINGCART)
+
+  """
+  Adds shoppingcart item to a shopping cart.
+  
+  Queries for existing item, otherwise adds new shoppingcart item.
+  """
+  addShoppingcartItem(
+    """AddShoppingCartItemInput"""
+    input: AddShoppingCartItemInput!
+  ): ShoppingCartItem! @join__field(graph: SHOPPINGCART)
+
+  """
+  Updates a single shoppingcart item.
+  
+  * `collection` - MongoDB collection to update.
+  * `input` - `UpdateShoppingCartItemInput`.
+  """
+  updateShoppingcartItem(
+    """UpdateShoppingCartItemInput"""
+    input: UpdateShoppingCartItemInput!
+  ): ShoppingCartItem! @join__field(graph: SHOPPINGCART)
+
+  """Deletes shoppingcart item of id."""
+  deleteShoppingcartItem(
+    """UUID of shoppingcart item to delete."""
+    id: UUID!
+  ): Boolean! @join__field(graph: SHOPPINGCART)
+
+  """Creates a new TaxRate"""
+  createTaxRate(
+    """Input for the createTaxRate mutation"""
+    input: CreateTaxRateInput!
+  ): TaxRate! @join__field(graph: TAX)
+
+  """Creates a new TaxRateVersion"""
+  createTaxRateVersion(
+    """Input for the createTaxRateVersion mutation"""
+    input: CreateTaxRateVersionInput!
+  ): TaxRateVersion! @join__field(graph: TAX)
+
+  """Updates a TaxRate"""
+  updateTaxRate(
+    """Input for the updateTaxRate mutation"""
+    input: UpdateTaxRateInput!
+  ): TaxRate! @join__field(graph: TAX)
+  updateUser(
+    """Input for the updateUser mutation"""
+    input: UpdateUserInput!
+  ): User! @join__field(graph: USER)
+
+  """
+  Adds a wishlist with a user_id, a list of product_variant_ids and a name.
+  
+  Formats UUIDs as hyphenated lowercase Strings.
+  """
+  addWishlist(
+    """AddWishlistInput"""
+    input: AddWishlistInput!
+  ): Wishlist! @join__field(graph: WISHLIST)
+
+  """
+  Updates name and/or product_variant_ids of a specific wishlist referenced with an id.
+  
+  Formats UUIDs as hyphenated lowercase Strings.
+  """
+  updateWishlist(
+    """UpdateWishlistInput"""
+    input: UpdateWishlistInput!
+  ): Wishlist! @join__field(graph: WISHLIST)
+
+  """Deletes wishlist of id."""
+  deleteWishlist(
+    """UUID of wishlist to delete."""
+    id: UUID!
+  ): Boolean! @join__field(graph: WISHLIST)
+}
+
+"""An object with an ID."""
+interface Node
+  @join__type(graph: CATALOG)
+  @join__type(graph: NOTIFICATION)
+  @join__type(graph: TAX)
+  @join__type(graph: USER)
+{
+  """The ID of the node."""
+  id: UUID!
+}
+
+"""A notification."""
+type Notification implements Node
+  @join__implements(graph: NOTIFICATION, interface: "Node")
+  @join__type(graph: NOTIFICATION, key: "id", resolvable: true)
+{
+  """The content of the notification"""
+  body: String!
+
+  """The date the notification was read"""
+  dateRead: DateTime
+
+  """The date the notification was sent"""
+  dateSent: DateTime!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """Whether the notification has been read"""
+  isRead: Boolean!
+
+  """The title of the notification"""
+  title: String!
+
+  """The user this notification was sent to."""
+  user: User!
+}
+
+"""A connection to a list of `Notification` values."""
+type NotificationConnection
+  @join__type(graph: NOTIFICATION)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [Notification!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Notification order fields"""
+enum NotificationOrderField
+  @join__type(graph: NOTIFICATION)
+{
+  """Order notifications by their id"""
+  ID @join__enumValue(graph: NOTIFICATION)
+}
+
+"""Notification order"""
+input NotificationOrderInput
+  @join__type(graph: NOTIFICATION)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: NotificationOrderField
+}
+
+"""A numerical characteristic of a Category."""
+type NumericalCategoryCharacteristic implements CategoryCharacteristic & Node
+  @join__implements(graph: CATALOG, interface: "CategoryCharacteristic")
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: true)
+{
+  """The Category this item belongs to."""
+  category: Category!
+
+  """The description of the CategoryCharacteristic."""
+  description: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The name of the CategoryCharacteristic."""
+  name: String!
+
+  """The unit of the NumericalCategoryCharacteristic."""
+  unit: String!
+}
+
+"""
+Input to create a characteristic whose values have arithmetic meaning, i.e. '8GB'
+"""
+input NumericalCategoryCharacteristicInput
+  @join__type(graph: CATALOG)
+{
+  """The description of the NumericalCategoryCharacteristic"""
+  description: String!
+
+  """The name of the NumericalCategoryCharacteristic"""
+  name: String!
+
+  """The unit of the NumericalCategoryCharacteristic"""
+  unit: String!
+}
+
+"""A numerical value of a NumericalCategoryCharacteristic."""
+type NumericalCategoryCharacteristicValue implements CategoryCharacteristicValue
+  @join__implements(graph: CATALOG, interface: "CategoryCharacteristicValue")
+  @join__type(graph: CATALOG)
+{
+  """The associated CategoryCharacteristic this is a value of."""
+  characteristic: CategoryCharacteristic!
+
+  """The value of the NumericalCategoryCharacteristic."""
+  value: Float!
+}
+
+"""Input for creating a NumericalCategoryCharacteristicValue."""
+input NumericalCategoryCharacteristicValueInput
+  @join__type(graph: CATALOG)
+{
+  """The id of the CategoryCharacteristic."""
+  characteristicId: UUID!
+
+  """The value of the NumericalCategoryCharacteristicValue."""
+  value: Float!
+}
+
+"""Order direction"""
+enum OrderDirection
+  @join__type(graph: CATALOG)
+  @join__type(graph: INVENTORY)
+  @join__type(graph: NOTIFICATION)
+  @join__type(graph: REVIEW)
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: TAX)
+  @join__type(graph: USER)
+  @join__type(graph: WISHLIST)
+{
+  """Ascending order"""
+  ASC @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+
+  """Descending order"""
+  DESC @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+}
+
+"""A product."""
+type Product implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: true)
+{
+  """Get all associated Categories"""
+  categories(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CategoryOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CategoryConnection!
+
+  """The default variant of the product."""
+  defaultVariant: ProductVariant!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """An internal name to identify the Product, not visible to customers."""
+  internalName: String!
+
+  """If true, the Product is visible to customers."""
+  isPubliclyVisible: Boolean!
+
+  """Get all associated ProductVariants"""
+  variants(
+    """Filtering"""
+    filter: ProductVariantFilterInput
+
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: ProductVariantOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ProductVariantConnection!
+}
+
+"""A connection to a list of `Product` values."""
+type ProductConnection
+  @join__type(graph: CATALOG)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [Product!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Product filter"""
+input ProductFilterInput
+  @join__type(graph: CATALOG)
+{
+  isPubliclyVisible: Boolean
+}
+
+"""A product Item of a product variant"""
+type ProductItem
+  @join__type(graph: INVENTORY, key: "id")
+{
+  """The uuid identifier of the product item"""
+  id: UUID!
+
+  """The corresponding product variant"""
+  productVariant: ProductVariant!
+
+  """Describes the inventory status of the product item"""
+  inventoryStatus: ProductItemStatus!
+}
+
+"""A connection of product items"""
+type ProductItemConnection
+  @join__type(graph: INVENTORY)
+{
+  """The resulting items"""
+  nodes: [ProductItem!]
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+}
+
+"""Ordering options for product items"""
+input ProductItemOrder
+  @join__type(graph: INVENTORY)
+{
+  """The field to order by"""
+  field: ProductItemOrderField
+
+  """The direction to order by"""
+  direction: OrderDirection
+}
+
+"""The field to order Product Items by"""
+enum ProductItemOrderField
+  @join__type(graph: INVENTORY)
+{
+  """Order Product Items by their ID"""
+  ID @join__enumValue(graph: INVENTORY)
+}
+
+"""The status of an individual product item in the inventory"""
+enum ProductItemStatus
+  @join__type(graph: INVENTORY)
+{
+  """The item is in storage, not yet sold or reserved"""
+  IN_STORAGE @join__enumValue(graph: INVENTORY)
+
+  """The item has been reserved for a customer but not yet sold"""
+  RESERVED @join__enumValue(graph: INVENTORY)
+
+  """The item is in the process of being fulfilled (packed, shipped)"""
+  IN_FULFILLMENT @join__enumValue(graph: INVENTORY)
+
+  """The item has been shipped to the customer"""
+  SHIPPED @join__enumValue(graph: INVENTORY)
+
+  """The item has been delivered to the customer"""
+  DELIVERED @join__enumValue(graph: INVENTORY)
+
+  """The item has been returned by the customer"""
+  RETURNED @join__enumValue(graph: INVENTORY)
+
+  """The item has been lost (e.g., during shipping or in the warehouse)"""
+  LOST @join__enumValue(graph: INVENTORY)
+}
+
+"""Product order fields"""
+enum ProductOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order products by their id"""
+  ID @join__enumValue(graph: CATALOG)
+
+  """Order products by their internal name"""
+  INTERNAL_NAME @join__enumValue(graph: CATALOG)
+}
+
+"""Product order"""
+input ProductOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: ProductOrderField
+}
+
+"""Foreign type of a product variant."""
+type ProductVariant implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: true)
+  @join__type(graph: INVENTORY, key: "id")
+  @join__type(graph: REVIEW, key: "id")
+  @join__type(graph: SHOPPINGCART, key: "id", resolvable: false)
+  @join__type(graph: WISHLIST, key: "id", resolvable: false)
+{
+  """The current version of the ProductVariant."""
+  currentVersion: ProductVariantVersion! @join__field(graph: CATALOG)
+
+  """UUID of the product variant."""
+  id: UUID!
+
+  """If true, the ProductVariant is visible to customers."""
+  isPubliclyVisible: Boolean! @join__field(graph: CATALOG)
+
+  """The Product belonging to this variant."""
+  product: Product! @join__field(graph: CATALOG)
+
+  """Get all associated versions"""
+  versions(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: ProductVariantVersionOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ProductVariantVersionConnection! @join__field(graph: CATALOG)
+
+  """A product item connection for referenced product items in stock"""
+  productItems: ProductItemConnection @join__field(graph: INVENTORY)
+
+  """Retrieves reviews of product variant."""
+  reviews(
+    """Describes that the `first` N reviews should be retrieved."""
+    first: Int
+
+    """Describes how many reviews should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which reviews are retrieved."""
+    orderBy: ReviewOrderInput
+  ): ReviewConnection! @join__field(graph: REVIEW)
+
+  """
+  Retrieves average rating of product variant.
+  
+  Filters reviews with `is_visible == false` to exclude them from the average rating.
+  """
+  averageRating: Float! @join__field(graph: REVIEW)
+}
+
+"""A connection to a list of `ProductVariant` values."""
+type ProductVariantConnection
+  @join__type(graph: CATALOG)
+  @join__type(graph: WISHLIST)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [ProductVariant!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Product variant filter"""
+input ProductVariantFilterInput
+  @join__type(graph: CATALOG)
+{
+  isPubliclyVisible: Boolean
+}
+
+"""Input for creating a product variant"""
+input ProductVariantInput
+  @join__type(graph: CATALOG)
+{
+  """The initial ProductVariantVersion of the ProductVariant."""
+  initialVersion: ProductVariantVersionInput!
+
+  """If true, the ProductVariant is visible to customers."""
+  isPubliclyVisible: Boolean!
+}
+
+"""ProductVariant order fields"""
+enum ProductVariantOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order productVariants by their id"""
+  ID @join__enumValue(graph: CATALOG)
+}
+
+"""ProductVariant order"""
+input ProductVariantOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: ProductVariantOrderField
+}
+
+"""A version of a ProductVariant."""
+type ProductVariantVersion implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: true)
+{
+  """
+  The amount of days for which an instance of the ProductVariantVersion can be returned after purchase
+  """
+  canBeReturnedForDays: Float
+
+  """Get all associated CategoryCharacteristicValues"""
+  characteristicValues(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CategoryCharacteristicValueOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CategoryCharacteristicValueConnection!
+
+  """The date when the ProductVariantVersion version was created."""
+  createdAt: DateTime!
+
+  """The description of the ProductVariantVersion."""
+  description: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The name of the ProductVariantVersion."""
+  name: String!
+
+  """The ProductVariant this is a version of."""
+  productVariant: ProductVariant!
+
+  """The retail price of the ProductVariantVersion."""
+  retailPrice: Int!
+
+  """The associated TaxRate."""
+  taxRate: TaxRate!
+
+  """The version of the ProductVariantVersion."""
+  version: Int!
+}
+
+"""A connection to a list of `ProductVariantVersion` values."""
+type ProductVariantVersionConnection
+  @join__type(graph: CATALOG)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [ProductVariantVersion!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Input for creating a ProductVariantVersion."""
+input ProductVariantVersionInput
+  @join__type(graph: CATALOG)
+{
+  """
+  The amount of days for which an instance of the ProductVariant can be returned after purchase
+  """
+  canBeReturnedForDays: Float
+
+  """
+  The CategoricalCategoryCharacteristicValues of the ProductVariant, must be compatible with the Categories of the associated Product.
+  """
+  categoricalCharacteristicValues: [CategoricalCategoryCharacteristicValueInput!]!
+
+  """The description of the ProductVariant."""
+  description: String!
+
+  """The name of the ProductVariant."""
+  name: String!
+
+  """
+  The NumericalCategoryCharacteristicValues of the ProductVariant, must be compatible with the Categories of the associated Product.
+  """
+  numericalCharacteristicValues: [NumericalCategoryCharacteristicValueInput!]!
+
+  """The retail price of the ProductVariant."""
+  retailPrice: Int!
+
+  """The associated TaxRate"""
+  taxRateId: UUID!
+}
+
+"""ProductVariantVersion order fields"""
+enum ProductVariantVersionOrderField
+  @join__type(graph: CATALOG)
+{
+  """Order productVariantVersions by their creation date"""
+  CREATED_AT @join__enumValue(graph: CATALOG)
+
+  """Order productVariantVersions by their id"""
+  ID @join__enumValue(graph: CATALOG)
+
+  """Order productVariantVersions by their version"""
+  VERSION @join__enumValue(graph: CATALOG)
+}
+
+"""ProductVariantVersion order"""
+input ProductVariantVersionOrderInput
+  @join__type(graph: CATALOG)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: ProductVariantVersionOrderField
+}
+
+type Query
+  @join__type(graph: CATALOG)
+  @join__type(graph: INVENTORY)
+  @join__type(graph: NOTIFICATION)
+  @join__type(graph: REVIEW)
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: TAX)
+  @join__type(graph: USER)
+  @join__type(graph: WISHLIST)
+{
+  """Get all categories"""
+  categories(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CategoryOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CategoryConnection! @join__field(graph: CATALOG)
+
+  """Get a category by id"""
+  category(
+    """The id of the category"""
+    id: UUID!
+  ): Category! @join__field(graph: CATALOG)
+
+  """Get a characteristic by id"""
+  categoryCharacteristic(
+    """The id of the characteristic"""
+    id: UUID!
+  ): CategoryCharacteristic! @join__field(graph: CATALOG)
+
+  """Get a product by id"""
+  product(
+    """The id of the product"""
+    id: UUID!
+  ): Product! @join__field(graph: CATALOG)
+
+  """Get all products"""
+  products(
+    """Filtering"""
+    filter: ProductFilterInput
+
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: ProductOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ProductConnection! @join__field(graph: CATALOG)
+
+  """Retrieves all product items"""
+  productItems(
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: ProductItemOrder
+  ): ProductItemConnection! @join__field(graph: INVENTORY)
+
+  """Returns product items in inventory of a product variant"""
+  productItemsByProductVariant(
+    """UUID of product variant for stock count"""
+    productVariantId: UUID!
+
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: ProductItemOrder
+  ): ProductItemConnection! @join__field(graph: INVENTORY)
+
+  """Retrieves a product item by id"""
+  productItem(
+    """UUID of the user"""
+    id: UUID!
+  ): ProductItem! @join__field(graph: INVENTORY)
+
+  """Get a notification by id"""
+  notification(
+    """The id of the notification"""
+    id: UUID!
+  ): Notification! @join__field(graph: NOTIFICATION)
+
+  """Retrieves all reviews."""
+  reviews(
+    """Describes that the `first` N reviews should be retrieved."""
+    first: Int
+
+    """Describes how many reviews should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which reviews are retrieved."""
+    orderBy: ReviewOrderInput
+  ): ReviewConnection! @join__field(graph: REVIEW)
+
+  """Retrieves review of specific id."""
+  review(
+    """UUID of review to retrieve."""
+    id: UUID!
+  ): Review! @join__field(graph: REVIEW)
+
+  """Retrieves shoppingcart item of specific id."""
+  shoppingcartItem(
+    """UUID of shoppingcart to retrieve."""
+    id: UUID!
+  ): ShoppingCartItem! @join__field(graph: SHOPPINGCART)
+
+  """Get a TaxRate by id"""
+  taxRate(
+    """The id of the TaxRate"""
+    id: UUID!
+  ): TaxRate! @join__field(graph: TAX)
+
+  """Get a TaxRateVersion by id"""
+  taxRateVersion(
+    """The id of the TaxRateVersion"""
+    id: UUID!
+  ): TaxRateVersion! @join__field(graph: TAX)
+
+  """Get all TaxRates"""
+  taxRates(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: TaxRateOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): TaxRateConnection! @join__field(graph: TAX)
+
+  """Get the currently authenticated user"""
+  currentUser: User @join__field(graph: USER)
+
+  """Get a user by id"""
+  user(
+    """The id of the user"""
+    id: UUID!
+  ): User! @join__field(graph: USER)
+
+  """Get all users"""
+  users(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: UserOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): UserConnection! @join__field(graph: USER)
+
+  """Retrieves wishlist of specific id."""
+  wishlist(
+    """UUID of wishlist to retrieve."""
+    id: UUID!
+  ): Wishlist! @join__field(graph: WISHLIST)
+}
+
+enum Rating
+  @join__type(graph: REVIEW)
+{
+  ONE_STARS @join__enumValue(graph: REVIEW)
+  TWO_STARS @join__enumValue(graph: REVIEW)
+  THREE_STARS @join__enumValue(graph: REVIEW)
+  FOUR_STARS @join__enumValue(graph: REVIEW)
+  FIVE_STARS @join__enumValue(graph: REVIEW)
+}
+
+"""The input to reserve a batch of product items"""
+input ReserveProductItemsBatchInput
+  @join__type(graph: INVENTORY)
+{
+  """The product variant id of the product item"""
+  productVariantId: UUID!
+
+  """The number of product items to reserve"""
+  number: Int!
+}
+
+"""The Review of a user."""
+type Review
+  @join__type(graph: REVIEW)
+{
+  """Review UUID."""
+  id: UUID!
+
+  """User."""
+  user: User!
+
+  """Product variant that review is about."""
+  productVariant: ProductVariant!
+
+  """Body of Review."""
+  body: String!
+
+  """Rating of Review in 1-5 stars."""
+  rating: Rating!
+
+  """Timestamp when Review was created."""
+  createdAt: DateTime!
+
+  """Timestamp when Review was created."""
+  lastUpdatedAt: DateTime!
+
+  """Flag if review is visible,"""
+  isVisible: Boolean!
+}
+
+"""A connection of Reviews."""
+type ReviewConnection
+  @join__type(graph: REVIEW)
+{
+  """The resulting entities."""
+  nodes: [Review!]!
+
+  """Whether this connection has a next page."""
+  hasNextPage: Boolean!
+
+  """The total amount of items in this connection."""
+  totalCount: Int!
+}
+
+"""Describes the fields that a review can be ordered by."""
+enum ReviewOrderField
+  @join__type(graph: REVIEW)
+{
+  """Orders by "id"."""
+  ID @join__enumValue(graph: REVIEW)
+
+  """Orders by "user_id"."""
+  USER_ID @join__enumValue(graph: REVIEW)
+
+  """Orders by "product_variant"."""
+  PRODUCT_VARIANT @join__enumValue(graph: REVIEW)
+
+  """Orders by "rating"."""
+  RATING @join__enumValue(graph: REVIEW)
+
+  """Orders by "created_at"."""
+  CREATED_AT @join__enumValue(graph: REVIEW)
+}
+
+"""Specifies the order of reviews."""
+input ReviewOrderInput
+  @join__type(graph: REVIEW)
+{
+  """Order direction of reviews."""
+  direction: OrderDirection
+
+  """Field that reviews should be ordered by."""
+  field: ReviewOrderField
+}
+
+"""The ShoppingCart of a user."""
+type ShoppingCart
+  @join__type(graph: SHOPPINGCART)
+{
+  """Timestamp when ShoppingCart was last updated."""
+  lastUpdatedAt: DateTime!
+
+  """Retrieves product variants."""
+  shoppingcartItems(
+    """Describes that the `first` N shoppingcarts should be retrieved."""
+    first: Int
+
+    """Describes how many shoppingcarts should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which shoppingcarts are retrieved."""
+    orderBy: CommonOrderInput
+  ): ShoppingCartItemConnection!
+}
+
+"""The ShoppingCart of a user."""
+type ShoppingCartItem
+  @join__type(graph: SHOPPINGCART, key: "id")
+{
+  """ShoppingCartItem UUID."""
+  id: UUID!
+
+  """Count of items in basket."""
+  count: Int!
+
+  """Timestamp when ShoppingCartItem was added."""
+  addedAt: DateTime!
+
+  """Product variant of shopping cart item."""
+  productVariant: ProductVariant!
+}
+
+"""A connection of ShoppingCart Items."""
+type ShoppingCartItemConnection
+  @join__type(graph: SHOPPINGCART)
+{
+  """The resulting entities."""
+  nodes: [ShoppingCartItem!]!
+
+  """Whether this connection has a next page."""
+  hasNextPage: Boolean!
+
+  """The total amount of items in this connection."""
+  totalCount: Int!
+}
+
+input ShoppingCartItemInput
+  @join__type(graph: SHOPPINGCART)
+{
+  """Count of items in basket."""
+  count: Int!
+
+  """Uuid of product variant."""
+  productVariantId: UUID!
+}
+
+"""A TaxRate."""
+type TaxRate implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__implements(graph: TAX, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: false)
+  @join__type(graph: TAX, key: "id", resolvable: true)
+{
+  """The ID of the node."""
+  id: UUID!
+
+  """The current version of the TaxRate."""
+  currentVersion: TaxRateVersion! @join__field(graph: TAX)
+
+  """The description of the TaxRate"""
+  description: String! @join__field(graph: TAX)
+
+  """The name of the TaxRate"""
+  name: String! @join__field(graph: TAX)
+
+  """Get all associated versions"""
+  versions(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: TaxRateVersionOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): TaxRateVersionConnection! @join__field(graph: TAX)
+}
+
+"""A connection to a list of `TaxRate` values."""
+type TaxRateConnection
+  @join__type(graph: TAX)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [TaxRate!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""TaxRate order fields"""
+enum TaxRateOrderField
+  @join__type(graph: TAX)
+{
+  """Order TaxRates by their id"""
+  ID @join__enumValue(graph: TAX)
+
+  """Order TaxRates by their name"""
+  NAME @join__enumValue(graph: TAX)
+}
+
+"""TaxRate order"""
+input TaxRateOrderInput
+  @join__type(graph: TAX)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: TaxRateOrderField
+}
+
+"""A TaxRateVersion."""
+type TaxRateVersion implements Node
+  @join__implements(graph: TAX, interface: "Node")
+  @join__type(graph: TAX, key: "id", resolvable: true)
+{
+  """Time stamp when the TaxRateVersion was created"""
+  createdAt: DateTime!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The rate of the TaxRateVersion"""
+  rate: Float!
+
+  """The associated TaxRate."""
+  taxRate: TaxRate!
+
+  """Version of the TaxRateVersion"""
+  version: Int!
+}
+
+"""A connection to a list of `TaxRateVersion` values."""
+type TaxRateVersionConnection
+  @join__type(graph: TAX)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [TaxRateVersion!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Input for creating a TaxRateVersion"""
+input TaxRateVersionInput
+  @join__type(graph: TAX)
+{
+  """The rate of the created TaxRateVersion"""
+  rate: Float!
+}
+
+"""TaxRateVersion order fields"""
+enum TaxRateVersionOrderField
+  @join__type(graph: TAX)
+{
+  """Order TaxRateVersions by their creation date"""
+  CREATED_AT @join__enumValue(graph: TAX)
+
+  """Order TaxRateVersions by their id"""
+  ID @join__enumValue(graph: TAX)
+
+  """Order TaxRateVersions by their version"""
+  VERSION @join__enumValue(graph: TAX)
+}
+
+"""TaxRateVersion order"""
+input TaxRateVersionOrderInput
+  @join__type(graph: TAX)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: TaxRateVersionOrderField
+}
+
+"""Input for the updateNotification mutation"""
+input UpdateNotificationInput
+  @join__type(graph: NOTIFICATION)
+{
+  """id of the notification to update"""
+  id: UUID!
+
+  """mark the notification as read/unread"""
+  isRead: Boolean!
+}
+
+"""Input for the updateProduct mutation."""
+input UpdateProductInput
+  @join__type(graph: CATALOG)
+{
+  """UUID of the product to be updated"""
+  id: UUID!
+
+  """If present, new value for internalName"""
+  internalName: String
+
+  """If present, new value for isPubliclyVisible"""
+  isPubliclyVisible: Boolean
+}
+
+"""The input of a product item update"""
+input UpdateProductItemInput
+  @join__type(graph: INVENTORY)
+{
+  """The product item identifier"""
+  id: UUID!
+
+  """The product variant id of the product item"""
+  productVariantId: UUID!
+
+  """The inventory state of the product item"""
+  inventoryStatus: ProductItemStatus!
+}
+
+"""Input for the updateProductVariant mutation."""
+input UpdateProductVariantInput
+  @join__type(graph: CATALOG)
+{
+  """UUID of the product variant to be updated"""
+  id: UUID!
+
+  """If present, new value for isPubliclyVisible"""
+  isPubliclyVisible: Boolean
+}
+
+input UpdateReviewInput
+  @join__type(graph: REVIEW)
+{
+  """UUID of review to update."""
+  id: UUID!
+
+  """Body of Review to update."""
+  body: String
+
+  """Rating of Review in 1-5 stars to update."""
+  rating: Rating
+
+  """Flag if review is visible."""
+  isVisible: Boolean
+}
+
+input UpdateShoppingCartInput
+  @join__type(graph: SHOPPINGCART)
+{
+  """UUID of user owning shopping cart."""
+  id: UUID!
+
+  """ShoppingCartItems of shoppingcart to update"""
+  shoppingCartItems: [ShoppingCartItemInput!]
+}
+
+input UpdateShoppingCartItemInput
+  @join__type(graph: SHOPPINGCART)
+{
+  """UUID of shoppingcart item to update."""
+  id: UUID!
+
+  """Count of items in basket."""
+  count: Int!
+}
+
+"""Input for the updateTaxRate mutation"""
+input UpdateTaxRateInput
+  @join__type(graph: TAX)
+{
+  """If provided, the new description of the TaxRate"""
+  description: String
+
+  """The id of the TaxRate to update"""
+  id: UUID!
+
+  """If provided, the new name of the TaxRate"""
+  name: String
+}
+
+"""Input for the updateUser mutation"""
+input UpdateUserInput
+  @join__type(graph: USER)
+{
+  """The new birthday of the user"""
+  birthday: Date
+
+  """The new first name of the user"""
+  firstName: String
+
+  """The new gender of the user"""
+  gender: Gender
+
+  """The id of the user to update"""
+  id: UUID!
+
+  """The new last name of the user"""
+  lastName: String
+}
+
+input UpdateWishlistInput
+  @join__type(graph: WISHLIST)
+{
+  """UUID of wishlist to update."""
+  id: UUID!
+
+  """product variant UUIDs of wishlist to update"""
+  productVariantIds: [UUID!]
+
+  """Wishlist name to update"""
+  name: String
+}
+
+"""A user."""
+type User implements Node
+  @join__implements(graph: NOTIFICATION, interface: "Node")
+  @join__implements(graph: USER, interface: "Node")
+  @join__type(graph: NOTIFICATION, key: "id", resolvable: true)
+  @join__type(graph: REVIEW, key: "id")
+  @join__type(graph: SHOPPINGCART, key: "id")
+  @join__type(graph: USER, key: "id", resolvable: true)
+  @join__type(graph: WISHLIST, key: "id")
+{
+  """UUID of the user."""
+  id: UUID!
+
+  """Get all notifications the user received"""
+  notifications(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: NotificationOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): NotificationConnection! @join__field(graph: NOTIFICATION)
+
+  """Retrieves reviews of user."""
+  reviews(
+    """Describes that the `first` N reviews should be retrieved."""
+    first: Int
+
+    """Describes how many reviews should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which reviews are retrieved."""
+    orderBy: ReviewOrderInput
+  ): ReviewConnection! @join__field(graph: REVIEW)
+  shoppingcart: ShoppingCart! @join__field(graph: SHOPPINGCART)
+
+  """The birthday of the user"""
+  birthday: Date @join__field(graph: USER)
+
+  """The date when the user joined"""
+  dateJoined: DateTime! @join__field(graph: USER)
+
+  """The first name of the user"""
+  firstName: String! @join__field(graph: USER)
+
+  """The gender of the user"""
+  gender: Gender @join__field(graph: USER)
+
+  """The last name of the user"""
+  lastName: String! @join__field(graph: USER)
+
+  """The username of the user"""
+  username: String! @join__field(graph: USER)
+
+  """Retrieves wishlists of user."""
+  wishlists(
+    """Describes that the `first` N wishlists should be retrieved."""
+    first: Int
+
+    """Describes how many wishlists should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which wishlists are retrieved."""
+    orderBy: WishlistOrderInput
+  ): WishlistConnection! @join__field(graph: WISHLIST)
+}
+
+"""A connection to a list of `User` values."""
+type UserConnection
+  @join__type(graph: USER)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [User!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""User order fields"""
+enum UserOrderField
+  @join__type(graph: USER)
+{
+  """Order users by their id"""
+  ID @join__enumValue(graph: USER)
+
+  """Order users by their username"""
+  USERNAME @join__enumValue(graph: USER)
+}
+
+"""User order"""
+input UserOrderInput
+  @join__type(graph: USER)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: UserOrderField
+}
+
+"""A universally unique identifier compliant UUID Scalar"""
+scalar UUID
+  @join__type(graph: CATALOG)
+  @join__type(graph: INVENTORY)
+  @join__type(graph: NOTIFICATION)
+  @join__type(graph: REVIEW)
+  @join__type(graph: SHOPPINGCART)
+  @join__type(graph: TAX)
+  @join__type(graph: USER)
+  @join__type(graph: WISHLIST)
+
+"""The Wishlist of a user."""
+type Wishlist
+  @join__type(graph: WISHLIST, key: "id")
+{
+  """Wishlist UUID."""
+  id: UUID!
+
+  """User."""
+  user: User!
+
+  """Name of Wishlist."""
+  name: String!
+
+  """Timestamp when Wishlist was created."""
+  createdAt: DateTime!
+
+  """Timestamp when Wishlist was last updated."""
+  lastUpdatedAt: DateTime!
+
+  """Retrieves product variants."""
+  productVariants(
+    """Describes that the `first` N product variants should be retrieved."""
+    first: Int
+
+    """
+    Describes how many product variants should be skipped at the beginning.
+    """
+    skip: Int
+
+    """Specifies the order in which product variants are retrieved."""
+    orderBy: CommonOrderInput
+  ): ProductVariantConnection!
+}
+
+"""A connection of Wishlists."""
+type WishlistConnection
+  @join__type(graph: WISHLIST)
+{
+  """The resulting entities."""
+  nodes: [Wishlist!]!
+
+  """Whether this connection has a next page."""
+  hasNextPage: Boolean!
+
+  """The total amount of items in this connection."""
+  totalCount: Int!
+}
+
+"""Describes the fields that a wishlist can be ordered by."""
+enum WishlistOrderField
+  @join__type(graph: WISHLIST)
+{
+  """Orders by "id"."""
+  ID @join__enumValue(graph: WISHLIST)
+
+  """Orders by "user_id"."""
+  USER_ID @join__enumValue(graph: WISHLIST)
+
+  """Orders by "name"."""
+  NAME @join__enumValue(graph: WISHLIST)
+
+  """Orders by "created_at"."""
+  CREATED_AT @join__enumValue(graph: WISHLIST)
+
+  """Orders by "last_updated_at"."""
+  LAST_UPDATED_AT @join__enumValue(graph: WISHLIST)
+}
+
+"""Specifies the order of wishlists."""
+input WishlistOrderInput
+  @join__type(graph: WISHLIST)
+{
+  """Order direction of wishlists."""
+  direction: OrderDirection
+
+  """Field that wishlists should be ordered by."""
+  field: WishlistOrderField
+}
