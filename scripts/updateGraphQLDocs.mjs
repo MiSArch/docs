@@ -12,7 +12,7 @@ for (const doc of graphqlDocs) {
         dedent`
             ---
             id: schema
-            slug: /docs/graphql/${doc.id}
+            slug: /graphql/${doc.id}
             title: ${name} Service GraphQL API
             sidebar_position: 1
             pagination_prev: null
@@ -31,11 +31,11 @@ for (const doc of graphqlDocs) {
 const output = execSync(`npx docusaurus graphql-to-doc:supergraph -f`, { encoding: "utf-8" });
 console.log(output);
 writeFileSync(
-    `docs/graphql/supergraph/generated.md`,
+    `docs/graphql/schema/generated.md`,
     dedent`
         ---
         id: schema
-        slug: /docs/graphql/supergraph
+        slug: /graphql/schema
         title: GraphQL API (Gateway)
         sidebar_position: 1
         pagination_prev: null

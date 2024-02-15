@@ -126,7 +126,7 @@ export default {
                 id: "supergraph",
                 schema: "supergraph.graphql",
                 rootPath: ".",
-                baseURL: `docs/graphql/supergraph`,
+                baseURL: `docs/graphql/schema`,
                 docOptions: {
                     index: true
                 },
