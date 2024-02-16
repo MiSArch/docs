@@ -1,6 +1,6 @@
 {
     "label": "ADRs",
-    "position": 2,
+    "position": 3,
     "link": {
         "type": "generated-index",
         "description": "Which design decisions were made and why?"

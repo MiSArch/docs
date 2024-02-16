@@ -38,3 +38,29 @@
 .pswp.pswp--open {
   display: block;
 }
+
+.repository-structure ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.repository-structure ul ul {
+  border-left: 2px solid var(--ifm-color-emphasis-500);
+  padding-left: 1.5em;
+  margin-left: 1em;
+}
+
+.repository-structure ul li {
+  position: relative;
+}
+
+.repository-structure ul ul li::before {
+  content: '';
+  width: 1.5em;
+  height: 0;
+  border-top: 2px solid var(--ifm-color-emphasis-500);
+  position: absolute;
+  left: -1.5em;
+  top: calc(0.5lh + 1px);
+  transform: translateY(-50%);
+}
