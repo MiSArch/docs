@@ -2,7 +2,7 @@ export default [
     {
         id: "catalog",
         path: "schemas/catalog.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/catalog"
     },
     {
         id: "inventory",
