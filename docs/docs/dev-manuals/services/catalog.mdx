@@ -1,0 +1,129 @@
+---
+sidebar_position: 1
+---
+
+import CustomImage from "@site/src/components/CustomImage";
+
+# Catalog Service
+
+The catalog service consists of the bounded contexts `Catalog`, `Category`, and `CategoryValue`.
+It is responsible for managing products, their variants and versions, categories, and their respective characteristics and values.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/catalogDomainModel" width="1240.06640625" height="946.625" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/catalog).
+
+## Technology Stack
+
+- **Language**: Kotlin
+- **Framework**: Spring Boot
+- **GraphQL Library**: GraphQL Kotlin
+- **Database**: PostgreSQL
+- **Schema Management**: Flyway
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/main/`: Source code of the service
+  - `kotlin/org/misarch/catalog/`: Kotlin source code
+    - `event/`: Dapr event handling
+      - `model/`: Event DTOs
+    - `graphql/`: GraphQL API
+      - `dataloader/`: Data loaders for efficient data fetching
+      - `federation/`: Apollo Federation entitiy resolvers
+      - `input/`: Input types for mutations
+      - `model/`: GraphQL types
+        - `connection/`: Connection types and logic for paginated queries
+    - `persistance/`: Database entities and repositories
+      - `model/`: R2DBC entities
+      - `repository/`: Spring Data R2DBC repositories
+    - `service/`: Service logic
+  - `resources/`: Spring Boot application configuration and SQL schema migration files
+    - `db/migration/`: Flyway SQL schema migration files
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the catalog service and can be used by other services.
+
+### Published Defined Events
+
+#### catalog/product/created
+
+This event is published when a new product is created.
+
+```js
+{
+  "id": "string",
+  "internalName": "string",
+  "isPubliclyVisible": "boolean",
+  "defaultVariantId": "string"
+}
+```
+
+#### catalog/product-variant/created
+
+This event is published when a new product variant is created.
+This includes the default variant created when a product is created.
+
+```js
+{
+  "id": "string",
+  "productId": "string",
+  "currentVersionId": "string",
+  "isPubliclyVisible": "boolean"
+}
+```
+
+#### catalog/product-variant-version/created
+
+This event is published when a new product variant version is created.
+This includes the initial version created when a product variant is created.
+
+```js
+{
+  "id": "string",
+  "name": "string",
+  "description": "string",
+  "version": "number",
+  "retailPrice": "number",
+  "createdAt": "string",
+  "canBeReturnedForDays": "number | undefined",
+  "productVariantId": "string"
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the catalog service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- tax/tax-rate/created (TODO make link): Used to import `TaxRate` from the `Tax` bounded context.
+
+## Important ADRs
+
+- [Merge Category and Product Service](/docs/docs/dev-manuals/adr/merge-category-and-product-service)
+- [No category hierarchy](/docs/docs/dev-manuals/adr/no-category-hierarchy)

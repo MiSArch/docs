@@ -1,0 +1,176 @@
+classDiagram {
+    class("Product") {
+        public {
+            internalName : string
+            averageReview : double
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(810, -130)
+    }
+
+    class("ProductVariant") {
+        public {
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(810, 50)
+    }
+
+    class("ProductVariantVersion") {
+        public {
+            name : string
+            description : string
+            version : int
+            retailPrice : int
+            price : int
+            createdAt : DateTime
+            canBeReturnedForDays : "double?"
+        }
+    } layout {
+        pos = apos(810, 280)
+    }
+
+    class("Category") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1507.5, -507.5)
+    }
+
+    class("CategoryCharacteristic", abstract = true) {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1507.5, -330)
+    }
+
+    class("NumericalCategoryCharacteristic") {
+        public {
+            unit : string
+        }
+    } layout {
+        pos = apos(1727.5, -137.5)
+    }
+
+    class("CategoricalCategoryCharacteristic") layout {
+        pos = apos(1307.5, -140)
+    }
+
+    class("CategoricalCategoryCharacteristicValue") {
+        public {
+            value : string
+        }
+    } layout {
+        pos = apos(1307.5, 60)
+    }
+
+    class("NumericalCategoryCharacteristicValue") {
+        public {
+            value : double
+        }
+    } layout {
+        pos = apos(1727.5, 60)
+    }
+
+    class("CategoryCharacteristicValue", abstract = true) layout {
+        pos = apos(1507.5, 210)
+    }
+
+    class("TaxRate") {
+        
+    } layout {
+        pos = apos(1347, 339.5)
+    } styles {
+        class += "imported"
+    }
+
+    Product --> ProductVariant with {
+        label("1..* : variants", 0.6875, -62)
+        label("1 : product", 0.06, -43.1)
+        over = start(0.1875).line(end(0.8125))
+    }
+
+    Product !--> ProductVariant with {
+        label("1 : defaultVariant", 0.75, 71.3)
+        label("0..1", 0.065, -29.8)
+        over = start(0.25).line(end(0.75))
+    }
+
+    ProductVariant --> ProductVariantVersion with {
+        label("1..* : versions", 0.65, -59.9)
+        label("1 : productVariant", 0.1375, -67.8)
+        over = start(0.1875).line(end(0.8125))
+    }
+
+    ProductVariant !--> ProductVariantVersion with {
+        label("1 : currentVersion", 0.665, 77.3)
+        label("0..1", 0.055, -33.1)
+        over = start(0.25).line(end(0.75))
+    }
+
+    ProductVariantVersion !--> TaxRate with {
+        label("1 : taxRate", 0.8625, 11.1)
+        label("0..*", 0.145, -24.4)
+        over = start(0.08).axisAligned(0.386, end(Position.Left))
+    }
+
+    list(CategoricalCategoryCharacteristic, NumericalCategoryCharacteristic).forEach {
+        it extends CategoryCharacteristic with {
+            over = start(Position.Top).axisAligned(
+                -0.5,
+                end(Position.Bottom)
+            )
+        }
+    }
+    list(CategoricalCategoryCharacteristicValue, NumericalCategoryCharacteristicValue).forEach {
+        it extends CategoryCharacteristicValue with {
+            over = start(Position.Bottom).axisAligned(
+                -0.5,
+                end(Position.Top)
+            )
+        }
+    }
+
+    Category --> CategoryCharacteristic with {
+        label("0..* : characteristics", 0.71, -82)
+        label("1 : category", 0.025, -48.9)
+        over = start(0.25).line(end(0.75))
+    }
+
+    NumericalCategoryCharacteristic <--! NumericalCategoryCharacteristicValue with {
+        label("0..*", 0.775, -30.9)
+        label("1 : characteristic", 0.075, -71.7)
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    CategoricalCategoryCharacteristic <--> CategoricalCategoryCharacteristicValue with {
+        label("0..* : values", 0.77, -56)
+        label("1 : characteristic", 0.075, -75.2)
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    Product --> Category with {
+        label("0..* : categories", 0.93, 12.7)
+        label("0..* : products", 0.195, 5.4)
+        over = start(Position.Right).axisAligned(0.248, end(Position.Left))
+    }
+
+    ProductVariantVersion !--> CategoryCharacteristicValue with {
+        label("0..* : characteristicValues", 0.7625, 12.3)
+        label("1", 0.1, 7.7)
+        over = start(0.905).line(end(Position.Left))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+        }
+    }
+}
