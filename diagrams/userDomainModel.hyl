@@ -1,0 +1,14 @@
+classDiagram {
+    class("User") {
+        public {
+            dateJoined : DateTime
+            birthday : "Date?"
+            gender : "Gender?"
+            firstName: String
+            lastName: String
+            username : String
+        }
+    } layout {
+        pos = apos(-240, 830)
+    }
+}

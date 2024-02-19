@@ -32,7 +32,7 @@ export default [
     {
         id: "user",
         path: "schemas/user.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/user"
     },
     {
         id: "wishlist",
