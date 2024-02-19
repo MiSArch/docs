@@ -27,7 +27,7 @@ export default [
     {
         id: "tax",
         path: "schemas/tax.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/catalog"
     },
     {
         id: "user",
