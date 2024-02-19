@@ -1,0 +1,102 @@
+---
+sidebar_position: 1
+---
+
+import CustomImage from "@site/src/components/CustomImage";
+
+# User Service
+
+The user service provides the bounded context `User`.
+It is responsible for managing users by interacting with Keycloak.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/userDomainModel" width="320" height="187.25" />
+
+## API
+
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/user).
+
+## Technology Stack
+
+- **Language**: Kotlin
+- **Framework**: Spring Boot
+- **GraphQL Library**: GraphQL Kotlin
+- **Database**: PostgreSQL
+- **Schema Management**: Flyway
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/main/`: Source code of the service
+  - `kotlin/org/misarch/user/`: Kotlin source code
+    - `event/`: Dapr event handling
+      - `model/`: Event DTOs
+    - `graphql/`: GraphQL API
+      - `dataloader/`: Data loaders for efficient data fetching
+      - `federation/`: Apollo Federation entitiy resolvers
+      - `input/`: Input types for mutations
+      - `model/`: GraphQL types
+        - `connection/`: Connection types and logic for paginated queries
+    - `persistance/`: Database entities and repositories
+      - `model/`: R2DBC entities
+      - `repository/`: Spring Data R2DBC repositories
+    - `service/`: Service logic
+  - `resources/`: Spring Boot application configuration and SQL schema migration files
+    - `db/migration/`: Flyway SQL schema migration files
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the user service and can be used by other services.
+
+### Published Defined Events
+
+#### user/user/created
+
+This event is published when a new user is created.
+
+```js
+{
+  "id": "string",
+  "username": "string",
+  "firstName": "string",
+  "lastName": "string",
+  "dateJoined": "string"
+}
+```
+
+### Subscribed Defined Events
+
+#### user/user/create
+
+Published by Keycloak to inform the user service about a newly created user account.
+
+```js
+{
+  "id": "string",
+  "username": "string",
+  "firstName": "string",
+  "lastName": "string"
+}
+```
+
+## Imported Events
+
+This section lists events defined by other services that are used by the user service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+n/a
+
+## Important ADRs
+
+n/a
