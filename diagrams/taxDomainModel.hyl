@@ -1,0 +1,32 @@
+classDiagram {
+    class("TaxRate") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1370, 600)
+    }
+
+    class("TaxRateVersion") {
+        public {
+            rate : double
+            version : int
+            createdAt : DateTime
+        }
+    } layout {
+        pos = apos(1370, 830)
+    }
+
+    TaxRate --> TaxRateVersion with {
+        label("1..* : versions", 0.865, -64.4)
+        label("1 : taxRate", 0.025, -44.2)
+        over = start(0.205).line(end(0.795))
+    }
+
+    TaxRate !--> TaxRateVersion with {
+        label("1 : currentVersion", 0.805, -79.9)
+        label("0..1", 0.07, -35.5)
+        over = start(0.345).line(end(0.655))
+    }
+}
