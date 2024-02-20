@@ -1905,6 +1905,9 @@ input UpdateNotificationInput
 input UpdateProductInput
   @join__type(graph: CATALOG)
 {
+  """If present, new value for defaultVariantId"""
+  defaultVariantId: UUID
+
   """UUID of the product to be updated"""
   id: UUID!
 
