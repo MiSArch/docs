@@ -20,6 +20,33 @@ directive @join__unionMember(graph: join__Graph!, member: String!) repeatable on
 
 directive @link(url: String, as: String, for: link__Purpose, import: [link__Import]) repeatable on SCHEMA
 
+"""An address."""
+interface Address implements Node
+  @join__implements(graph: ADDRESS, interface: "Node")
+  @join__type(graph: ADDRESS)
+{
+  """The city part of the address"""
+  city: String!
+
+  """The company name part of the address"""
+  companyName: String
+
+  """The country part of the address"""
+  country: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The postal code part of the address"""
+  postalCode: String!
+
+  """The first part of the street part of the address"""
+  street1: String!
+
+  """The second part of the street part of the address"""
+  street2: String!
+}
+
 input AddReviewInput
   @join__type(graph: REVIEW)
 {
@@ -60,6 +87,14 @@ input AddWishlistInput
 
   """Wishlist name."""
   name: String!
+}
+
+"""Input for the archiveUserAddress mutation."""
+input ArchiveUserAddressInput
+  @join__type(graph: ADDRESS)
+{
+  """The id of the user address to archive."""
+  id: UUID!
 }
 
 """A categorical characteristic of a category."""
@@ -521,12 +556,62 @@ input CreateTaxRateVersionInput
   taxRateId: UUID!
 }
 
+"""Input for the createUserAddress mutation."""
+input CreateUserAddressInput
+  @join__type(graph: ADDRESS)
+{
+  """The city part of the address to create"""
+  city: String!
+
+  """The company name part of the address to create"""
+  companyName: String
+
+  """The country part of the address to create"""
+  country: String!
+
+  """The postal code part of the address to create"""
+  postalCode: String!
+
+  """The first part of the street part of the address to create"""
+  street1: String!
+
+  """The second part of the street part of the address to create"""
+  street2: String!
+
+  """The id of the user to create the address for."""
+  userId: UUID!
+}
+
+"""Input for the createVendorAddress mutation."""
+input CreateVendorAddressInput
+  @join__type(graph: ADDRESS)
+{
+  """The city part of the address to create"""
+  city: String!
+
+  """The company name part of the address to create"""
+  companyName: String
+
+  """The country part of the address to create"""
+  country: String!
+
+  """The postal code part of the address to create"""
+  postalCode: String!
+
+  """The first part of the street part of the address to create"""
+  street1: String!
+
+  """The second part of the street part of the address to create"""
+  street2: String!
+}
+
 """An RFC-3339 compliant Full Date Scalar"""
 scalar Date
   @join__type(graph: USER)
 
 """A slightly refined version of RFC-3339 compliant DateTime Scalar"""
 scalar DateTime
+  @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: REVIEW)
@@ -555,6 +640,7 @@ enum Gender
 scalar join__FieldSet
 
 enum join__Graph {
+  ADDRESS @join__graph(name: "address", url: "http://localhost:3500/v1.0/invoke/address/method/graphql")
   CATALOG @join__graph(name: "catalog", url: "http://localhost:3500/v1.0/invoke/catalog/method/graphql")
   INVENTORY @join__graph(name: "inventory", url: "http://localhost:3500/v1.0/invoke/inventory/method/graphql")
   NOTIFICATION @join__graph(name: "notification", url: "http://localhost:3500/v1.0/invoke/notification/method/graphql")
@@ -580,6 +666,7 @@ enum link__Purpose {
 }
 
 type Mutation
+  @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
@@ -589,6 +676,24 @@ type Mutation
   @join__type(graph: USER)
   @join__type(graph: WISHLIST)
 {
+  """Archive a user address"""
+  archiveUserAddress(
+    """Input for the archiveUserAddress mutation"""
+    input: ArchiveUserAddressInput!
+  ): UserAddress! @join__field(graph: ADDRESS)
+
+  """Create a new user address"""
+  createUserAddress(
+    """Input for the createUserAddress mutation"""
+    input: CreateUserAddressInput!
+  ): UserAddress! @join__field(graph: ADDRESS)
+
+  """Create a new vendor address"""
+  createVendorAddress(
+    """Input for the createVendorAddress mutation"""
+    input: CreateVendorAddressInput!
+  ): VendorAddress! @join__field(graph: ADDRESS)
+
   """
   Create a new value for a characteristic whose values have no further meaning
   """
@@ -776,6 +881,7 @@ type Mutation
 
 """An object with an ID."""
 interface Node
+  @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: TAX)
@@ -908,6 +1014,7 @@ input NumericalCategoryCharacteristicValueInput
 
 """Order direction"""
 enum OrderDirection
+  @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
@@ -918,10 +1025,10 @@ enum OrderDirection
   @join__type(graph: WISHLIST)
 {
   """Ascending order"""
-  ASC @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+  ASC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
 
   """Descending order"""
-  DESC @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+  DESC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
 }
 
 """A product."""
@@ -1312,6 +1419,7 @@ input ProductVariantVersionOrderInput
 }
 
 type Query
+  @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
@@ -1321,6 +1429,15 @@ type Query
   @join__type(graph: USER)
   @join__type(graph: WISHLIST)
 {
+  """Get a address by id"""
+  address(
+    """The id of the address"""
+    id: UUID!
+  ): Address! @join__field(graph: ADDRESS)
+
+  """Get the current vendor address"""
+  vendorAddress: VendorAddress @join__field(graph: ADDRESS)
+
   """Get all categories"""
   categories(
     """Number of items to return"""
@@ -1908,15 +2025,32 @@ input UpdateWishlistInput
 
 """A user."""
 type User implements Node
+  @join__implements(graph: ADDRESS, interface: "Node")
   @join__implements(graph: NOTIFICATION, interface: "Node")
   @join__implements(graph: USER, interface: "Node")
+  @join__type(graph: ADDRESS, key: "id", resolvable: true)
   @join__type(graph: NOTIFICATION, key: "id", resolvable: true)
   @join__type(graph: REVIEW, key: "id")
   @join__type(graph: SHOPPINGCART, key: "id")
   @join__type(graph: USER, key: "id", resolvable: true)
   @join__type(graph: WISHLIST, key: "id")
 {
-  """UUID of the user."""
+  """Get all address the user received"""
+  addresses(
+    """Filtering"""
+    filter: UserAddressFilterInput
+
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: UserAddressOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): UserAddressConnection! @join__field(graph: ADDRESS)
+
+  """The ID of the node."""
   id: UUID!
 
   """Get all notifications the user received"""
@@ -1975,6 +2109,83 @@ type User implements Node
   ): WishlistConnection! @join__field(graph: WISHLIST)
 }
 
+"""A address associated with a user."""
+type UserAddress implements Address & Node
+  @join__implements(graph: ADDRESS, interface: "Address")
+  @join__implements(graph: ADDRESS, interface: "Node")
+  @join__type(graph: ADDRESS, key: "id", resolvable: true)
+{
+  """If this address is archived, the datetime it was archived."""
+  archivedAt: DateTime
+
+  """The city part of the address"""
+  city: String!
+
+  """The company name part of the address"""
+  companyName: String
+
+  """The country part of the address"""
+  country: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """If true, this address is archived and can no longer be used."""
+  isArchived: Boolean!
+
+  """The postal code part of the address"""
+  postalCode: String!
+
+  """The first part of the street part of the address"""
+  street1: String!
+
+  """The second part of the street part of the address"""
+  street2: String!
+
+  """The user this address belongs to."""
+  user: User!
+}
+
+"""A connection to a list of `Address` values."""
+type UserAddressConnection
+  @join__type(graph: ADDRESS)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [UserAddress!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""User address filter"""
+input UserAddressFilterInput
+  @join__type(graph: ADDRESS)
+{
+  isArchived: Boolean
+}
+
+"""User address order fields"""
+enum UserAddressOrderField
+  @join__type(graph: ADDRESS)
+{
+  """Order addresss by their id"""
+  ID @join__enumValue(graph: ADDRESS)
+}
+
+"""User address order"""
+input UserAddressOrderInput
+  @join__type(graph: ADDRESS)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: UserAddressOrderField
+}
+
 """A connection to a list of `User` values."""
 type UserConnection
   @join__type(graph: USER)
@@ -2013,6 +2224,7 @@ input UserOrderInput
 
 """A universally unique identifier compliant UUID Scalar"""
 scalar UUID
+  @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
@@ -2021,6 +2233,34 @@ scalar UUID
   @join__type(graph: TAX)
   @join__type(graph: USER)
   @join__type(graph: WISHLIST)
+
+"""An address associated with the vendor."""
+type VendorAddress implements Address & Node
+  @join__implements(graph: ADDRESS, interface: "Address")
+  @join__implements(graph: ADDRESS, interface: "Node")
+  @join__type(graph: ADDRESS, key: "id", resolvable: true)
+{
+  """The city part of the address"""
+  city: String!
+
+  """The company name part of the address"""
+  companyName: String
+
+  """The country part of the address"""
+  country: String!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The postal code part of the address"""
+  postalCode: String!
+
+  """The first part of the street part of the address"""
+  street1: String!
+
+  """The second part of the street part of the address"""
+  street2: String!
+}
 
 """The Wishlist of a user."""
 type Wishlist
