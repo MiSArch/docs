@@ -1,0 +1,56 @@
+classDiagram {
+
+    class("Address", abstract = true) {
+        public {
+            street1 : string
+            street2 : string
+            city : string
+            postalCode : string
+            country : string
+            companyName : string
+        }
+    } layout {
+        pos = apos(-240, 1185)
+    }
+
+    class("VendorAddress") layout {
+        pos = apos(-602.5, 995)
+    }
+
+    class("UserAddress") {
+        public {
+           archivedAt : "DateTime?"
+           isArchived : boolean
+        }
+    } layout {
+        pos = apos(-240, 992.5)
+    }
+
+    class("User") layout {
+        pos = apos(-240, 832.5)
+    } styles {
+        class += "imported"
+    }
+
+    UserAddress extends Address with {
+        over = start(0.25).line(end(0.75))
+    }
+
+    VendorAddress extends Address with {
+        over = start(0.25).axisAligned(-0.167, end(0.675))
+    }
+
+    User --> UserAddress with {
+        label("0..* : addresses", 0.66, 70.1)
+        label("1 : user", 0.03, 48.2)
+        over = start(0.25).line(end(0.75))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+        }
+    }
+}

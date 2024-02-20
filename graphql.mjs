@@ -1,5 +1,10 @@
 export default [
     {
+        id: "address",
+        path: "schemas/address.graphql",
+        docs: "/docs/docs/dev-manuals/services/address"
+    },
+    {
         id: "catalog",
         path: "schemas/catalog.graphql",
         docs: "/docs/docs/dev-manuals/services/catalog"
