@@ -99,7 +99,32 @@ This includes the initial version created when a product variant is created.
   "retailPrice": "number",
   "createdAt": "string",
   "canBeReturnedForDays": "number | undefined",
-  "productVariantId": "string"
+  "productVariantId": "string",
+  "taxRateId": "string"
+}
+```
+
+#### catalog/product/updated
+
+This event is published when a product is updated.
+
+```js
+{
+  "id": "string",
+  "internalName": "string",
+  "isPubliclyVisible": "boolean",
+  "defaultVariantId": "string"
+}
+```
+
+#### catalog/product-variant/updated
+
+This event is published when a product variant is updated.
+
+```js
+{
+  "id": "string",
+  "isPubliclyVisible": "boolean"
 }
 ```
 
