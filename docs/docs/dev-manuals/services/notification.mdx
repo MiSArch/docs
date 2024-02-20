@@ -64,7 +64,7 @@ n/a
 
 #### notification/notification/create
 
-This event can be used by other services to create new notifications.
+Other services can publish this event to create new notifications.
 
 ```js
 {
@@ -84,7 +84,7 @@ n/a
 
 ### Subscribed Imported Events
 
-- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to import `User` from the `User` bounded context.
+- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to validate that only existing users can receive notifications
 
 ## Important ADRs
 
