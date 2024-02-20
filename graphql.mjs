@@ -12,7 +12,7 @@ export default [
     {
         id: "notification",
         path: "schemas/notification.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/notification"
     },
     {
         id: "review",
