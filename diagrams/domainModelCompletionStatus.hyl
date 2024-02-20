@@ -29,19 +29,19 @@ classDiagram {
         boundedContexts.account = package("Account") layout {
             width = 355.194290034
             height = 322.755733225
-            pos = apos(-420, 390)
+            pos = apos(-420, 342.5)
         }
 
         boundedContexts.user = package("User") layout {
             width = 458.277241987
             height = 226.188750551
-            pos = apos(-450, 715)
+            pos = apos(-450, 660)
         }
 
         boundedContexts.notification = package("Notification") layout {
             width = 400.684089512
             height = 200.416947984
-            pos = apos(-897.5, 710)
+            pos = apos(-897.5, 605)
         }
 
         boundedContexts.wishlist = package("Wishlist") layout {
@@ -75,9 +75,9 @@ classDiagram {
         }
 
         boundedContexts.address = package("Address") layout {
-            width = 411
-            height = 295.75
-            pos = apos(-417.5, 972.5)
+            width = 708
+            height = 416.75
+            pos = apos(-770, 882.5)
         }
 
         boundedContexts.payment = package("Payment") layout {
@@ -168,16 +168,16 @@ classDiagram {
 
     class("AuthCredential") layout {
         width = 144.728151114
-        pos = apos(-240, 460)
+        pos = apos(-240, 415)
     }
 
     class("Account") {
         public {
-            role : UserRole
+            role : "Set<UserRole>"
             username : string
         }
     } layout {
-        pos = apos(-240, 620)
+        pos = apos(-240, 575)
     }
 
     class("User") {
@@ -185,15 +185,15 @@ classDiagram {
             dateJoined : DateTime
             birthday : "Date?"
             gender : "Gender?"
-            firstName: String
-            lastName: String
-            username : String
+            firstName: string
+            lastName: string
+            username : string
         }
     } layout {
-        pos = apos(-240, 830)
+        pos = apos(-240, 785)
     }
 
-    class("Address") {
+    class("Address", abstract = true) {
         public {
             street1 : string
             street2 : string
@@ -203,7 +203,20 @@ classDiagram {
             companyName : string
         }
     } layout {
-        pos = apos(-240, 1140)
+        pos = apos(-240, 1185)
+    }
+
+    class("VendorAddress") layout {
+        pos = apos(-602.5, 995)
+    }
+
+    class("UserAddress") {
+        public {
+           archivedAt : "DateTime?"
+           isArchived : boolean
+        }
+    } layout {
+        pos = apos(-240, 992.5)
     }
 
     class("PaymentMethod") {
@@ -346,7 +359,7 @@ classDiagram {
             dateRead : "DateTime?"
         }
     } layout {
-        pos = apos(-730, 814)
+        pos = apos(-730, 719)
     }
 
     class("ProductItem") {
@@ -508,9 +521,17 @@ classDiagram {
             over = start(1).line(end(0.5))
         }
 
-        User --> Address with {
-            label("0..* : addresses", 0.77, 67.7)
-            label("0..1 : user", 0.03, 48.2)
+        UserAddress extends Address with {
+            over = start(0.25).line(end(0.75))
+        }
+
+        VendorAddress extends Address with {
+            over = start(0.25).axisAligned(-0.167, end(0.675))
+        }
+
+        User --> UserAddress with {
+            label("0..* : addresses", 0.66, 70.1)
+            label("1 : user", 0.03, 48.2)
             over = start(0.25).line(end(0.75))
         } withClass "ccr"
 
@@ -525,7 +546,7 @@ classDiagram {
             label("1 : user", 0.065, 24.9)
             over = start(0.415).axisAligned(
                 1,
-                apos(-470, 1760),
+                apos(-810, 1760),
                 -1,
                 end(0.3125)
             )
@@ -569,7 +590,7 @@ classDiagram {
         User --> ShoppingCart with {
             label("1 : cart", 0.695, -32)
             label("1 : user", 0.085, 4.9)
-            over = start(0.0625).axisAligned(0.83, end(0.5))
+            over = start(0.005).axisAligned(0.83, end(0.5))
         } withClass "ccr"
 
         ShoppingCartItem --> ProductVariant with {
@@ -581,7 +602,7 @@ classDiagram {
         User --> Wishlist with {
             label("0..* : wishlists", 0.725, -35.3)
             label("1 : user", 0.105, 3.4)
-            over = start(1).axisAligned(0.644, end(0.5))
+            over = start(0.94).axisAligned(0.644, end(0.5))
         } withClass "ccr"
 
         Wishlist --> ProductVariant with {
@@ -611,7 +632,7 @@ classDiagram {
         User --> Order with {
             label("0..* : orders", 0.95, 13.4)
             label("1 : user", 0.35, -30.2)
-            over = start(0.1875).axisAligned(0, end(0.5))
+            over = start(0.125).axisAligned(0.438, end(0.5))
         } withClass "ccr"
 
         ProductVariant --> Review with {
@@ -629,7 +650,7 @@ classDiagram {
         User --> Review with {
             label("0..* : reviews", 0.975, 13.4)
             label("1 : user", 0.17, 2)
-            over = start(0.9375).axisAligned(0.124, end(0.5))
+            over = start(0.875).axisAligned(0.124, end(0.5))
         } withClass "ccr"
 
         OrderItem !--> ProductVariantVersion with {
@@ -653,7 +674,7 @@ classDiagram {
         User --> Notification with {
             label("0..* : notifications", 0.63, -13.5)
             label("1 : user", 0.155, 24.8)
-            over = start(0.575).line(end(0.94))
+            over = start(0.575).line(end(0.025))
         } withClass "ccr"
 
         ProductVariant --> ProductItem with {
@@ -724,7 +745,7 @@ classDiagram {
         User --> Coupon with {
             label("0..* : coupons", 0.99, 64.3)
             label("1 : user", 0.39, 6.1)
-            over = start(0.125).axisAligned(-1, end(0.335))
+            over = start(0.06).axisAligned(-1, end(0.335))
         } withClass "ccr"
 
         Coupon <--> Discount with {

@@ -4,9 +4,9 @@ classDiagram {
             dateJoined : DateTime
             birthday : "Date?"
             gender : "Gender?"
-            firstName: String
-            lastName: String
-            username : String
+            firstName: string
+            lastName: string
+            username : string
         }
     } layout {
         pos = apos(-240, 830)
