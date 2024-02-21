@@ -956,12 +956,15 @@ classDiagram {
 
     if(highlightCompletionStatus) {
         boundedContexts.account withClass "completed-package"
+        boundedContexts.address withClass "completed-package"
         boundedContexts.category withClass "completed-package"
         boundedContexts.categoryvalue withClass "completed-package"
         boundedContexts.inventory withClass "completed-package"
         boundedContexts.notification withClass "completed-package"
+        boundedContexts.order withClass "wip-package"
         boundedContexts.product withClass "completed-package"
         boundedContexts.review withClass "completed-package"
+        boundedContexts.shipment withClass "wip-package"
         boundedContexts.shopping withClass "completed-package"
         boundedContexts.tax withClass "completed-package"
         boundedContexts.user withClass "completed-package"
