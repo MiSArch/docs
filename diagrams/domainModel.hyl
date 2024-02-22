@@ -117,7 +117,7 @@ classDiagram {
         }
 
         boundedContexts.product = package("Product") layout {
-            height = 600.727183394
+            height = 612.166505087
             width = 389.766537637
             pos = apos(627.5, -222.5)
         }
@@ -286,6 +286,7 @@ classDiagram {
             price : int
             createdAt : DateTime
             canBeReturnedForDays : "double?"
+            weight : double
         }
     } layout {
         pos = apos(810, 280)
@@ -847,7 +848,7 @@ classDiagram {
         ProductVariantVersion !--> CategoryCharacteristicValue with {
             label("0..* : characteristicValues", 0.7625, 12.3)
             label("1", 0.1, 7.7)
-            over = start(0.905).line(end(Position.Left))
+            over = start(0.9125).line(end(Position.Left))
         } withClass "ccr"
 
         OrderItem --> Discount with {

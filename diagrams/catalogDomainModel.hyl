@@ -26,6 +26,7 @@ classDiagram {
             price : int
             createdAt : DateTime
             canBeReturnedForDays : "double?"
+            weight : double
         }
     } layout {
         pos = apos(810, 280)
@@ -116,7 +117,7 @@ classDiagram {
     ProductVariantVersion !--> TaxRate with {
         label("1 : taxRate", 0.8625, 11.1)
         label("0..*", 0.145, -24.4)
-        over = start(0.08).axisAligned(0.386, end(Position.Left))
+        over = start(0.07375).line(end(0.5))
     }
 
     list(CategoricalCategoryCharacteristic, NumericalCategoryCharacteristic).forEach {
@@ -163,7 +164,7 @@ classDiagram {
     ProductVariantVersion !--> CategoryCharacteristicValue with {
         label("0..* : characteristicValues", 0.7625, 12.3)
         label("1", 0.1, 7.7)
-        over = start(0.905).line(end(Position.Left))
+        over = start(0.91625).line(end(Position.Left))
     }
 
     styles {
