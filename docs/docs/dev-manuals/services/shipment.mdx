@@ -23,6 +23,24 @@ The service provides a GraphQL API, which is documented in the GraphQL API docum
 
 The service provides a REST API which is used by the external shipment provider to inform about shipment status changes.
 
+#### POST `/shipment/{id}/status`
+
+Updates the status of a shipment.
+
+**Body**
+```tsx
+{
+  status: ShipmentStatus
+}
+
+enum ShipmentStatus {
+  PENDING,
+  IN_PROGRESS,
+  DELIVERED,
+  FAILED
+}
+```
+
 ## Technology Stack
 
 - **Language**: Kotlin
