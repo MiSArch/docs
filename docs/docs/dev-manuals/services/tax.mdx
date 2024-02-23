@@ -56,12 +56,12 @@ This section lists events that are defined by the tax service and can be used by
 
 This event is published when a new tax rate is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "name": "string",
-  "description": "string",
-  "currentVersionId": "string"
+  id: string,
+  name: string,
+  description: string,
+  currentVersionId: string
 }
 ```
 
@@ -70,13 +70,13 @@ This event is published when a new tax rate is created.
 This event is published when a new tax rate version is created.
 This includes the initial version created when a tax rate is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "rate": "number",
-  "version": "number",
-  "createdAt": "string",
-  "taxRateId": "string"
+  id: string,
+  rate: number,
+  version: number,
+  createdAt: string,
+  taxRateId: string
 }
 ```
 

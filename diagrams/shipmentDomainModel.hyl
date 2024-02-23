@@ -1,0 +1,101 @@
+classDiagram {
+    enum = {
+        (name, fields) = args
+        noedit {
+            class(name, keywords = list("enumeration")) {
+                sections += fields.map { "+" + it }
+            }
+        }
+    }
+
+    enum(
+        "ShipmentStatus",
+        list(
+            "PENDING",
+            "IN_PROGRESS",
+            "DELIVERED",
+            "FAILED"
+        )
+    ) layout {
+        pos = apos(277.5, 1187.5)
+    }
+
+    class("ShipmentMethod") {
+        public {
+            name : string
+            description : string
+            baseFees : int
+            feesPerItem : int
+            feesPerKg : int
+            archivedAt : "DateTime?"
+            isArchived : boolean
+        }
+    } layout {
+        pos = apos(1357.5, 1412.5)
+    }
+
+    class("Shipment") {
+        public {
+            status : ShipmentStatus
+        }
+    } layout {
+        pos = apos(810, 1460)
+    }
+
+    class("OrderItem") layout {
+        pos = apos(810, 1302.5)
+    } styles {
+        class += "imported"
+    }
+
+    class("Address", abstract = true) {
+        public {
+            street1 : string
+            street2 : string
+            city : string
+            postalCode : string
+            country : string
+            companyName : string
+        }
+    } layout {
+        pos = apos(277.5, 1460)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariantVersion") layout {
+        pos = apos(810, 1182.5)
+    }styles {
+        class += "imported"
+    }
+
+    Shipment !--> ShipmentMethod with {
+        label("1 : shipmentMethod", 0.64, 8.9)
+        label("0..*", 0.15, -23.6)
+        over = start(0).line(end(0.435))
+    }
+
+    Shipment !--> Address with {
+        label("1 : shipmentAddress", 0.56, -7)
+        label("0..*", 0.085, -16.5)
+        over = start(0.5).line(end(0))
+    }
+
+    Shipment !--> OrderItem with {
+        label("0..* : sentItems", 0.865, 72.7)
+        label("1..*", 0.12, 20)
+        over = start(0.75).line(end(0.25))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+
+}

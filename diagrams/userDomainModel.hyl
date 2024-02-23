@@ -1,4 +1,14 @@
 classDiagram {
+
+    enum = {
+        (name, fields) = args
+        noedit {
+            class(name, keywords = list("enumeration")) {
+                sections += fields.map { "+" + it }
+            }
+        }
+    }
+
     class("User") {
         public {
             dateJoined : DateTime
@@ -11,4 +21,12 @@ classDiagram {
     } layout {
         pos = apos(-240, 830)
     }
+
+    enum (
+        "Gender",
+        list("MALE", "FEMALE", "DIVERSE", "OTHER")
+    ) layout {
+        pos = apos(-240, 617.5)
+    }
+
 }

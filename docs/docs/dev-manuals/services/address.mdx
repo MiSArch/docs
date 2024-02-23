@@ -62,16 +62,16 @@ This section lists events that are defined by the address service and can be use
 
 This event is published when a new user address is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "street1": "string",
-  "street2": "string",
-  "city": "string",
-  "postalCode": "string",
-  "country": "string",
-  "companyName": "string | undefined",
-  "userId": "string"
+  id: string,
+  street1: string,
+  street2: string,
+  city: string,
+  postalCode: string,
+  country: string,
+  companyName?: string,
+  userId: string
 }
 ```
 
@@ -79,15 +79,15 @@ This event is published when a new user address is created.
 
 This event is published when a new vendor address is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "street1": "string",
-  "street2": "string",
-  "city": "string",
-  "postalCode": "string",
-  "country": "string",
-  "companyName": "string | undefined"
+  id: string,
+  street1: string,
+  street2: string,
+  city: string,
+  postalCode: string,
+  country: string,
+  companyName?: string
 }
 ```
 
@@ -95,9 +95,9 @@ This event is published when a new vendor address is created.
 
 This event is published when a user address is archived.
 
-```js
+```tsx
 {
-  "id": "string"
+  id: string
 }
 ```
 

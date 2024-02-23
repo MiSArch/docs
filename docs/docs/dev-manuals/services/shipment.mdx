@@ -1,0 +1,165 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Shipment Service
+
+The shipment service consists of the bounded contexts `Shipment`, `Category`, and `CategoryValue`.
+It is responsible for managing products, their variants and versions, categories, and their respective characteristics and values.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/shipmentDomainModel" width="1400" height="450.375" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the GraphQL API documentation TODO.
+
+### REST API
+
+The service provides a REST API which is used by the external shipment provider to inform about shipment status changes.
+
+## Technology Stack
+
+- **Language**: Kotlin
+- **Framework**: Spring Boot
+- **GraphQL Library**: GraphQL Kotlin
+- **Database**: PostgreSQL
+- **Schema Management**: Flyway
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/main/`: Source code of the service
+  - `kotlin/org/misarch/shipment/`: Kotlin source code
+    - `event/`: Dapr event handling
+      - `model/`: Event DTOs
+    - `graphql/`: GraphQL API
+      - `dataloader/`: Data loaders for efficient data fetching
+      - `federation/`: Apollo Federation entitiy resolvers
+      - `input/`: Input types for mutations
+      - `model/`: GraphQL types
+        - `connection/`: Connection types and logic for paginated queries
+    - `persistance/`: Database entities and repositories
+      - `model/`: R2DBC entities
+      - `repository/`: Spring Data R2DBC repositories
+    - `provider/`: REST API for external shipment provider, configuration
+    - `service/`: Service logic
+  - `resources/`: Spring Boot application configuration and SQL schema migration files
+    - `db/migration/`: Flyway SQL schema migration files
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the shipment service and can be used by other services.
+
+### Type Definitions
+
+The following types are used in the defined events:
+
+```tsx
+enum ShipmentStatus {
+  PENDING,
+  IN_PROGRESS,
+  DELIVERED,
+  FAILED
+}
+```
+
+### Published Defined Events
+
+#### shipment/shipment/created
+
+This event is published when a new shipment is created.
+
+```tsx
+{
+  id: string,
+  orderId: string,
+  returnId: string,
+  status: string,
+}
+```
+
+#### shipment/shipment/creation-failed
+
+This event is published when the creation of a shipment failed.
+
+```tsx
+{
+  orderId?: string,
+  returnId?: string,
+  orderItemIds: string[],
+  shipmentMethodId: string,
+  addressId: string,
+  reason: string
+}
+```
+
+#### shipment/shipment/status-updated
+
+This event is published when the status of a shipment is updated.
+
+```tsx
+{
+  id: string,
+  status: ShipmentStatus
+}
+```
+
+#### shipment/shipment-method/created
+
+This event is published when a new shipment method is created.
+
+```tsx
+{
+  id: string,
+  name: string,
+  description: string,
+  ref: string,
+  baseFees: number,
+  feesPerItem: number,
+  feesPerKg: number
+}
+```
+
+#### shipment/shipment-method/archived
+
+This event is published when a shipment method is archived.
+
+```tsx
+{
+  id: string
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the shipment service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- discount/order/validation-successful: Used to create new shipments for an order when the order is validated successfully.
+- [address/user-address/created](/docs/docs/dev-manuals/services/address#addressuser-addresscreated): Used to import `UserAddress` from the `Address` bounded context.
+- [address/vendor-address/created](/docs/docs/dev-manuals/services/address#addressvendor-addresscreated): Used to import `VendorAddress` from the `Address` bounded context.
+- [catalog/product-variant-version/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variant-versioncreated): Used to import `ProductVariantVersion` from the `Catalog` bounded context.
+
+## Important ADRs
+
+n/a
