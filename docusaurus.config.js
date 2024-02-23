@@ -5,8 +5,8 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import graphqlDocs from "./graphql.mjs";
 import { buildSchema } from "graphql";
-import lightTheme from "./prismLight.mjs"
-import darkTheme from "./prismDark.mjs"
+import lightTheme from "./prismLight.mjs";
+import darkTheme from "./prismDark.mjs";
 
 /** @type {import('@docusaurus/types').Config} */
 export default {
