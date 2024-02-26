@@ -7,7 +7,7 @@ It is responsible for managing products, their variants and versions, categories
 
 ## Domain Model
 
-<CustomImage path="/renderedDiagrams/shipmentDomainModel" width="1400" height="450.375" />
+<CustomImage path="/renderedDiagrams/shipmentDomainModel" width="1720" height="403.375" />
 
 :::info
 
@@ -104,7 +104,10 @@ This event is published when a new shipment is created.
   id: string,
   orderId: string,
   returnId: string,
-  status: string,
+  status: ShipmentStatus,
+  orderItemIds: string[],
+  shipmentMethodId: string,
+  shipmentAddressId: string
 }
 ```
 
@@ -118,7 +121,7 @@ This event is published when the creation of a shipment failed.
   returnId?: string,
   orderItemIds: string[],
   shipmentMethodId: string,
-  addressId: string,
+  shipmentAddressId: string,
   reason: string
 }
 ```
@@ -130,7 +133,10 @@ This event is published when the status of a shipment is updated.
 ```tsx
 {
   id: string,
-  status: ShipmentStatus
+  orderId: string,
+  returnId: string,
+  status: ShipmentStatus,
+  orderItemIds: string[],
 }
 ```
 
