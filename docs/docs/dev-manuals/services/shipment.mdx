@@ -2,8 +2,8 @@ import CustomImage from "@site/src/components/CustomImage";
 
 # Shipment Service
 
-The shipment service consists of the bounded contexts `Shipment`, `Category`, and `CategoryValue`.
-It is responsible for managing products, their variants and versions, categories, and their respective characteristics and values.
+The shipment service provides the bounded context `Shipment`.
+It is responsible for managing shipments and their state, and interacts with an external shipment provider to do so.
 
 ## Domain Model
 
@@ -102,8 +102,8 @@ This event is published when a new shipment is created.
 ```tsx
 {
   id: string,
-  orderId: string,
-  returnId: string,
+  orderId?: string,
+  returnId?: string,
   status: ShipmentStatus,
   orderItemIds: string[],
   shipmentMethodId: string,
@@ -133,8 +133,8 @@ This event is published when the status of a shipment is updated.
 ```tsx
 {
   id: string,
-  orderId: string,
-  returnId: string,
+  orderId?: string,
+  returnId?: string,
   status: ShipmentStatus,
   orderItemIds: string[],
 }
