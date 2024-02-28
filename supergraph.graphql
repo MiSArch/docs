@@ -529,6 +529,9 @@ input CreateProductVariantVersionInput
 
   """The associated TaxRate"""
   taxRateId: UUID!
+
+  """The weight of a single instance of the ProductVariant."""
+  weight: Float!
 }
 
 """Input for the createTaxRate mutation"""
@@ -1345,6 +1348,9 @@ type ProductVariantVersion implements Node
 
   """The version of the ProductVariantVersion."""
   version: Int!
+
+  """The weight of the ProductVariantVersion."""
+  weight: Float!
 }
 
 """A connection to a list of `ProductVariantVersion` values."""
@@ -1391,6 +1397,9 @@ input ProductVariantVersionInput
 
   """The associated TaxRate"""
   taxRateId: UUID!
+
+  """The weight of a single instance of the ProductVariant."""
+  weight: Float!
 }
 
 """ProductVariantVersion order fields"""
