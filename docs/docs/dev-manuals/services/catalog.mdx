@@ -62,12 +62,12 @@ This section lists events that are defined by the catalog service and can be use
 
 This event is published when a new product is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "internalName": "string",
-  "isPubliclyVisible": "boolean",
-  "defaultVariantId": "string"
+  id: string,
+  internalName: string,
+  isPubliclyVisible: boolean,
+  defaultVariantId: string
 }
 ```
 
@@ -76,12 +76,12 @@ This event is published when a new product is created.
 This event is published when a new product variant is created.
 This includes the default variant created when a product is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "productId": "string",
-  "currentVersionId": "string",
-  "isPubliclyVisible": "boolean"
+  id: string,
+  productId: string,
+  currentVersionId: string,
+  isPubliclyVisible: boolean
 }
 ```
 
@@ -90,18 +90,18 @@ This includes the default variant created when a product is created.
 This event is published when a new product variant version is created.
 This includes the initial version created when a product variant is created.
 
-```js
+```tsx
 {
-  "id": "string",
-  "name": "string",
-  "description": "string",
-  "version": "number",
-  "retailPrice": "number",
-  "createdAt": "string",
-  "canBeReturnedForDays": "number | undefined",
-  "productVariantId": "string",
-  "taxRateId": "string",
-  "weight": "number"
+  id: string,
+  name: string,
+  description: string,
+  version: number,
+  retailPrice: number,
+  createdAt: string,
+  canBeReturnedForDays?: number,
+  productVariantId: string,
+  taxRateId: string,
+  weight: number
 }
 ```
 
@@ -109,12 +109,12 @@ This includes the initial version created when a product variant is created.
 
 This event is published when a product is updated.
 
-```js
+```tsx
 {
-  "id": "string",
-  "internalName": "string",
-  "isPubliclyVisible": "boolean",
-  "defaultVariantId": "string"
+  id: string,
+  internalName: string,
+  isPubliclyVisible: boolean,
+  defaultVariantId: string
 }
 ```
 
@@ -122,10 +122,10 @@ This event is published when a product is updated.
 
 This event is published when a product variant is updated.
 
-```js
+```tsx
 {
-  "id": "string",
-  "isPubliclyVisible": "boolean"
+  id: string,
+  isPubliclyVisible: boolean
 }
 ```
 
