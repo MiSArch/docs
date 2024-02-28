@@ -1,14 +1,12 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
-import { themes } from "prism-react-renderer";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import graphqlDocs from "./graphql.mjs";
 import { buildSchema } from "graphql";
-
-const lightTheme = themes.github;
-const darkTheme = themes.dracula;
+import lightTheme from "./prismLight.mjs";
+import darkTheme from "./prismDark.mjs";
 
 /** @type {import('@docusaurus/types').Config} */
 export default {

@@ -11,7 +11,7 @@ classDiagram {
     enum = {
         (name, fields) = args
         noedit {
-            class(name, keywords = list("enum")) {
+            class(name, keywords = list("enumeration")) {
                 sections += fields.map { "+" + it }
             } withClass "v-top"
         }
@@ -94,8 +94,8 @@ classDiagram {
 
         boundedContexts.shipment = package("Shipment") layout {
             width = 1071.601554688
-            height = 200.878770777
-            pos = apos(517.5, 1342.5)
+            height = 239.878770777
+            pos = apos(517.5, 1277.5)
         }
 
         boundedContexts.category = package("Category") layout {
@@ -145,14 +145,13 @@ classDiagram {
         pos = apos(470, -560)
     }
 
-    boundedContexts.deliverystatuses = enum(
-        "DeliveryStatus",
+    boundedContexts.shipmentstatuses = enum(
+        "ShipmentStatus",
         list(
             "PENDING",
             "IN_PROGRESS",
             "DELIVERED",
-            "RETURNED",
-            "RETURN_IN_PROGRESS"
+            "FAILED"
         )
     ) layout {
         pos = apos(110, -560)
@@ -245,15 +244,19 @@ classDiagram {
         public {
             name : string
             description : string
-            calculateFees(TODO) : int
+            baseFees : int
+            feesPerItem : int
+            feesPerKg : int
+            archivedAt : "DateTime?"
+            isArchived : boolean
         }
     } layout {
-        pos = apos(1390, 1460)
+        pos = apos(1390, 1412.5)
     }
 
     class("Shipment") {
         public {
-            status : DeliveryStatus
+            status : ShipmentStatus
         }
     } layout {
         pos = apos(810, 1460)
@@ -511,9 +514,9 @@ classDiagram {
         }
 
         Shipment !--> ShipmentMethod with {
-            label("1 : method", 0.795, 14.4)
+            label("1 : shipmentMethod", 0.64, 8.9)
             label("0..*", 0.15, -23.6)
-            over = start(0).line(end(0.5))
+            over = start(0).line(end(0.435))
         }
 
         PaymentInformation !--> PaymentMethod with {
@@ -537,7 +540,7 @@ classDiagram {
         } withClass "ccr"
 
         Shipment !--> Address with {
-            label("1 : address", 0.66, 57.8)
+            label("1 : shipmentAddress", 0.655, -90.1)
             label("0..*", 0.015, -6)
             over = start(0.485).axisAligned(1, end(0.375))
         } withClass "ccr"
