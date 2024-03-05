@@ -1,0 +1,222 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Discount Service
+
+The discount service provides the bounded context `Discount`.
+It is responsible for managing discounts, coupons, and their usages by userso.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/discountDomainModel" width="1542.5" height="663.25" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the GraphQL API documentation TODO.
+
+## Technology Stack
+
+- **Language**: Kotlin
+- **Framework**: Spring Boot
+- **GraphQL Library**: GraphQL Kotlin
+- **Database**: PostgreSQL
+- **Schema Management**: Flyway
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/main/`: Source code of the service
+  - `kotlin/org/misarch/discount/`: Kotlin source code
+    - `event/`: Dapr event handling
+      - `model/`: Event DTOs
+        - `order/`: Order context DTOs
+    - `graphql/`: GraphQL API
+      - `dataloader/`: Data loaders for efficient data fetching
+      - `federation/`: Apollo Federation entitiy resolvers
+      - `input/`: Input types for mutations
+      - `model/`: GraphQL types
+        - `connection/`: Connection types and logic for paginated queries
+    - `persistance/`: Database entities and repositories
+      - `model/`: R2DBC entities
+      - `repository/`: Spring Data R2DBC repositories
+    - `service/`: Service logic
+  - `resources/`: Spring Boot application configuration and SQL schema migration files
+    - `db/migration/`: Flyway SQL schema migration files
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the discount service and can be used by other services.
+
+### Type Definitions
+
+The following types are used in the defined events:
+
+```tsx
+interface Order {
+  id: string,
+  userId: string,
+  createdAt: Date,
+  orderStatus: OrderStatus,
+  placedAt?: Date,
+  rejectionReason?: RejectionReason,
+  orderItems: OrderItem[],
+}
+
+interface OrderItem {
+  id: string,
+  createdAt: Date,
+  productItemId?: string,
+  productVariantVersionId: string,
+  taxRateVersionId: string,
+  count: number,
+  compensatableAmount: number,
+  shipment: Shipment,
+  discountIds: string[],
+}
+
+interface Shipment {
+  status: ShipmentStatus,
+  shipmentMethodId: string
+}
+
+enum OrderStatus {
+  PENDING,
+  PLACED,
+  REJECTED
+}
+
+enum RejectionReason {
+  INVALID_ORDER_DATA,
+  INVENTORY_RESERVATION_FAILED
+}
+
+enum ShipmentStatus {
+  PENDING,
+  IN_PROGRESS,
+  DELIVERED,
+  FAILED
+}
+```
+
+### Published Defined Events
+
+#### discount/discount/created
+
+This event is published when a new discount is created.
+
+```tsx
+{
+  id: string,
+  discount: number,
+  maxUsagesperUser?: number,
+  validUntil: string,
+  validFrom: string,
+  minOrderAmount?: number,
+  discountAppliesToCategoryIds: string[],
+  discountAppliesToProductIds: string[],
+  discountAppliesToProductVariantIds: string[]
+}
+```
+
+#### discount/discount/updated
+
+This event is published when a discount is updated.
+
+```tsx
+{
+  id: string,
+  discount: number,
+  maxUsagesperUser?: number,
+  validUntil: string,
+  validFrom: string,
+  minOrderAmount?: number,
+  discountAppliesToCategoryIds: string[],
+  discountAppliesToProductIds: string[],
+  discountAppliesToProductVariantIds: string[]
+}
+```
+
+#### discount/coupon/created
+
+This event is published when a new coupon is created.
+
+```tsx
+{
+  id: string,
+  code: string,
+  discountId: string,
+  maxUsages: number,
+  validUntil: string,
+  validFrom: string
+}
+```
+
+#### discount/coupon/updated
+
+This event is published when a coupon is updated.
+
+```tsx
+{
+  id: string,
+  code: string,
+  discountId: string,
+  maxUsages: number,
+  validUntil: string,
+  validFrom: string
+}
+```
+
+#### discount/order/validation-succeeded
+
+This event is thrown when the validation of an order caused by inventory/product-item/reservation-succeeded (TODO link) is successful.
+
+```tsx
+{
+  order: Order
+}
+```
+
+#### discount/order/validation-failed
+
+This event is thrown when the validation of an order caused by inventory/product-item/reservation-succeeded (TODO link) is not successful.
+
+```tsx
+{
+  order: Order,
+  failingDiscountIds: string[]
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the discount service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- inventory/product-item/reservation-succeeded (TODO link): Causes a validation of the order to check if the discounts can still be applied.
+- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to import `User` from the `User` bounded context.
+- [catalog/category/created](/docs/docs/dev-manuals/services/catalog#catalogcategorycreated): Used to import `Category` from the `Category` bounded context.
+- [catalog/product/created](/docs/docs/dev-manuals/services/catalog#catalogproductcreated): Used to import `Product` from the `Catalog` bounded context.
+- [catalog/product-variant/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variantcreated): Used to import `ProductVariant` from the `Catalog` bounded context.
+
+## Important ADRs
+
+n/a
