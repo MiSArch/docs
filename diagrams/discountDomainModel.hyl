@@ -59,7 +59,7 @@ classDiagram {
 
     User --> Coupon with {
         label("0..* : coupons", 0.937, 69.5)
-        label("1 : user", 0.436, 6.1)
+        label("0..* : users", 0.465, 6.7)
         over = start(0.002).axisAligned(-1, end(0.335))
     }
 

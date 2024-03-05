@@ -757,7 +757,7 @@ classDiagram {
 
         User --> Coupon with {
             label("0..* : coupons", 0.99, 64.3)
-            label("1 : user", 0.39, 6.1)
+            label("0..* : users", 0.403, 7.3)
             over = start(0.06).axisAligned(-1, end(0.335))
         } withClass "ccr"
 
