@@ -91,7 +91,57 @@ enum ShipmentStatus {
   DELIVERED,
   FAILED
 }
+
+interface Order {
+  id: string,
+  userId: string,
+  createdAt: Date,
+  orderStatus: OrderStatus,
+  placedAt?: Date,
+  rejectionReason?: RejectionReason,
+  orderItems: OrderItem[],
+  shipmentAddressId: string,
+  invoiceAddressId: string
+}
+
+interface OrderItem {
+  id: string,
+  createdAt: Date,
+  productItemId?: string,
+  productVariantVersionId: string,
+  productVariantId: string,
+  taxRateVersionId: string,
+  count: number,
+  compensatableAmount: number,
+  shipment: Shipment,
+  discountIds: string[],
+}
+
+interface Shipment {
+  status: ShipmentStatus,
+  shipmentMethodId: string
+}
+
+enum OrderStatus {
+  PENDING,
+  PLACED,
+  REJECTED
+}
+
+enum RejectionReason {
+  INVALID_ORDER_DATA,
+  INVENTORY_RESERVATION_FAILED
+}
+
+enum ShipmentStatus {
+  PENDING,
+  IN_PROGRESS,
+  DELIVERED,
+  FAILED
+}
 ```
+
+````
 
 ### Published Defined Events
 
@@ -109,7 +159,7 @@ This event is published when a new shipment is created.
   shipmentMethodId: string,
   shipmentAddressId: string
 }
-```
+````
 
 #### shipment/shipment/creation-failed
 
@@ -180,7 +230,7 @@ n/a
 
 ### Subscribed Imported Events
 
-- discount/order/validation-successful: Used to create new shipments for an order when the order is validated successfully.
+- payment/payment/payment-enabled: Used to create new shipments for an order when the order and associated payment is validated successfully.
 - [address/user-address/created](/docs/docs/dev-manuals/services/address#addressuser-addresscreated): Used to import `UserAddress` from the `Address` bounded context.
 - [address/vendor-address/created](/docs/docs/dev-manuals/services/address#addressvendor-addresscreated): Used to import `VendorAddress` from the `Address` bounded context.
 - [catalog/product-variant-version/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variant-versioncreated): Used to import `ProductVariantVersion` from the `Catalog` bounded context.

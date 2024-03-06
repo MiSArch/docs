@@ -70,6 +70,8 @@ interface Order {
   placedAt?: Date,
   rejectionReason?: RejectionReason,
   orderItems: OrderItem[],
+  shipmentAddressId: string,
+  invoiceAddressId: string
 }
 
 interface OrderItem {
@@ -77,6 +79,7 @@ interface OrderItem {
   createdAt: Date,
   productItemId?: string,
   productVariantVersionId: string,
+  productVariantId: string,
   taxRateVersionId: string,
   count: number,
   compensatableAmount: number,
