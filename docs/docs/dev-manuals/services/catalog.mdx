@@ -106,6 +106,18 @@ This includes the initial version created when a product variant is created.
 }
 ```
 
+#### catalog/category/created
+
+This event is published when a new category is created.
+
+```tsx
+{
+  id: string,
+  name: string,
+  description: string
+}
+```
+
 #### catalog/product/updated
 
 This event is published when a product is updated.
