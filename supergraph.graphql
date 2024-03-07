@@ -1,10 +1,13 @@
 schema
   @link(url: "https://specs.apollo.dev/link/v1.0")
   @link(url: "https://specs.apollo.dev/join/v0.3", for: EXECUTION)
+  @link(url: "https://specs.apollo.dev/inaccessible/v0.2", for: SECURITY)
 {
   query: Query
   mutation: Mutation
 }
+
+directive @inaccessible on FIELD_DEFINITION | OBJECT | INTERFACE | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
 
 directive @join__enumValue(graph: join__Graph!) repeatable on ENUM_VALUE
 
@@ -200,7 +203,9 @@ input CategoricalCategoryCharacteristicValueOrderInput
 """A category"""
 type Category implements Node
   @join__implements(graph: CATALOG, interface: "Node")
+  @join__implements(graph: DISCOUNT, interface: "Node")
   @join__type(graph: CATALOG, key: "id", resolvable: true)
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
 {
   """Get characteristics for the category"""
   characteristics(
@@ -212,16 +217,16 @@ type Category implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): CategoryCharacteristicConnection!
+  ): CategoryCharacteristicConnection! @join__field(graph: CATALOG)
 
   """The description of the category."""
-  description: String!
+  description: String! @join__field(graph: CATALOG)
 
   """The ID of the node."""
   id: UUID!
 
   """The name of the category."""
-  name: String!
+  name: String! @join__field(graph: CATALOG)
 
   """Get all associated products"""
   products(
@@ -236,7 +241,19 @@ type Category implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): ProductConnection!
+  ): ProductConnection! @join__field(graph: CATALOG)
+
+  """Get all discounts which apply directly to this category"""
+  discounts(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: DiscountOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): DiscountConnection! @join__field(graph: DISCOUNT)
 }
 
 """A characteristic of a Category."""
@@ -334,6 +351,7 @@ input CategoryCharacteristicValueOrderInput
 """A connection to a list of `Category` values."""
 type CategoryConnection
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
 {
   """Whether this connection has a next page"""
   hasNextPage: Boolean!
@@ -373,23 +391,113 @@ Describes the fields that a foreign types can be ordered by.
 Only the Id valid at the moment.
 """
 enum CommonOrderField
+  @join__type(graph: DISCOUNT)
   @join__type(graph: SHOPPINGCART)
   @join__type(graph: WISHLIST)
 {
   """Orders by "id"."""
-  ID @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
+  ID @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
 }
 
 """Specifies the order of foreign types."""
 input CommonOrderInput
+  @join__type(graph: DISCOUNT)
   @join__type(graph: SHOPPINGCART)
   @join__type(graph: WISHLIST)
 {
-  """Order direction of shoppingcarts."""
+  """The direction to order by"""
   direction: OrderDirection
 
-  """Field that shoppingcarts should be ordered by."""
+  """The field to order by"""
   field: CommonOrderField
+}
+
+"""A coupon"""
+type Coupon implements Node
+  @join__implements(graph: DISCOUNT, interface: "Node")
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
+{
+  """The code of the coupon."""
+  code: String!
+
+  """The discount granted by this coupon."""
+  discount: Discount!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The maximum number of times the coupon can be used."""
+  maxUsages: Int
+
+  """The number of times the coupon has been used."""
+  usages: Int!
+
+  """Get all users who claimed this coupon."""
+  users(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CommonOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): UserConnection!
+
+  """The date and time from which the coupon is valid."""
+  validFrom: DateTime!
+
+  """The date and time until which the coupon is valid."""
+  validUntil: DateTime!
+}
+
+"""A connection to a list of `Coupon` values."""
+type CouponConnection
+  @join__type(graph: DISCOUNT)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [Coupon!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Coupon filter"""
+input CouponFilterInput
+  @join__type(graph: DISCOUNT)
+{
+  """
+  Filter weather the user with the provided id own the coupon, other users than the authenticated user require at least EMPLOYEE
+  """
+  userHasCoupon: UUID
+}
+
+"""Coupon order fields"""
+enum CouponOrderField
+  @join__type(graph: DISCOUNT)
+{
+  """Order coupons by their id"""
+  ID @join__enumValue(graph: DISCOUNT)
+
+  """Order coupons by the valid from date"""
+  VALID_FROM @join__enumValue(graph: DISCOUNT)
+
+  """Order coupons by the valid until date"""
+  VALID_UNTIL @join__enumValue(graph: DISCOUNT)
+}
+
+"""Coupon order"""
+input CouponOrderInput
+  @join__type(graph: DISCOUNT)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: CouponOrderField
 }
 
 """Input for the createCategoricalCategoryCharacteristic mutation"""
@@ -421,6 +529,57 @@ input CreateCategoryInput
 
   """The NumericalCategoryCharacteristics of the Category"""
   numericalCharacteristics: [NumericalCategoryCharacteristicInput!]!
+}
+
+"""Input for the createCoupon mutation."""
+input CreateCouponInput
+  @join__type(graph: DISCOUNT)
+{
+  """The code of the coupon."""
+  code: String!
+
+  """The id of the discount the coupon is for."""
+  discountId: UUID!
+
+  """The maximum number of times the coupon can be used."""
+  maxUsages: Int!
+
+  """The date and time from which the coupon is valid."""
+  validFrom: DateTime!
+
+  """The date and time until which the coupon is valid."""
+  validUntil: DateTime!
+}
+
+"""Input for the createDiscount mutation."""
+input CreateDiscountInput
+  @join__type(graph: DISCOUNT)
+{
+  """The discount applied to the order item."""
+  discount: Float!
+
+  """The category ids to which the discount applies."""
+  discountAppliesToCategoryIds: [UUID!]!
+
+  """The product ids to which the discount applies."""
+  discountAppliesToProductIds: [UUID!]!
+
+  """The product variant ids to which the discount applies."""
+  discountAppliesToProductVariantIds: [UUID!]!
+
+  """
+  The maximum number of times a user can use this discount in bought ProductItems.
+  """
+  maxUsagesPerUser: Int!
+
+  """The minimum order amount required to use this discount."""
+  minOrderAmount: Int
+
+  """The date and time from which the discount is valid."""
+  validFrom: DateTime!
+
+  """The date and time until which the discount is valid."""
+  validUntil: DateTime!
 }
 
 """Input for the createNotification mutation"""
@@ -616,12 +775,221 @@ scalar Date
 scalar DateTime
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: REVIEW)
   @join__type(graph: SHOPPINGCART)
   @join__type(graph: TAX)
   @join__type(graph: USER)
   @join__type(graph: WISHLIST)
+
+"""
+A discount.
+Multiple discounts are applied multiplicatively:
+discounted = original * (1 - discount1) * (1 - discount2) * ...
+"""
+type Discount implements Node
+  @join__implements(graph: DISCOUNT, interface: "Node")
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
+{
+  """
+  The discount applied to the order item, e.g. 0.2 meaning a 20% reduction in price.
+  Multiple discounts are applied multiplicatively:
+  discounted = original * (1 - discount1) * (1 - discount2) * ...
+  """
+  discount: Float!
+
+  """Get all categories to which this discount directly applies"""
+  discountAppliesToCategories(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CommonOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CategoryConnection!
+
+  """Get all product variants to which this discount directly applies"""
+  discountAppliesToProductVariants(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CommonOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ProductVariantConnection!
+
+  """Get all products to which this discount directly applies"""
+  discountAppliesToProducts(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CommonOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ProductConnection!
+
+  """Get all product variants to which this discount directly applies"""
+  discountRequiresCoupon(
+    """Filtering"""
+    filter: CouponFilterInput
+
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CouponOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CouponConnection!
+
+  """Get all the usages of this discount by all users."""
+  discountUsages(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: DiscountUsageOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): DiscountUsageConnection!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """
+  The maximum number of times a user can use this discount in bought ProductItems.
+  """
+  maxUsagesPerUser: Int
+
+  """The minimum order amount required to use this discount."""
+  minOrderAmount: Int
+
+  """The date and time from which the discount is valid."""
+  validFrom: DateTime!
+
+  """The date and time until which the discount is valid."""
+  validUntil: DateTime!
+}
+
+"""A connection to a list of `Discount` values."""
+type DiscountConnection
+  @join__type(graph: DISCOUNT)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [Discount!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Discount order fields"""
+enum DiscountOrderField
+  @join__type(graph: DISCOUNT)
+{
+  """Order discounts by their id"""
+  ID @join__enumValue(graph: DISCOUNT)
+
+  """Order discounts by the valid from date"""
+  VALID_FROM @join__enumValue(graph: DISCOUNT)
+
+  """Order discounts by the valid until date"""
+  VALID_UNTIL @join__enumValue(graph: DISCOUNT)
+}
+
+"""Discount order"""
+input DiscountOrderInput
+  @join__type(graph: DISCOUNT)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: DiscountOrderField
+}
+
+"""Discount usage by a user."""
+type DiscountUsage implements Node
+  @join__implements(graph: DISCOUNT, interface: "Node")
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
+{
+  """The used discount."""
+  discount: Discount!
+
+  """The ID of the node."""
+  id: UUID!
+
+  """The amount of items the user has used this discount for."""
+  usages: Int!
+
+  """The user using the discount."""
+  user: User!
+}
+
+"""A connection to a list of `DiscountUsage` values."""
+type DiscountUsageConnection
+  @join__type(graph: DISCOUNT)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [DiscountUsage!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""DiscountUsage order fields"""
+enum DiscountUsageOrderField
+  @join__type(graph: DISCOUNT)
+{
+  """Order discount usages by their id"""
+  ID @join__enumValue(graph: DISCOUNT)
+
+  """Order discount usages by their usages"""
+  USAGES @join__enumValue(graph: DISCOUNT)
+}
+
+"""DiscountUsage order"""
+input DiscountUsageOrderInput
+  @join__type(graph: DISCOUNT)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: DiscountUsageOrderField
+}
+
+"""Input for the findApplicableDiscounts query."""
+input FindApplicableDiscountsInput
+  @join__type(graph: DISCOUNT)
+  @inaccessible
+{
+  """The number of items to which the discounts should be applied."""
+  count: Int!
+
+  """The list of coupon ids for which discounts should be computed."""
+  couponIds: [UUID!]!
+
+  """The product variant id for which discounts should be computed."""
+  productVariantId: UUID!
+
+  """The user id for which discounts should be computed."""
+  userId: UUID!
+}
 
 """The gender of a user"""
 enum Gender
@@ -645,6 +1013,7 @@ scalar join__FieldSet
 enum join__Graph {
   ADDRESS @join__graph(name: "address", url: "http://localhost:3500/v1.0/invoke/address/method/graphql")
   CATALOG @join__graph(name: "catalog", url: "http://localhost:3500/v1.0/invoke/catalog/method/graphql")
+  DISCOUNT @join__graph(name: "discount", url: "http://localhost:3500/v1.0/invoke/discount/method/graphql")
   INVENTORY @join__graph(name: "inventory", url: "http://localhost:3500/v1.0/invoke/inventory/method/graphql")
   NOTIFICATION @join__graph(name: "notification", url: "http://localhost:3500/v1.0/invoke/notification/method/graphql")
   REVIEW @join__graph(name: "review", url: "http://localhost:3500/v1.0/invoke/review/method/")
@@ -671,6 +1040,7 @@ enum link__Purpose {
 type Mutation
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: REVIEW)
@@ -746,6 +1116,36 @@ type Mutation
     """Input for the updateProductVariant mutation"""
     input: UpdateProductVariantInput!
   ): ProductVariant! @join__field(graph: CATALOG)
+
+  """Create a new coupon"""
+  createCoupon(
+    """Input for the createCoupon mutation"""
+    input: CreateCouponInput!
+  ): Coupon! @join__field(graph: DISCOUNT)
+
+  """Create a new discount"""
+  createDiscount(
+    """Input for the createDiscount mutation"""
+    input: CreateDiscountInput!
+  ): Discount! @join__field(graph: DISCOUNT)
+
+  """Register a coupon"""
+  registerCoupon(
+    """Input for the registerCoupon mutation"""
+    input: RegisterCouponInput!
+  ): Coupon! @join__field(graph: DISCOUNT)
+
+  """Update a coupon"""
+  updateCoupon(
+    """Input for the updateCoupon mutation"""
+    input: UpdateCouponInput!
+  ): Coupon! @join__field(graph: DISCOUNT)
+
+  """Update a discount"""
+  updateDiscount(
+    """Input for the updateDiscount mutation"""
+    input: UpdateDiscountInput!
+  ): Discount! @join__field(graph: DISCOUNT)
 
   """
   Adds a batch of product items with the specified productVartiantId of size number
@@ -886,6 +1286,7 @@ type Mutation
 interface Node
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: TAX)
   @join__type(graph: USER)
@@ -1019,6 +1420,7 @@ input NumericalCategoryCharacteristicValueInput
 enum OrderDirection
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: REVIEW)
@@ -1028,16 +1430,18 @@ enum OrderDirection
   @join__type(graph: WISHLIST)
 {
   """Ascending order"""
-  ASC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+  ASC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
 
   """Descending order"""
-  DESC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+  DESC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
 }
 
 """A product."""
 type Product implements Node
   @join__implements(graph: CATALOG, interface: "Node")
+  @join__implements(graph: DISCOUNT, interface: "Node")
   @join__type(graph: CATALOG, key: "id", resolvable: true)
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
 {
   """Get all associated Categories"""
   categories(
@@ -1049,19 +1453,19 @@ type Product implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): CategoryConnection!
+  ): CategoryConnection! @join__field(graph: CATALOG)
 
   """The default variant of the product."""
-  defaultVariant: ProductVariant!
+  defaultVariant: ProductVariant! @join__field(graph: CATALOG)
 
   """The ID of the node."""
   id: UUID!
 
   """An internal name to identify the Product, not visible to customers."""
-  internalName: String!
+  internalName: String! @join__field(graph: CATALOG)
 
   """If true, the Product is visible to customers."""
-  isPubliclyVisible: Boolean!
+  isPubliclyVisible: Boolean! @join__field(graph: CATALOG)
 
   """Get all associated ProductVariants"""
   variants(
@@ -1076,12 +1480,25 @@ type Product implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): ProductVariantConnection!
+  ): ProductVariantConnection! @join__field(graph: CATALOG)
+
+  """Get all discounts which apply directly to this product"""
+  discounts(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: DiscountOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): DiscountConnection! @join__field(graph: DISCOUNT)
 }
 
 """A connection to a list of `Product` values."""
 type ProductConnection
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
 {
   """Whether this connection has a next page"""
   hasNextPage: Boolean!
@@ -1198,7 +1615,9 @@ input ProductOrderInput
 """Foreign type of a product variant."""
 type ProductVariant implements Node
   @join__implements(graph: CATALOG, interface: "Node")
+  @join__implements(graph: DISCOUNT, interface: "Node")
   @join__type(graph: CATALOG, key: "id", resolvable: true)
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
   @join__type(graph: INVENTORY, key: "id")
   @join__type(graph: REVIEW, key: "id")
   @join__type(graph: SHOPPINGCART, key: "id", resolvable: false)
@@ -1228,6 +1647,32 @@ type ProductVariant implements Node
     skip: Int
   ): ProductVariantVersionConnection! @join__field(graph: CATALOG)
 
+  """
+  Get all discounts which apply to this product variant for the authenticated user
+  """
+  applicableDiscounts(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: DiscountOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): DiscountConnection! @join__field(graph: DISCOUNT)
+
+  """Get all discounts which apply directly to this product variant"""
+  discounts(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: DiscountOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): DiscountConnection! @join__field(graph: DISCOUNT)
+
   """A product item connection for referenced product items in stock"""
   productItems: ProductItemConnection @join__field(graph: INVENTORY)
 
@@ -1254,6 +1699,7 @@ type ProductVariant implements Node
 """A connection to a list of `ProductVariant` values."""
 type ProductVariantConnection
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: WISHLIST)
 {
   """Whether this connection has a next page"""
@@ -1430,6 +1876,7 @@ input ProductVariantVersionOrderInput
 type Query
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: REVIEW)
@@ -1491,6 +1938,26 @@ type Query
     """Number of items to skip"""
     skip: Int
   ): ProductConnection! @join__field(graph: CATALOG)
+
+  """Get a coupon by id"""
+  coupon(
+    """The id of the coupon"""
+    id: UUID!
+  ): Coupon! @join__field(graph: DISCOUNT)
+
+  """Get a discount by id"""
+  discount(
+    """The id of the discount"""
+    id: UUID!
+  ): Discount! @join__field(graph: DISCOUNT)
+
+  """
+  Find all applicable discounts for a product variant and user, and list of coupon ids.
+  """
+  findApplicableDiscounts(
+    """The input for the findApplicableDiscounts query."""
+    input: FindApplicableDiscountsInput!
+  ): [Discount!]! @inaccessible @join__field(graph: DISCOUNT)
 
   """Retrieves all product items"""
   productItems(
@@ -1615,6 +2082,17 @@ enum Rating
   THREE_STARS @join__enumValue(graph: REVIEW)
   FOUR_STARS @join__enumValue(graph: REVIEW)
   FIVE_STARS @join__enumValue(graph: REVIEW)
+}
+
+"""Input for the registerCoupon mutation"""
+input RegisterCouponInput
+  @join__type(graph: DISCOUNT)
+{
+  """The code of the coupon."""
+  code: String!
+
+  """The user who wants to register the coupon."""
+  userId: UUID!
 }
 
 """The input to reserve a batch of product items"""
@@ -1899,6 +2377,64 @@ input TaxRateVersionOrderInput
   field: TaxRateVersionOrderField
 }
 
+"""Input for the updateCoupon mutation."""
+input UpdateCouponInput
+  @join__type(graph: DISCOUNT)
+{
+  """The code of the coupon."""
+  code: String
+
+  """The id of the coupon to update."""
+  id: UUID!
+
+  """The maximum number of times the coupon can be used."""
+  maxUsages: Int
+
+  """The date and time from which the coupon is valid."""
+  validFrom: DateTime
+
+  """The date and time until which the coupon is valid."""
+  validUntil: DateTime
+}
+
+"""Input for the updateDiscount mutation."""
+input UpdateDiscountInput
+  @join__type(graph: DISCOUNT)
+{
+  """Added category ids to which the discount applies."""
+  addedDiscountAppliesToCategoryIds: [UUID!]
+
+  """Added product ids to which the discount applies."""
+  addedDiscountAppliesToProductIds: [UUID!]
+
+  """Added product variant ids to which the discount applies."""
+  addedDiscountAppliesToProductVariantIds: [UUID!]
+
+  """The id of the discount to update."""
+  id: UUID!
+
+  """The discount applied to the order item."""
+  maxUsagesPerUser: Int
+
+  """The minimum order amount required to use this discount."""
+  minOrderAmount: Int
+
+  """Removed category ids to which the discount applies."""
+  removedDiscountAppliesToCategoryIds: [UUID!]
+
+  """Removed product ids to which the discount applies."""
+  removedDiscountAppliesToProductIds: [UUID!]
+
+  """Removed product variant ids to which the discount applies."""
+  removedDiscountAppliesToProductVariantIds: [UUID!]
+
+  """The date and time from which the discount is valid."""
+  validFrom: DateTime
+
+  """The date and time until which the discount is valid."""
+  validUntil: DateTime
+}
+
 """Input for the updateNotification mutation"""
 input UpdateNotificationInput
   @join__type(graph: NOTIFICATION)
@@ -2038,9 +2574,11 @@ input UpdateWishlistInput
 """A user."""
 type User implements Node
   @join__implements(graph: ADDRESS, interface: "Node")
+  @join__implements(graph: DISCOUNT, interface: "Node")
   @join__implements(graph: NOTIFICATION, interface: "Node")
   @join__implements(graph: USER, interface: "Node")
   @join__type(graph: ADDRESS, key: "id", resolvable: true)
+  @join__type(graph: DISCOUNT, key: "id", resolvable: true)
   @join__type(graph: NOTIFICATION, key: "id", resolvable: true)
   @join__type(graph: REVIEW, key: "id")
   @join__type(graph: SHOPPINGCART, key: "id")
@@ -2064,6 +2602,33 @@ type User implements Node
 
   """The ID of the node."""
   id: UUID!
+
+  """Get all coupons this user has claimed"""
+  coupons(
+    """Filtering"""
+    filter: CouponFilterInput
+
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CouponOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): CouponConnection! @join__field(graph: DISCOUNT)
+
+  """Get all the discount usages by this user"""
+  discountUsages(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: DiscountUsageOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): DiscountUsageConnection! @join__field(graph: DISCOUNT)
 
   """Get all notifications the user received"""
   notifications(
@@ -2200,6 +2765,7 @@ input UserAddressOrderInput
 
 """A connection to a list of `User` values."""
 type UserConnection
+  @join__type(graph: DISCOUNT)
   @join__type(graph: USER)
 {
   """Whether this connection has a next page"""
@@ -2238,6 +2804,7 @@ input UserOrderInput
 scalar UUID
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
+  @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: REVIEW)
