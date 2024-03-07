@@ -29,19 +29,19 @@ classDiagram {
         boundedContexts.account = package("Account") layout {
             width = 355.194290034
             height = 322.755733225
-            pos = apos(-420, 342.5)
+            pos = apos(-420, 197.5)
         }
 
         boundedContexts.user = package("User") layout {
             width = 458.277241987
-            height = 226.188750551
-            pos = apos(-450, 660)
+            height = 236.499771766
+            pos = apos(-450, 522.5)
         }
 
         boundedContexts.notification = package("Notification") layout {
             width = 400.684089512
             height = 200.416947984
-            pos = apos(-897.5, 605)
+            pos = apos(-897.5, 465)
         }
 
         boundedContexts.wishlist = package("Wishlist") layout {
@@ -63,8 +63,8 @@ classDiagram {
         }
 
         boundedContexts.discount = package("Discount") layout {
-            width = 517.631207732
-            height = 603.745921541
+            width = 530.820977898
+            height = 659.802444745
             pos = apos(115, 200)
         }
 
@@ -118,8 +118,8 @@ classDiagram {
 
         boundedContexts.product = package("Product") layout {
             height = 612.166505087
-            width = 389.766537637
-            pos = apos(627.5, -222.5)
+            width = 368.333161118
+            pos = apos(650, -222.5)
         }
 
         boundedContexts.media = package("Media") layout {
@@ -129,9 +129,9 @@ classDiagram {
         }
 
         boundedContexts.review = package("Review") layout {
-            width = 360.32266988
+            width = 368.207568456
             height = 198.264144528
-            pos = apos(625, -430)
+            pos = apos(650, -430)
         }
 
         boundedContexts.return = package("Return") layout {
@@ -167,7 +167,7 @@ classDiagram {
 
     class("AuthCredential") layout {
         width = 144.728151114
-        pos = apos(-240, 415)
+        pos = apos(-240, 277.5)
     }
 
     class("Account") {
@@ -176,7 +176,7 @@ classDiagram {
             username : string
         }
     } layout {
-        pos = apos(-240, 575)
+        pos = apos(-240, 437.5)
     }
 
     class("User") {
@@ -189,7 +189,7 @@ classDiagram {
             username : string
         }
     } layout {
-        pos = apos(-240, 785)
+        pos = apos(-240, 647.5)
     }
 
     class("Address", abstract = true) {
@@ -363,7 +363,7 @@ classDiagram {
             dateRead : "DateTime?"
         }
     } layout {
-        pos = apos(-730, 719)
+        pos = apos(-730, 581.5)
     }
 
     class("ProductItem") {
@@ -415,14 +415,23 @@ classDiagram {
     class("Discount") {
         public {
             discount : double
-            maxUsagesPerUser : "int?..."
+            maxUsagesPerUser : "int?"
             validUntil : DateTime
             validFrom : DateTime
             minOrderAmount : "int?"
             maxDiscountableAmount : "int?"
         }
     } layout {
-        pos = apos(470, 700)
+        pos = apos(492.5, 700)
+    }
+
+    class("DiscountUsage") {
+        public {
+            amount : int
+        }
+    } layout {
+        width = 207.671608841
+        pos = apos(225, 747.5)
     }
 
     class("TaxRate") {
@@ -635,8 +644,8 @@ classDiagram {
 
         User --> Order with {
             label("0..* : orders", 0.95, 13.4)
-            label("1 : user", 0.35, -30.2)
-            over = start(0.125).axisAligned(0.438, end(0.5))
+            label("1 : user", 0.014, -35.1)
+            over = start(0.202).axisAligned(-0.248, rpos(User, 175, 302.5), 0, end(0.5))
         } withClass "ccr"
 
         ProductVariant --> Review with {
@@ -748,31 +757,43 @@ classDiagram {
 
         User --> Coupon with {
             label("0..* : coupons", 0.99, 64.3)
-            label("1 : user", 0.39, 6.1)
+            label("0..* : users", 0.403, 7.3)
             over = start(0.06).axisAligned(-1, end(0.335))
         } withClass "ccr"
 
+        User <--> DiscountUsage with {
+            label("0..* : discountUsages", 0.712, 14.8)
+            label("1 : user", 0.093, 13.7)
+            over = start(0.125).axisAligned(0.514, end(0.42))
+        } withClass "ccr"
+
+        Discount <--> DiscountUsage with {
+            label("0..* : discountUsages", 0.515, 24.3)
+            label("1 : discount", 0.189, -58.2)
+            over = start(0.248).axisAligned(0, rpos(Discount, -187.5, 137.5), 1, end(0.262))
+        } withClass "ccr"
+
         Coupon <--> Discount with {
-            label("1 : discount", 0.62, 21, 90)
+            label("1 : discount", 0.615, 21, 90)
             label("0..* : discountAppliesToCoupon", 0.445, -22.3, 90)
-            over = start(Position.Right).axisAligned(1, end(0.74))
+            over = start(Position.Right).axisAligned(1, end(0.728))
         }
 
         Discount --> Product with {
             label("0..* : \ndiscountAppliesTo\nProduct", 0.83, -58.3, 0)
             label("0..* : discounts", 0.36, -13, 90)
-            over = start(0.805).axisAligned(0, end(0.49))
+            over = start(0.787).axisAligned(0, end(0.49))
         } withClass "ccr"
 
         Discount --> ProductVariant with {
             label("0..* : \ndiscountAppliesTo\nProductVariant", 0.885, 6.6, 0)
             label("0..* : discounts", 0.37, 26.1, 90)
-            over = start(0.82).axisAligned(0, end(0.37))
+            over = start(0.797).axisAligned(0, end(0.37))
         } withClass "ccr"
 
         Discount --> Category with {
             label("0..* : discountAppliesToCategory", 0.945, -14.5)
-            label("0..* : discounts", 0.125, 4.3)
+            label("0..* : discounts", 0.128, -27.2)
             over = start(0).axisAligned(
                 -1,
                 apos(1130, 1030),
@@ -855,7 +876,7 @@ classDiagram {
         } withClass "ccr"
 
         OrderItem --> Discount with {
-            label("0..* : discounts", 0.88, -19.5)
+            label("0..* : discounts", 0.705, 33.9)
             label("0..* : usedWith", 0.415, -54.2)
             over = start(Position.Top).axisAligned(0, end(0.085))
         } withClass "ccr"

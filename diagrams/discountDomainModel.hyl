@@ -1,0 +1,112 @@
+classDiagram {
+
+    class("Coupon") {
+        public {
+            usages : "int"
+            maxUsages : "int?"
+            validUntil : DateTime
+            validFrom : DateTime
+            code : string
+        }
+    } layout {
+        pos = apos(307.5, 340)
+    }
+
+    class("Discount") {
+        public {
+            discount : double
+            maxUsagesPerUser : "int?"
+            validUntil : DateTime
+            validFrom : DateTime
+            minOrderAmount : "int?"
+            maxDiscountableAmount : "int?"
+        }
+    } layout {
+        pos = apos(492.5, 700)
+    }
+
+    class("User") layout {
+        pos = apos(-55, 490)
+    } styles {
+        class += "imported"
+    }
+
+    class("DiscountUsage") {
+        public {
+            amount : int
+        }
+    } layout {
+        pos = rpos(User, 0, 217.5)
+    }
+
+    class("Product") layout {
+        pos = apos(1167.5, 550)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariant") layout {
+        pos = rpos(Product, 0, 150)
+    } styles {
+        class += "imported"
+    }
+
+    class("Category") layout {
+        pos = rpos(ProductVariant, 0, 150)
+    } styles {
+        class += "imported"
+    }
+
+    User --> Coupon with {
+        label("0..* : coupons", 0.937, 69.5)
+        label("0..* : users", 0.465, 6.7)
+        over = start(0.002).axisAligned(-1, end(0.335))
+    }
+
+    User <--> DiscountUsage with {
+        label("0..* : discountUsages", 0.858, -90.7)
+        label("1 : user", 0.056, 41.6)
+        over = start(0.261).line(end(0.739))
+    }
+
+    Discount <--> DiscountUsage with {
+        label("0..* : discountUsages", 0.675, -15)
+        label("1 : discount", 0.201, 35.4)
+        over = start(0.489).line(end(0.996))
+    }
+
+    Coupon <--> Discount with {
+        label("1 : discount", 0.611, 25.2, 90)
+        label("0..* : discountAppliesToCoupon", 0.333, -35.2)
+        over = start(Position.Right).axisAligned(1, end(0.82))
+    }
+
+    Discount --> Product with {
+        label("0..* : \ndiscountAppliesTo\nProduct", 0.84, -64.4, 0)
+        label("0..* : discounts", 0.11, -32)
+        over = start(0.93).axisAligned(0.5, end(0.49))
+    }
+
+    Discount --> ProductVariant with {
+        label("0..* : \ndiscountAppliesTo\nProductVariant", 0.746, -63.1, 0)
+        label("0..* : discounts", 0.176, -31.1, 0)
+        over = start(0).line(end(0.5))
+    }
+
+    Discount --> Category with {
+        label("0..* : discountAppliesTo\nCategory", 0.831, 21.5)
+        label("0..* : discounts", 0.118, -23)
+        over = start(0.07).axisAligned(0.5, end(0.5))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+}
