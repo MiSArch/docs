@@ -1529,6 +1529,9 @@ type ProductItem
 
   """Describes the inventory status of the product item"""
   inventoryStatus: ProductItemStatus!
+
+  """Reference to the order that reserved the product item"""
+  orderId: UUID
 }
 
 """A connection of product items"""
@@ -2104,6 +2107,9 @@ input ReserveProductItemsBatchInput
 
   """The number of product items to reserve"""
   number: Int!
+
+  """The order id that reserves the product items"""
+  orderId: UUID!
 }
 
 """The Review of a user."""
