@@ -286,7 +286,6 @@ classDiagram {
             description : string
             version : int
             retailPrice : int
-            price : int
             createdAt : DateTime
             canBeReturnedForDays : "double?"
             weight : double
