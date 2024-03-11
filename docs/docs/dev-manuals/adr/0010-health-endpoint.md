@@ -24,6 +24,7 @@ it is easier to implement and the difference between the two routes is not relev
 ### `GET /health 200 OK response: "{…}"`
 
 - Good, easier to implement
+- Good, follows industry standard as for example in Spring Boot
 - Neutral, distinction between liveness and readiness can still be added using the JSON body
 
 ### `GET /liveness & GET /readiness 200 OK responses: "{…}"`
