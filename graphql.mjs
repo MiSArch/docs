@@ -10,6 +10,11 @@ export default [
         docs: "/docs/docs/dev-manuals/services/catalog"
     },
     {
+        id: "discount",
+        path: "schemas/discount.graphql",
+        docs: "/docs/docs/dev-manuals/services/discount"
+    },
+    {
         id: "inventory",
         path: "schemas/inventory.graphql",
         docs: false
@@ -23,6 +28,11 @@ export default [
         id: "review",
         path: "schemas/review.graphql",
         docs: false
+    },
+    {
+        id: "shipment",
+        path: "schemas/shipment.graphql",
+        docs: "/docs/docs/dev-manuals/services/shipment"
     },
     {
         id: "shoppingcart",
