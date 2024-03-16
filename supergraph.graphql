@@ -954,6 +954,20 @@ input DiscountOrderInput
   field: DiscountOrderField
 }
 
+"""A list of discounts for a product variant (and count)"""
+type DiscountsForProductVariant
+  @join__type(graph: DISCOUNT)
+{
+  """The number of items to which the discounts should be applied."""
+  count: Int!
+
+  """The list of applicable discounts"""
+  discounts: [Discount!]!
+
+  """The product variant id for which discounts should be computed."""
+  productVariantId: UUID!
+}
+
 """Discount usage by a user."""
 type DiscountUsage implements Node
   @join__implements(graph: DISCOUNT, interface: "Node")
@@ -1013,6 +1027,23 @@ input FindApplicableDiscountsInput
   @join__type(graph: DISCOUNT)
   @inaccessible
 {
+  """The order amount, used to filter applicable discounts."""
+  orderAmount: Int!
+
+  """The list of product variants for which discounts should be computed."""
+  productVariants: [FindApplicableDiscountsProductVariantInput!]!
+
+  """The user id for which discounts should be computed."""
+  userId: UUID!
+}
+
+"""
+Triple of a product variant id, a count, and a list of coupon ids for which discounts should be computed
+"""
+input FindApplicableDiscountsProductVariantInput
+  @join__type(graph: DISCOUNT)
+  @inaccessible
+{
   """The number of items to which the discounts should be applied."""
   count: Int!
 
@@ -1021,9 +1052,6 @@ input FindApplicableDiscountsInput
 
   """The product variant id for which discounts should be computed."""
   productVariantId: UUID!
-
-  """The user id for which discounts should be computed."""
-  userId: UUID!
 }
 
 """The gender of a user"""
@@ -1668,6 +1696,25 @@ type ProductItemConnection
   hasNextPage: Boolean!
 }
 
+"""Filtering options for product items"""
+input ProductItemFilter
+  @join__type(graph: INVENTORY)
+{
+  """Linked product variant id"""
+  productVariant: UUID
+
+  """Current product item status"""
+  inventoryStatus: ProductItemStatus
+}
+
+"""Filtering options for product items of product variants"""
+input ProductItemOfProductVariantFilter
+  @join__type(graph: INVENTORY)
+{
+  """Current product item status"""
+  inventoryStatus: ProductItemStatus
+}
+
 """Ordering options for product items"""
 input ProductItemOrder
   @join__type(graph: INVENTORY)
@@ -1797,7 +1844,22 @@ type ProductVariant implements Node
   ): DiscountConnection! @join__field(graph: DISCOUNT)
 
   """A product item connection for referenced product items in stock"""
-  productItems: ProductItemConnection @join__field(graph: INVENTORY)
+  productItems(
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: ProductItemOrder
+
+    """Filtering"""
+    filter: ProductItemOfProductVariantFilter
+  ): ProductItemConnection @join__field(graph: INVENTORY)
+
+  """The number of product items in stock"""
+  inventoryCount: Int! @join__field(graph: INVENTORY)
 
   """Retrieves reviews of product variant."""
   reviews(
@@ -2087,14 +2149,14 @@ type Query
   ): Discount! @join__field(graph: DISCOUNT)
 
   """
-  Find all applicable discounts for a product variant and user, and list of coupon ids.
+  Find all applicable discounts for a user and a list of product variant, count and coupon id triples
   """
   findApplicableDiscounts(
     """The input for the findApplicableDiscounts query."""
     input: FindApplicableDiscountsInput!
-  ): [Discount!]! @inaccessible @join__field(graph: DISCOUNT)
+  ): [DiscountsForProductVariant!]! @inaccessible @join__field(graph: DISCOUNT)
 
-  """Retrieves all product items"""
+  """Retrieves all product items matching the filter"""
   productItems(
     """Number of items to skip"""
     skip: Int = 0
@@ -2104,21 +2166,9 @@ type Query
 
     """Ordering"""
     orderBy: ProductItemOrder
-  ): ProductItemConnection! @join__field(graph: INVENTORY)
 
-  """Returns product items in inventory of a product variant"""
-  productItemsByProductVariant(
-    """UUID of product variant for stock count"""
-    productVariantId: UUID!
-
-    """Number of items to skip"""
-    skip: Int = 0
-
-    """Number of items to return"""
-    first: Int = 2147483647
-
-    """Ordering"""
-    orderBy: ProductItemOrder
+    """Filtering"""
+    filter: ProductItemFilter
   ): ProductItemConnection! @join__field(graph: INVENTORY)
 
   """Retrieves a product item by id"""
