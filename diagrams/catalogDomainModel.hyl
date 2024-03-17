@@ -23,9 +23,8 @@ classDiagram {
             description : string
             version : int
             retailPrice : int
-            price : int
             createdAt : DateTime
-            canBeReturnedForDays : "double?"
+            canBeReturnedForDays : "int?"
             weight : double
         }
     } layout {
@@ -79,13 +78,13 @@ classDiagram {
     }
 
     class("CategoryCharacteristicValue", abstract = true) layout {
-        pos = apos(1507.5, 210)
+        pos = apos(1507.5, 217.5)
     }
 
     class("TaxRate") {
         
     } layout {
-        pos = apos(1347, 339.5)
+        pos = apos(1347, 336.5)
     } styles {
         class += "imported"
     }
@@ -115,7 +114,7 @@ classDiagram {
     }
 
     ProductVariantVersion !--> TaxRate with {
-        label("1 : taxRate", 0.8625, 11.1)
+        label("1 : taxRate", 0.828, 11.2)
         label("0..*", 0.145, -24.4)
         over = start(0.07375).line(end(0.5))
     }

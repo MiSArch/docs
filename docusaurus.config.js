@@ -111,6 +111,7 @@ export default {
                                         for: link__Purpose,
                                         import: [link__Import]
                                     ) repeatable on SCHEMA
+                                    directive @inaccessible on FIELD_DEFINITION | INTERFACE | OBJECT | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
                                 `)
                             ]
                         }
