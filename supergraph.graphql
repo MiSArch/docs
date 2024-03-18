@@ -109,6 +109,15 @@ input ArchiveUserAddressInput
   id: UUID!
 }
 
+"""Input for calculateShipmentFees query."""
+input CalculateShipmentFeesInput
+  @join__type(graph: SHIPMENT)
+  @inaccessible
+{
+  """The items to calculate the shipment fees for."""
+  items: [ProductVariantVersionWithQuantityAndShipmentMethodInput!]!
+}
+
 """A categorical characteristic of a category."""
 type CategoricalCategoryCharacteristic implements CategoryCharacteristic & Node
   @join__implements(graph: CATALOG, interface: "CategoryCharacteristic")
@@ -669,9 +678,9 @@ input CreateProductVariantVersionInput
   @join__type(graph: CATALOG)
 {
   """
-  The amount of days for which an instance of the ProductVariant can be returned after purchase
+  The amount of days for which an instance of the ProductVariant can be returned after purchase, if null can be returned indefinitely.
   """
-  canBeReturnedForDays: Float
+  canBeReturnedForDays: Int
 
   """
   The CategoricalCategoryCharacteristicValues of the ProductVariant, must be compatible with the Categories of the associated Product.
@@ -1940,9 +1949,9 @@ type ProductVariantVersion implements Node
   @join__type(graph: CATALOG, key: "id", resolvable: true)
 {
   """
-  The amount of days for which an instance of the ProductVariantVersion can be returned after purchase
+  The amount of days for which an instance of the ProductVariantVersion can be returned after purchase, if null can be returned indefinitely.
   """
-  canBeReturnedForDays: Float
+  canBeReturnedForDays: Int
 
   """Get all associated CategoryCharacteristicValues"""
   characteristicValues(
@@ -2003,9 +2012,9 @@ input ProductVariantVersionInput
   @join__type(graph: CATALOG)
 {
   """
-  The amount of days for which an instance of the ProductVariant can be returned after purchase
+  The amount of days for which an instance of the ProductVariant can be returned after purchase, if null can be returned indefinitely.
   """
-  canBeReturnedForDays: Float
+  canBeReturnedForDays: Int
 
   """
   The CategoricalCategoryCharacteristicValues of the ProductVariant, must be compatible with the Categories of the associated Product.
@@ -2056,6 +2065,22 @@ input ProductVariantVersionOrderInput
 
   """The field to order by"""
   field: ProductVariantVersionOrderField
+}
+
+"""
+Input for a product variant version with a quantity and shipment method.
+"""
+input ProductVariantVersionWithQuantityAndShipmentMethodInput
+  @join__type(graph: SHIPMENT)
+{
+  """The product variant version id."""
+  productVariantVersionId: UUID!
+
+  """The quantity of the product variant version."""
+  quantity: Int!
+
+  """The id of the shipment method."""
+  shipmentMethodId: UUID!
 }
 
 """Input for a product variant version with a quantity."""
@@ -2200,6 +2225,14 @@ type Query
     """UUID of review to retrieve."""
     id: UUID!
   ): Review! @join__field(graph: REVIEW)
+
+  """
+  Calculates the fees for a collection of shipped items. Should only be called by the Order service
+  """
+  calculateShipmentFees(
+    """The input for the calculateShipmentFees query."""
+    input: CalculateShipmentFeesInput!
+  ): Int! @inaccessible @join__field(graph: SHIPMENT)
 
   """Get a shipmentMethod by id"""
   shipmentMethod(
