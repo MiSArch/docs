@@ -1,0 +1,97 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Return Service
+
+The return service provides the bounded context `Return`.
+It is responsible for managing and validating returns.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/returnDomainModel" width="883.9301563617175" height="680.25" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/return).
+
+## Technology Stack
+
+- **Language**: Kotlin
+- **Framework**: Spring Boot
+- **GraphQL Library**: GraphQL Kotlin
+- **Database**: PostgreSQL
+- **Schema Management**: Flyway
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/main/`: Source code of the service
+  - `kotlin/org/misarch/return/`: Kotlin source code
+    - `event/`: Dapr event handling
+      - `model/`: Event DTOs
+    - `graphql/`: GraphQL API
+      - `dataloader/`: Data loaders for efficient data fetching
+      - `federation/`: Apollo Federation entitiy resolvers
+      - `input/`: Input types for mutations
+      - `model/`: GraphQL types
+        - `connection/`: Connection types and logic for paginated queries
+    - `persistance/`: Database entities and repositories
+      - `model/`: R2DBC entities
+      - `repository/`: Spring Data R2DBC repositories
+    - `service/`: Service logic
+  - `resources/`: Spring Boot application configuration and SQL schema migration files
+    - `db/migration/`: Flyway SQL schema migration files
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the return service and can be used by other services.
+
+### Published Defined Events
+
+#### return/return/created
+
+This event is published when a new user return is created.
+
+```tsx
+{
+  id: string,
+  orderId: string,
+  orderItemsIds: string[],
+  reason: string,
+  refundedAmount: number,
+  createdAt: string
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the return service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- [shipment/shipment/created](/docs/docs/dev-manuals/services/shipment#shipmentshipmentcreated): Used to import `Shipment` from the `Shipment` bounded context.
+- [shipment/shipment/status-updated](/docs/docs/dev-manuals/services/shipment#shipmentshipmentstatus-updated): Used to update the delivery status of imported `Shipment` entities.
+- order/order/created TODO link: Used to import `Order` and associated `OrderItem`s from the `Order` bounded context.
+- [catalog/product-variant-version/created](/docs/docs/dev-manuals/services/catalog#product-variant-versioncreated): Used to import `ProductVariantVersion` from the `Product` bounded context.
+
+## Important ADRs
+
+n/a

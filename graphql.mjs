@@ -25,6 +25,11 @@ export default [
         docs: "/docs/docs/dev-manuals/services/notification"
     },
     {
+        id: "return",
+        path: "schemas/return.graphql",
+        docs: "/docs/docs/dev-manuals/services/return"
+    },
+    {
         id: "review",
         path: "schemas/review.graphql",
         docs: false
