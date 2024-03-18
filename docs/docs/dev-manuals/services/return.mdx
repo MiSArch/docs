@@ -1,13 +1,13 @@
 import CustomImage from "@site/src/components/CustomImage";
 
-# Address Service
+# Return Service
 
-The address service provides the bounded context `Address`.
-It is responsible for managing addresses, both for users and of the vendor itself.
+The return service provides the bounded context `Return`.
+It is responsible for managing and validating returns.
 
 ## Domain Model
 
-<CustomImage path="/renderedDiagrams/addressDomainModel" width="1240.06640625" height="946.625" />
+<CustomImage path="/renderedDiagrams/returnDomainModel" width="883.9301563617175" height="680.25" />
 
 :::info
 
@@ -17,7 +17,7 @@ Imported entities from other bounded contexts are marked with a dashed border.
 
 ## API
 
-The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/address).
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/return).
 
 ## Technology Stack
 
@@ -34,7 +34,7 @@ The repository is structured as follows:
 <div className="repository-structure" >
 
 - `/src/main/`: Source code of the service
-  - `kotlin/org/misarch/address/`: Kotlin source code
+  - `kotlin/org/misarch/return/`: Kotlin source code
     - `event/`: Dapr event handling
       - `model/`: Event DTOs
     - `graphql/`: GraphQL API
@@ -54,51 +54,22 @@ The repository is structured as follows:
 
 ## Defined Events
 
-This section lists events that are defined by the address service and can be used by other services.
+This section lists events that are defined by the return service and can be used by other services.
 
 ### Published Defined Events
 
-#### address/user-address/created
+#### return/return/created
 
-This event is published when a new user address is created.
-
-```tsx
-{
-  id: string,
-  street1: string,
-  street2: string,
-  city: string,
-  postalCode: string,
-  country: string,
-  companyName?: string,
-  userId: string
-}
-```
-
-#### address/vendor-address/created
-
-This event is published when a new vendor address is created.
+This event is published when a new user return is created.
 
 ```tsx
 {
   id: string,
-  street1: string,
-  street2: string,
-  city: string,
-  postalCode: string,
-  country: string,
-  companyName?: string
-}
-```
-
-#### address/user-address/archived
-
-This event is published when a user address is archived.
-
-```tsx
-{
-  id: string,
-  userId: string
+  orderId: string,
+  orderItemsIds: string[],
+  reason: string,
+  refundedAmount: number,
+  createdAt: string
 }
 ```
 
@@ -108,7 +79,7 @@ n/a
 
 ## Imported Events
 
-This section lists events defined by other services that are used by the address service.
+This section lists events defined by other services that are used by the return service.
 
 ### Published Imported Events
 
@@ -116,7 +87,10 @@ n/a
 
 ### Subscribed Imported Events
 
-- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to validate that addresses belong to an existing users
+- [shipment/shipment/created](/docs/docs/dev-manuals/services/shipment#shipmentshipmentcreated): Used to import `Shipment` from the `Shipment` bounded context.
+- [shipment/shipment/status-updated](/docs/docs/dev-manuals/services/shipment#shipmentshipmentstatus-updated): Used to update the delivery status of imported `Shipment` entities.
+- order/order/created TODO link: Used to import `Order` and associated `OrderItem`s from the `Order` bounded context.
+- [catalog/product-variant-version/created](/docs/docs/dev-manuals/services/catalog#product-variant-versioncreated): Used to import `ProductVariantVersion` from the `Product` bounded context.
 
 ## Important ADRs
 

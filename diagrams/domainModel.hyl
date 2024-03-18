@@ -135,7 +135,7 @@ classDiagram {
         }
 
         boundedContexts.return = package("Return") layout {
-            height = 141.403065971
+            height = 155.353271144
             width = 407.962457429
             pos = apos(352.5, 1075)
         }
@@ -377,9 +377,10 @@ classDiagram {
         public {
             refundedAmount : int
             reason : string
+            createdAt : DateTime
         }
     } layout {
-        pos = apos(520, 1150)
+        pos = apos(520, 1167.5)
     }
 
     class("Invoice") {

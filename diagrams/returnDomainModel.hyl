@@ -1,0 +1,75 @@
+classDiagram {
+
+    class("Return") {
+        public {
+            refundedAmount : int
+            reason : string
+            createdAt : DateTime
+        }
+    } layout {
+        pos = apos(520, 1167.5)
+    }
+
+    class("Order") layout {
+        pos = apos(280, 970)
+    } styles {
+        class += "imported"
+    }
+
+    class("OrderItem") layout {
+        pos = apos(810, 970)
+    } styles {
+        class += "imported"
+    }
+
+    class("Shipment") layout {
+        pos = apos(810, 1327.5)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariantVersion") layout {
+        pos = apos(807.5, 710)
+    } styles {
+        class += "imported"
+    }
+
+    OrderItem !--> ProductVariantVersion with {
+        label("1 : productVariantVersion", 0.587, 35.4, 90)
+        label("0..*", 0.122, -41)
+        over = start(0.875).line(end(0.125))
+    }
+
+    Return --> OrderItem with {
+        label("1..* : returnedItems", 0.97, 81.9)
+        label("0..1 : returnedWith", 0.625, 37.9)
+        over = start(0.835).axisAligned(-0.425, end(0.34))
+    }
+
+    Order --> Return with {
+        label("0..* : returns", 0.815, -60)
+        label("1 : order", 0.075, 37.6)
+        over = start(0.125).line(end(0.675))
+    }
+
+    Order --> OrderItem with {
+        label("1..* : items", 0.82, 15.8)
+        label("1 : order", 0.145, 7.7)
+        over = start(0).line(end(0.5))
+    }
+
+    Return --> Shipment with {
+        label("1 : shipment", 0.929, -59.7)
+        label("0..1 : return", 0.465, 8.5)
+        over = start(0.035).axisAligned(-1, end(0.73))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+        }
+    }
+
+}
