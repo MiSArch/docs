@@ -70,16 +70,6 @@ input AddReviewInput
   isVisible: Boolean
 }
 
-input AddShoppingCartItemInput
-  @join__type(graph: SHOPPINGCART)
-{
-  """UUID of user owning the shopping cart."""
-  id: UUID!
-
-  """ShoppingCartItem in shoppingcart to update"""
-  shoppingCartItem: ShoppingCartItemInput!
-}
-
 input AddWishlistInput
   @join__type(graph: WISHLIST)
 {
@@ -747,6 +737,16 @@ input CreateShipmentMethodInput
   name: String!
 }
 
+input CreateShoppingCartItemInput
+  @join__type(graph: SHOPPINGCART)
+{
+  """UUID of user owning the shopping cart."""
+  id: UUID!
+
+  """ShoppingCartItem in shoppingcart to update"""
+  shoppingCartItem: ShoppingCartItemInput!
+}
+
 """Input for the createTaxRate mutation"""
 input CreateTaxRateInput
   @join__type(graph: TAX)
@@ -1317,9 +1317,9 @@ type Mutation
   
   Queries for existing item, otherwise adds new shoppingcart item.
   """
-  addShoppingcartItem(
-    """AddShoppingCartItemInput"""
-    input: AddShoppingCartItemInput!
+  createShoppingcartItem(
+    """CreateShoppingCartItemInput"""
+    input: CreateShoppingCartItemInput!
   ): ShoppingCartItem! @join__field(graph: SHOPPINGCART)
 
   """
