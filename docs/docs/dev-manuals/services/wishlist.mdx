@@ -1,0 +1,79 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Wishlist Service
+
+The wishlist service provides the bounded context `Wishlist`.
+It is responsible for managing wishlists of users.
+
+## Domain Model
+
+// TODO: Niklas
+
+<CustomImage path="/renderedDiagrams/addressDomainModel" width="1240.06640625" height="946.625" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/wishlist).
+
+## Technology Stack
+
+- **Language**: Rust
+- **Framework**: [axum](https://docs.rs/axum/latest/axum/)
+- **GraphQL Library**: [async_graphql](https://docs.rs/async-graphql/latest/async_graphql/)
+- **Database**: MongoDB
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure">
+- `/src`: Source code of the service
+  - `authentication.rs` Header authentication logic of service
+  - `base_connection.rs` Generic GraphQL connection
+  - `foreign_types.rs` Datatypes which are not part of the services bounded context
+  - `http_event_service.rs` Handling of incoming events
+  - `main.rs` Service execution and schema generation
+  - `mutation_input_structs.rs` GraphQL input datatypes for mutations
+  - `mutation.rs` GraphQL mutations and associated functions
+  - `order_datatypes.rs` GraphQL datatypes for connection element ordering
+  - `product_variant_connection.rs` GraphQL connection of product variants
+  - `query.rs` GraphQL queries and associated functions
+  - `user.rs` User with additional GraphQL field(s) provided by this service
+  - `wishlist_connection.rs` GraphQL connection of wishlist
+  - `wishlist.rs` Wishlist datatype
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the address service and can be used by other services.
+
+### Published Defined Events
+
+n/a
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the address service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to validate that wishlists belong to an existing users
+- [catalog/product-variant/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variantcreated): Used to validate product variants of in wishlists
+
+## Important ADRs
+
+n/a
