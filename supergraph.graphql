@@ -1535,7 +1535,7 @@ type Order implements Node
   id: UUID!
 
   """Get all associated Shipments"""
-  variants(
+  shipments(
     """Filtering"""
     filter: ShipmentFilterInput
 
@@ -2239,6 +2239,24 @@ type Query
     id: UUID!
   ): Notification! @join__field(graph: NOTIFICATION)
 
+  """Get a return by id"""
+  return(
+    """The id of the return"""
+    id: UUID!
+  ): Return! @join__field(graph: RETURN)
+
+  """Get all returns"""
+  returns(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: ReturnOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ReturnConnection! @join__field(graph: RETURN)
+
   """Retrieves all reviews."""
   reviews(
     """Describes that the `first` N reviews should be retrieved."""
@@ -2415,6 +2433,39 @@ type Return implements Node
 
   """The associated Shipment"""
   shipment: Shipment! @join__field(graph: SHIPMENT)
+}
+
+"""A connection to a list of `Return` values."""
+type ReturnConnection
+  @join__type(graph: RETURN)
+{
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
+  """The resulting items."""
+  nodes: [Return!]!
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+}
+
+"""Return order fields"""
+enum ReturnOrderField
+  @join__type(graph: RETURN)
+{
+  """Order returns by their id"""
+  ID @join__enumValue(graph: RETURN)
+}
+
+"""Direction to sort returns in"""
+input ReturnOrderInput
+  @join__type(graph: RETURN)
+{
+  """The direction to order by"""
+  direction: OrderDirection
+
+  """The field to order by"""
+  field: ReturnOrderField
 }
 
 """The Review of a user."""
@@ -3063,10 +3114,12 @@ type User implements Node
   @join__implements(graph: ADDRESS, interface: "Node")
   @join__implements(graph: DISCOUNT, interface: "Node")
   @join__implements(graph: NOTIFICATION, interface: "Node")
+  @join__implements(graph: RETURN, interface: "Node")
   @join__implements(graph: USER, interface: "Node")
   @join__type(graph: ADDRESS, key: "id", resolvable: true)
   @join__type(graph: DISCOUNT, key: "id", resolvable: true)
   @join__type(graph: NOTIFICATION, key: "id", resolvable: true)
+  @join__type(graph: RETURN, key: "id", resolvable: true)
   @join__type(graph: REVIEW, key: "id")
   @join__type(graph: SHOPPINGCART, key: "id")
   @join__type(graph: USER, key: "id", resolvable: true)
@@ -3128,6 +3181,18 @@ type User implements Node
     """Number of items to skip"""
     skip: Int
   ): NotificationConnection! @join__field(graph: NOTIFICATION)
+
+  """Get all returns of this user"""
+  returns(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: ReturnOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): ReturnConnection! @join__field(graph: RETURN)
 
   """Retrieves reviews of user."""
   reviews(
