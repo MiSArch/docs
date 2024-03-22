@@ -1,0 +1,133 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Inventory Service
+
+The inventory service consists of the context `ProductItem`.
+It is responsible for managing the inventory - consisting of `ProductItems` of a `ProductVariant`. It is part of the order and return saga, where it reserves and releases the required `ProductItems`.
+
+## Domain Model
+<CustomImage path="/renderedDiagrams/inventoryDomainModel" width="1542.5" height="663.25" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/payment).
+
+## Technology Stack
+
+- **Language**: TypeScript
+- **Framework**: NestJS
+- **GraphQL Library**: @nestjs/graphql with @nestjs/apollo (code first)
+- **Database**: MongoDB
+- **Entity Management**: Mongoose
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/`: Source code of the service
+  - `events/`: Dapr event handling
+    - `dto/`: Event DTOs
+  - `health/`: GraphQL API
+  - `inventory/`: `ProductItem` Module
+    - `dto`: Inventory DTOs
+    - `entities/`: Inventory persistet entities
+    - `graphql-types/`: Types for graphQL
+  - `product-variant-partial/`: `ProductVariantPartial` Module
+    - `entities/`: ProuctVariantPartial persistet entities
+  - `shared/`: Shared Code between different modules
+    - `constants`: Shared constants
+    - `decorators`: Shared decorators
+    - `enums`: Shared enumerators
+    - `guards`: Shared guards
+    - `interfaces`: Shared interfaces
+    - `logger`: Logging configuration
+    - `scalars`: Shared graphQL scalars
+    - `utils`: Shared helpers
+- `.dapr`: Dapr Configuration
+- `.github`: Github Actions
+
+</div>
+
+## Business Processes
+The inventory service is part of the [Buy](/docs/docs/dev-manuals/architecture/business-processes.md#buy-process) and [Return](/docs/docs/dev-manuals/architecture/business-processes.md#return-process) process.
+
+## Defined Events
+
+This section lists events that are defined by the inventory service and can be used by other services.
+
+### Published Defined Events
+
+#### inventory/product/created
+
+This event is published when a new product is created.
+
+```tsx
+{
+  id: string,
+  internalName: string,
+  isPubliclyVisible: boolean,
+  defaultVariantId: string,
+  categoryIds: string[]
+}
+```
+
+#### inventory/product-item/reservation-succeeded
+
+This event is published when all `ProductItems` for the `ProductVariants` of an `Orders` `OrderItems` were reserved successfully.
+
+```tsx
+{
+  order: Order
+}
+```
+
+#### inventory/product-item/reservation-failed
+
+This event is published when at least one `ProductItem` for the `ProductVariants` of an `Orders` `OrderItems` could not be reserved. 
+
+```tsx
+{
+  order: Order,
+  failedProductVariantIds: string[]
+}
+```
+
+#### inventory/product-item/release-succeeded
+
+This event is published after an order compensation event. It indicates, that all previously reserved `ProductItems` for the `ProductVariants` of an `Orders` `OrderItems` were released again. 
+
+```tsx
+{
+  order: Order,
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the catalog service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- [catalog/product-variant/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variantcreated): Used to import `ProductVariant` from the `Catalog` bounded context.
+- [order/order/created](/docs/docs/dev-manuals/services/order#orderordercreated): Used to reserve the `ProductItems` for an `Order`.
+
+## Important ADRs
+
+- [Check Entity Consistency](/docs/docs/dev-manuals/adr/check-entity-consistency)
+- [Service Health Endpoint](/docs/docs/dev-manuals/adr/health-endpoint)

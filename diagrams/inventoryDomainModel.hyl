@@ -1,0 +1,36 @@
+classDiagram {
+    class("ProductItem") {
+        public {
+            isInInventory : boolean
+        }
+    } layout {
+        pos = apos(1517.5, 372.5)
+    }
+
+    class("ProductVariant") {
+        public {
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(810, 50)
+    }
+
+    ProductVariant --> ProductItem with {
+        label("0..* : productItems", 0.9375, 13)
+        label("1 : productVariant", 0.115, -27)
+        over = start(0.125).axisAligned(
+            0.511,
+            apos(1160, 190),
+            0,
+            end(Position.Left)
+        )
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+        }
+    }
+}
