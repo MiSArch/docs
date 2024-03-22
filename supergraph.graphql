@@ -51,38 +51,6 @@ interface Address implements Node
   street2: String! @join__field(graph: ADDRESS)
 }
 
-input AddReviewInput
-  @join__type(graph: REVIEW)
-{
-  """UUID of user owning the review."""
-  userId: UUID!
-
-  """UUID of product variant in review."""
-  productVariantId: UUID!
-
-  """Body of Review."""
-  body: String!
-
-  """Rating of Review in 1-5 stars."""
-  rating: Rating!
-
-  """Flag if review is visible, by default set to true."""
-  isVisible: Boolean
-}
-
-input AddWishlistInput
-  @join__type(graph: WISHLIST)
-{
-  """UUID of user owning the wishlist."""
-  userId: UUID!
-
-  """UUIDs of product variants in wishlist."""
-  productVariantIds: [UUID!]!
-
-  """Wishlist name."""
-  name: String!
-}
-
 """Input for the archiveShipmentMethod mutation."""
 input ArchiveShipmentMethodInput
   @join__type(graph: SHIPMENT)
@@ -712,6 +680,25 @@ input CreateReturnInput
   reason: String!
 }
 
+input CreateReviewInput
+  @join__type(graph: REVIEW)
+{
+  """UUID of user owning the review."""
+  userId: UUID!
+
+  """UUID of product variant in review."""
+  productVariantId: UUID!
+
+  """Body of Review."""
+  body: String!
+
+  """Rating of Review in 1-5 stars."""
+  rating: Rating!
+
+  """Flag if review is visible, by default set to true."""
+  isVisible: Boolean
+}
+
 """Input for the createShipmentMethod mutation."""
 input CreateShipmentMethodInput
   @join__type(graph: SHIPMENT)
@@ -819,6 +806,19 @@ input CreateVendorAddressInput
 
   """The second part of the street part of the address to create"""
   street2: String!
+}
+
+input CreateWishlistInput
+  @join__type(graph: WISHLIST)
+{
+  """UUID of user owning the wishlist."""
+  userId: UUID!
+
+  """UUIDs of product variants in wishlist."""
+  productVariantIds: [UUID!]!
+
+  """Wishlist name."""
+  name: String!
 }
 
 """An RFC-3339 compliant Full Date Scalar"""
@@ -1272,10 +1272,12 @@ type Mutation
     input: CreateReturnInput!
   ): Return! @join__field(graph: RETURN)
 
-  """Adds a review."""
-  addReview(
-    """AddReviewInput"""
-    input: AddReviewInput!
+  """
+  Adds a review for a user and a product variant with a content, rating and visibility.
+  """
+  createReview(
+    """CreateReviewInput"""
+    input: CreateReviewInput!
   ): Review! @join__field(graph: REVIEW)
 
   """Updates a specific review referenced with an id."""
@@ -1366,9 +1368,9 @@ type Mutation
   
   Formats UUIDs as hyphenated lowercase Strings.
   """
-  addWishlist(
-    """AddWishlistInput"""
-    input: AddWishlistInput!
+  createWishlist(
+    """CreateWishlistInput"""
+    input: CreateWishlistInput!
   ): Wishlist! @join__field(graph: WISHLIST)
 
   """
