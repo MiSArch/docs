@@ -71,25 +71,22 @@ interface Order {
   rejectionReason?: RejectionReason,
   orderItems: OrderItem[],
   shipmentAddressId: string,
-  invoiceAddressId: string
+  invoiceAddressId: string,
+  compensatableOrderAmount: number,
+  paymentInformationId: string
 }
 
 interface OrderItem {
   id: string,
   createdAt: Date,
-  productItemId?: string,
   productVariantVersionId: string,
   productVariantId: string,
   taxRateVersionId: string,
+  shoppingCartItemId: string,
   count: number,
   compensatableAmount: number,
-  shipment: Shipment,
+  shipmentMethodId: string,
   discountIds: string[],
-}
-
-interface Shipment {
-  status: ShipmentStatus,
-  shipmentMethodId: string
 }
 
 enum OrderStatus {
@@ -101,13 +98,6 @@ enum OrderStatus {
 enum RejectionReason {
   INVALID_ORDER_DATA,
   INVENTORY_RESERVATION_FAILED
-}
-
-enum ShipmentStatus {
-  PENDING,
-  IN_PROGRESS,
-  DELIVERED,
-  FAILED
 }
 ```
 
