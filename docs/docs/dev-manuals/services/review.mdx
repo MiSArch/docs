@@ -8,6 +8,7 @@ It is responsible for managing reviews of users.
 ## Domain Model
 
 // TODO: Niklas
+
 <CustomImage path="/renderedDiagrams/reviewDomainModel" width="1365" height="131" />
 
 :::info
@@ -32,19 +33,13 @@ The service provides a GraphQL API, which is documented in the [GraphQL API docu
 The repository is structured as follows:
 
 <div className="repository-structure">
-- `/src`: Source code of the service
-  - `authentication.rs` Header authentication logic of service
-  - `base_connection.rs` Generic GraphQL connection
-  - `http_event_service.rs` Handling of incoming events
-  - `main.rs` Service execution and schema generation
-  - `mutation_input_structs.rs` GraphQL input datatypes for mutations
-  - `mutation.rs` GraphQL mutations and associated functions
-  - `order_datatypes.rs` GraphQL datatypes for connection element ordering
-  - `product_variant_connection.rs` GraphQL connection of product variants
-  - `query.rs` GraphQL queries and associated functions
-  - `review_connection.rs` GraphQL connection of review
-  - `review.rs` Review datatype
-  - `user.rs` User with additional GraphQL field(s) provided by this service
+ - `/src`: Source code of the service - `authentication.rs` Header authentication logic of service -
+ `base_connection.rs` Generic GraphQL connection - `http_event_service.rs` Handling of incoming events - `main.rs`
+ Service execution and schema generation - `mutation_input_structs.rs` GraphQL input datatypes for mutations -
+ `mutation.rs` GraphQL mutations and associated functions - `order_datatypes.rs` GraphQL datatypes for connection
+ element ordering - `product_variant_connection.rs` GraphQL connection of product variants - `query.rs` GraphQL queries
+ and associated functions - `review_connection.rs` GraphQL connection of review - `review.rs` Review datatype -
+ `user.rs` User with additional GraphQL field(s) provided by this service
 </div>
 
 ## Defined Events

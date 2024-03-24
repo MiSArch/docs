@@ -8,6 +8,7 @@ It is responsible for managing orders of users.
 ## Domain Model
 
 // TODO: Niklas
+
 <CustomImage path="/renderedDiagrams/orderDomainModel" width="1365" height="131" />
 
 :::info
@@ -32,23 +33,15 @@ The service provides a GraphQL API, which is documented in the [GraphQL API docu
 The repository is structured as follows:
 
 <div className="repository-structure">
-- `/src`: Source code of the service
-  - `authentication.rs` Header authentication logic of service
-  - `base_connection.rs` Generic GraphQL connection
-  - `order_connection.rs` GraphQL connection of discount
-  - `foreign_types.rs` Datatypes which are not part of the services bounded context
-  - `http_event_service.rs` Handling of incoming events
-  - `main.rs` Service execution and schema generation
-  - `mutation_input_structs.rs` GraphQL input datatypes for mutations
-  - `mutation.rs` GraphQL mutations and associated functions
-  - `order_compenstation.rs` Compensation logic on `shipment/shipment/creation-failed` event
-  - `order_connection.rs` GraphQL connection of order
-  - `order_datatypes.rs` GraphQL datatypes for connection element ordering
-  - `order_item_connection.rs` GraphQL connection of an order item
-  - `order_item.rs` Order item datatype
-  - `order.rs` Order datatype
-  - `query.rs` GraphQL queries and associated functions
-  - `user.rs` User with additional GraphQL field(s) provided by this service
+ - `/src`: Source code of the service - `authentication.rs` Header authentication logic of service -
+ `base_connection.rs` Generic GraphQL connection - `order_connection.rs` GraphQL connection of discount -
+ `foreign_types.rs` Datatypes which are not part of the services bounded context - `http_event_service.rs` Handling of
+ incoming events - `main.rs` Service execution and schema generation - `mutation_input_structs.rs` GraphQL input
+ datatypes for mutations - `mutation.rs` GraphQL mutations and associated functions - `order_compenstation.rs`
+ Compensation logic on `shipment/shipment/creation-failed` event - `order_connection.rs` GraphQL connection of order -
+ `order_datatypes.rs` GraphQL datatypes for connection element ordering - `order_item_connection.rs` GraphQL connection
+ of an order item - `order_item.rs` Order item datatype - `order.rs` Order datatype - `query.rs` GraphQL queries and
+ associated functions - `user.rs` User with additional GraphQL field(s) provided by this service
 </div>
 
 ## Defined Events
@@ -57,41 +50,43 @@ This section lists events that are defined by the order service and can be used 
 
 ```tsx
 interface Order {
-  id: string,
-  userId: string,
-  createdAt: Date,
-  orderStatus: OrderStatus,
-  placedAt: Date,
-  rejectionReason?: RejectionReason,
-  orderItems: OrderItem[],
-  shipmentAddressId: string,
-  invoiceAddressId: string,
-  compensatableOrderAmount: number,
-  paymentInformationId, string,
+ id: string;
+ userId: string;
+ createdAt: Date;
+ orderStatus: OrderStatus;
+ placedAt: Date;
+ rejectionReason?: RejectionReason;
+ orderItems: OrderItem[];
+ shipmentAddressId: string;
+ invoiceAddressId: string;
+ compensatableOrderAmount: number;
+ paymentInformationId;
+ string;
 }
 
 interface OrderItem {
-  id: string,
-  createdAt: Date,
-  productVariantId: string,
-  productVariantVersionId: string,
-  taxRateVersionId: string,
-  shoppingCartItemId: string,
-  count: number,
-  compensatableAmount: number,
-  shipmentMethodId, string,
-  discountIds: string[],
+ id: string;
+ createdAt: Date;
+ productVariantId: string;
+ productVariantVersionId: string;
+ taxRateVersionId: string;
+ shoppingCartItemId: string;
+ count: number;
+ compensatableAmount: number;
+ shipmentMethodId;
+ string;
+ discountIds: string[];
 }
 
 enum OrderStatus {
-  PENDING,
-  PLACED,
-  REJECTED
+ PENDING,
+ PLACED,
+ REJECTED
 }
 
 enum RejectionReason {
-  INVALID_ORDER_DATA,
-  INVENTORY_RESERVATION_FAILED
+ INVALID_ORDER_DATA,
+ INVENTORY_RESERVATION_FAILED
 }
 ```
 

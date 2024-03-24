@@ -5,10 +5,10 @@ import CustomImage from "@site/src/components/CustomImage";
 The invoice service provides the bounded context `Invoice`.
 It is responsible for managing invoices of orders.
 
-
 ## Domain Model
 
 // TODO: Niklas
+
 <CustomImage path="/renderedDiagrams/invoiceDomainModel" width="1365" height="131" />
 
 :::info
@@ -33,13 +33,9 @@ The service provides a GraphQL API, which is documented in the [GraphQL API docu
 The repository is structured as follows:
 
 <div className="repository-structure">
-- `/src`: Source code of the service
-  - `authentication.rs` Header authentication logic of service
-  - `http_event_service.rs` Handling of incoming events
-  - `invoice.rs` Invoice datatype
-  - `main.rs` Service execution and schema generation
-  - `order.rs` Order datatype
-  - `query.rs` GraphQL queries and associated functions
+ - `/src`: Source code of the service - `authentication.rs` Header authentication logic of service -
+ `http_event_service.rs` Handling of incoming events - `invoice.rs` Invoice datatype - `main.rs` Service execution and
+ schema generation - `order.rs` Order datatype - `query.rs` GraphQL queries and associated functions
 </div>
 
 ## Defined Events
@@ -52,45 +48,47 @@ The following types are used in the defined events:
 
 ```tsx
 interface Order {
-  id: string,
-  userId: string,
-  createdAt: Date,
-  orderStatus: OrderStatus,
-  placedAt: Date,
-  rejectionReason?: RejectionReason,
-  orderItems: OrderItem[],
-  shipmentAddressId: string,
-  invoiceAddressId: string,
-  compensatableOrderAmount: number,
-  paymentInformationId, string,
+ id: string;
+ userId: string;
+ createdAt: Date;
+ orderStatus: OrderStatus;
+ placedAt: Date;
+ rejectionReason?: RejectionReason;
+ orderItems: OrderItem[];
+ shipmentAddressId: string;
+ invoiceAddressId: string;
+ compensatableOrderAmount: number;
+ paymentInformationId;
+ string;
 }
 
 interface OrderItem {
-  id: string,
-  createdAt: Date,
-  productVariantId: string,
-  productVariantVersionId: string,
-  taxRateVersionId: string,
-  shoppingCartItemId: string,
-  count: number,
-  compensatableAmount: number,
-  shipmentMethodId, string,
-  discountIds: string[],
+ id: string;
+ createdAt: Date;
+ productVariantId: string;
+ productVariantVersionId: string;
+ taxRateVersionId: string;
+ shoppingCartItemId: string;
+ count: number;
+ compensatableAmount: number;
+ shipmentMethodId;
+ string;
+ discountIds: string[];
 }
 
 enum OrderStatus {
-  PENDING,
-  PLACED,
-  REJECTED
+ PENDING,
+ PLACED,
+ REJECTED
 }
 
 enum RejectionReason {
-  INVALID_ORDER_DATA,
-  INVENTORY_RESERVATION_FAILED
+ INVALID_ORDER_DATA,
+ INVENTORY_RESERVATION_FAILED
 }
 
 interface Invoice {
-  content: number,
+ content: number;
 }
 ```
 
@@ -106,6 +104,7 @@ This event is published when an invoice for an order is created.
   invoice: Invoice,
 }
 ```
+
 ### Subscribed Defined Events
 
 n/a
