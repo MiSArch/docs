@@ -91,54 +91,6 @@ enum ShipmentStatus {
   DELIVERED,
   FAILED
 }
-
-interface Order {
-  id: string,
-  userId: string,
-  createdAt: Date,
-  orderStatus: OrderStatus,
-  placedAt?: Date,
-  rejectionReason?: RejectionReason,
-  orderItems: OrderItem[],
-  shipmentAddressId: string,
-  invoiceAddressId: string
-}
-
-interface OrderItem {
-  id: string,
-  createdAt: Date,
-  productItemId?: string,
-  productVariantVersionId: string,
-  productVariantId: string,
-  taxRateVersionId: string,
-  count: number,
-  compensatableAmount: number,
-  shipment: Shipment,
-  discountIds: string[],
-}
-
-interface Shipment {
-  status: ShipmentStatus,
-  shipmentMethodId: string
-}
-
-enum OrderStatus {
-  PENDING,
-  PLACED,
-  REJECTED
-}
-
-enum RejectionReason {
-  INVALID_ORDER_DATA,
-  INVENTORY_RESERVATION_FAILED
-}
-
-enum ShipmentStatus {
-  PENDING,
-  IN_PROGRESS,
-  DELIVERED,
-  FAILED
-}
 ```
 
 ### Published Defined Events
