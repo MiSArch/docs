@@ -1,10 +1,4 @@
 classDiagram {
-    boundedContexts.payment = package("Payment") layout {
-        width = 1968.505925949
-        height = 210.771098401
-        pos = apos(-402.5, 1537.5)
-    }
-
     class("PaymentMethod") {
         public {
             name : string
