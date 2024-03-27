@@ -13,6 +13,8 @@ classDiagram {
         }
     } layout {
         pos = apos(810, 50)
+    } styles {
+        class += "imported"
     }
 
     ProductVariant --> ProductItem with {

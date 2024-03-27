@@ -1,0 +1,75 @@
+classDiagram {
+    boundedContexts.payment = package("Payment") layout {
+        width = 1968.505925949
+        height = 210.771098401
+        pos = apos(-402.5, 1537.5)
+    }
+
+    class("PaymentMethod") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1390, 1670)
+    }
+
+    class("PaymentInformation") layout {
+        pos = apos(820, 1670)
+    }
+
+    class("Payment") {
+        public {
+            payedAt : "Date?"
+            amount : int
+        }
+    } layout {
+        pos = apos(280, 1670)
+    }
+
+    Payment --> PaymentInformation with {
+        label("1 : paymentInformation", 0.65, 12.1)
+        label("0..* : payments", 0.24, -26.1)
+        over = start(1).line(end(0.5))
+    }
+
+     PaymentInformation !--> PaymentMethod with {
+        label("1 : method", 0.775, 11.4)
+        label("0..*", 0.075, 16.6)
+        over = start(1).line(end(0.5))
+    }
+
+    class("User") {
+        public {
+            dateJoined : DateTime
+            birthday : "Date?"
+            gender : "Gender?"
+            firstName: string
+            lastName: string
+            username : string
+        }
+    } layout {
+        pos = apos(-240, 647.5)
+    } styles {
+        class += "imported"
+    }
+
+   User --> PaymentInformation with {
+        label("0..* : paymentInformations", 0.975, 114.3)
+        label("1 : user", 0.065, 24.9)
+        over = start(0.415).axisAligned(
+            1,
+            apos(-810, 1760),
+            -1,
+            end(0.3125)
+            )
+    } withClass "ccr"
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+        }
+    }
+}
