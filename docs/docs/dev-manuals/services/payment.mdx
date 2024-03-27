@@ -4,9 +4,10 @@ import CustomImage from "@site/src/components/CustomImage";
 
 The payment service consists of the bounded contexts `Payment`, `PaymentInformation` and `PaymentMethod`.
 It is responsible for handling the payment prozess and managing `Users` payment Infotmations. It is part of the order and return saga, where it captures the payments for `Orders` or refunds the payment after an `Return`.
-It *is not a payment provider* but simulates communicating with one via the `Simulation` Service.
+It _is not a payment provider_ but simulates communicating with one via the `Simulation` Service.
 
 ## Domain Model
+
 CustomImage path="/renderedDiagrams/inventoryDomainModel" width="1542.5" height="663.25" />
 
 ## API
@@ -38,33 +39,34 @@ The repository is structured as follows:
   - `health/`: GraphQL API
   - `open-orders/`: Module for imported, pending `Orders`
     - `entities/`: Imported Order persistet entities
- - `payment/`: Module for `Payments`
-    - `dto`: Inventory DTOs
-    - `entities/`: Inventory persistet entities
- - `payment-information/`: Module for `PaymentInformations`
-    - `dto`: PaymentInformation DTOs
-    - `entities/`: PaymentInformation persistet entities
-  - `product-method/`: Folder for everything related to `PaymentMethods` Module
-  - `payment-provider-connection/`: Module for the communication with external payment Providers
-    - `dto`: Payment Provider Communication DTOs
-    - `payment-processors/`: Payment processing logic for each `PaymentMethod`
-  - `shared/`: Shared Code between different modules
-    - `constants`: Shared constants
-    - `decorators`: Shared decorators
-    - `enums`: Shared enumerators
-    - `guards`: Shared guards
-    - `interfaces`: Shared interfaces
-    - `logger`: Logging configuration
-    - `pipes`: Shared Pipelines
-    - `scalars`: Shared graphQL scalars
-    - `utils`: Shared helpers
-    - `validators`: Shared validators
+- `payment/`: Module for `Payments`
+  - `dto`: Inventory DTOs
+  - `entities/`: Inventory persistet entities
+- `payment-information/`: Module for `PaymentInformations`
+  - `dto`: PaymentInformation DTOs
+  - `entities/`: PaymentInformation persistet entities
+- `product-method/`: Folder for everything related to `PaymentMethods` Module
+- `payment-provider-connection/`: Module for the communication with external payment Providers
+  - `dto`: Payment Provider Communication DTOs
+  - `payment-processors/`: Payment processing logic for each `PaymentMethod`
+- `shared/`: Shared Code between different modules
+  - `constants`: Shared constants
+  - `decorators`: Shared decorators
+  - `enums`: Shared enumerators
+  - `guards`: Shared guards
+  - `interfaces`: Shared interfaces
+  - `logger`: Logging configuration
+  - `pipes`: Shared Pipelines
+  - `scalars`: Shared graphQL scalars
+  - `utils`: Shared helpers
+  - `validators`: Shared validators
 - `.dapr`: Dapr Configuration
 - `.github`: Github Actions
 
 </div>
 
 ## Business Processes
+
 The payment service is part of the [Buy](/docs/docs/dev-manuals/architecture/business-processes.md#buy-process) and [Return](/docs/docs/dev-manuals/architecture/business-processes.md#return-process) process.
 
 ## Defined Events
@@ -80,7 +82,7 @@ It indicates, that other services can continue the order saga.
 
 ```tsx
 {
-  order: Order
+ order: Order;
 }
 ```
 
@@ -90,7 +92,7 @@ This event is published when the full payment amount was successfully captured.
 
 ```tsx
 {
-  order: Order
+ order: Order;
 }
 ```
 
@@ -122,4 +124,5 @@ n/a
 - [order/order/created](/docs/docs/dev-manuals/services/order#orderordercreated): Used to start the payment process after the previous steps finished successfully.
 
 ## Important ADRs
+
 - [Service Health Endpoint](/docs/docs/dev-manuals/adr/health-endpoint)

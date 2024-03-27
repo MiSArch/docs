@@ -7,6 +7,7 @@ It simulates status changes for `Payment` and `Shipment` events. Users of the re
 It is also possible, to update the event status manually for full control.
 
 ## Service Architecture
+
 ###### CustomImage path="/renderedDiagrams/inventoryDomainModel" width="1542.5" height="663.25" />
 
 ### REST API
@@ -34,31 +35,32 @@ The repository is structured as follows:
   - `health/`: GraphQL API
   - `open-orders/`: Module for imported, pending `Orders`
     - `entities/`: Imported Order persistet entities
- - `payment/`: Module for `Payments`
-    - `dto`: Inventory DTOs
-    - `entities/`: Inventory persistet entities
- - `payment-information/`: Module for `PaymentInformations`
-    - `dto`: PaymentInformation DTOs
-    - `entities/`: PaymentInformation persistet entities
-  - `product-method/`: Folder for everything related to `PaymentMethods` Module
-  - `payment-provider-connection/`: Module for the communication with external payment Providers
-    - `dto`: Payment Provider Communication DTOs
-    - `payment-processors/`: Payment processing logic for each `PaymentMethod`
-  - `shared/`: Shared Code between different modules
-    - `constants`: Shared constants
-    - `decorators`: Shared decorators
-    - `enums`: Shared enumerators
-    - `guards`: Shared guards
-    - `interfaces`: Shared interfaces
-    - `logger`: Logging configuration
-    - `pipes`: Shared Pipelines
-    - `scalars`: Shared graphQL scalars
-    - `utils`: Shared helpers
-    - `validators`: Shared validators
+- `payment/`: Module for `Payments`
+  - `dto`: Inventory DTOs
+  - `entities/`: Inventory persistet entities
+- `payment-information/`: Module for `PaymentInformations`
+  - `dto`: PaymentInformation DTOs
+  - `entities/`: PaymentInformation persistet entities
+- `product-method/`: Folder for everything related to `PaymentMethods` Module
+- `payment-provider-connection/`: Module for the communication with external payment Providers
+  - `dto`: Payment Provider Communication DTOs
+  - `payment-processors/`: Payment processing logic for each `PaymentMethod`
+- `shared/`: Shared Code between different modules
+  - `constants`: Shared constants
+  - `decorators`: Shared decorators
+  - `enums`: Shared enumerators
+  - `guards`: Shared guards
+  - `interfaces`: Shared interfaces
+  - `logger`: Logging configuration
+  - `pipes`: Shared Pipelines
+  - `scalars`: Shared graphQL scalars
+  - `utils`: Shared helpers
+  - `validators`: Shared validators
 - `.dapr`: Dapr Configuration
 - `.github`: Github Actions
 
 </div>
 
 ## Important ADRs
+
 - [Service Health Endpoint](/docs/docs/dev-manuals/adr/health-endpoint)

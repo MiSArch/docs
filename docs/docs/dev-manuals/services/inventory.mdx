@@ -6,6 +6,7 @@ The inventory service consists of the context `ProductItem`.
 It is responsible for managing the inventory - consisting of `ProductItems` of a `ProductVariant`. It is part of the order and return saga, where it reserves and releases the required `ProductItems`.
 
 ## Domain Model
+
 <CustomImage path="/renderedDiagrams/inventoryDomainModel" width="1542.5" height="663.25" />
 
 :::info
@@ -57,6 +58,7 @@ The repository is structured as follows:
 </div>
 
 ## Business Processes
+
 The inventory service is part of the [Buy](/docs/docs/dev-manuals/architecture/business-processes.md#buy-process) and [Return](/docs/docs/dev-manuals/architecture/business-processes.md#return-process) process.
 
 ## Defined Events
@@ -85,13 +87,13 @@ This event is published when all `ProductItems` for the `ProductVariants` of an 
 
 ```tsx
 {
-  order: Order
+ order: Order;
 }
 ```
 
 #### inventory/product-item/reservation-failed
 
-This event is published when at least one `ProductItem` for the `ProductVariants` of an `Orders` `OrderItems` could not be reserved. 
+This event is published when at least one `ProductItem` for the `ProductVariants` of an `Orders` `OrderItems` could not be reserved.
 
 ```tsx
 {
@@ -102,7 +104,7 @@ This event is published when at least one `ProductItem` for the `ProductVariants
 
 #### inventory/product-item/release-succeeded
 
-This event is published after an order compensation event. It indicates, that all previously reserved `ProductItems` for the `ProductVariants` of an `Orders` `OrderItems` were released again. 
+This event is published after an order compensation event. It indicates, that all previously reserved `ProductItems` for the `ProductVariants` of an `Orders` `OrderItems` were released again.
 
 ```tsx
 {
