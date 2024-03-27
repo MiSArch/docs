@@ -7,9 +7,7 @@ It is responsible for managing orders of users.
 
 ## Domain Model
 
-// TODO: Niklas
-
-<CustomImage path="/renderedDiagrams/orderDomainModel" width="1365" height="131" />
+<CustomImage path="/renderedDiagrams/orderDomainModel" width="1320" height="682.75" />
 
 :::info
 
@@ -19,7 +17,7 @@ Imported entities from other bounded contexts are marked with a dashed border.
 
 ## API
 
-The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/order).
+The service provides a GraphQL API, which is documented in the GraphQL API documentation (TODO).
 
 ## Technology Stack
 
@@ -92,7 +90,7 @@ enum RejectionReason {
 
 ### Published Defined Events
 
-#### invoice/invoice/created
+#### order/order/created
 
 This event is published when an order is placed, which means its order status is set to `PLACED`.
 
@@ -115,7 +113,7 @@ n/a
 - [catalog/product-variant-version/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variant-versioncreated): Used to obtain the current product variant versions for product variants.
 - [discount/coupon/created](/docs/docs/dev-manuals/services/discount#discountcouponcreated): Used to validate the existence of coupons.
 - [tax/tax-rate-version/created](/docs/docs/dev-manuals/services/tax#taxtax-rate-versioncreated): Used to obtain the current tax rate versions for tax rates.
-- [shipment/shipment-method/created](/docs/docs/dev-manuals/services/tax#shipmentshipment-methodcreated): Used to validate the existence of shipment methods.
+- [shipment/shipment-method/created](/docs/docs/dev-manuals/services/shipment#shipmentshipment-methodcreated): Used to validate the existence of shipment methods.
 - [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to validate that orders belong to an existing user.
 - [address/user-address/created](/docs/docs/dev-manuals/services/address#addressuser-addresscreated): Used to validate that addresses exist for a user.
 - [shipment/shipment/creation-failed](/docs/docs/dev-manuals/services/shipment#shipmentshipmentcreation-failed): Used to trigger order compensation for a shipment.
