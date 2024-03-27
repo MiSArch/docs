@@ -17,7 +17,7 @@ Imported entities from other bounded contexts are marked with a dashed border.
 
 ## API
 
-The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/shopping cart).
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/shoppingcart).
 
 ## Technology Stack
 
@@ -31,15 +31,22 @@ The service provides a GraphQL API, which is documented in the [GraphQL API docu
 The repository is structured as follows:
 
 <div className="repository-structure">
- - `/src`: Source code of the service - `authentication.rs` Header authentication logic of service -
- `base_connection.rs` Generic GraphQL connection - `foreign_types.rs` Datatypes which are not part of the services
- bounded context - `http_event_service.rs` Handling of incoming events - `main.rs` Service execution and schema
- generation - `mutation_input_structs.rs` GraphQL input datatypes for mutations - `mutation.rs` GraphQL mutations and
- associated functions - `order_datatypes.rs` GraphQL datatypes for connection element ordering -
- `product_variant_connection.rs` GraphQL connection of product variants - `query.rs` GraphQL queries and associated
- functions - `shoppingcart_item_connection.rs` GraphQL connection of shopping cart items - `shoppingcart_item.rs`
- Shopping cart item datatype - `shoppingcart.rs` Shopping cart datatype - `user.rs` User with additional GraphQL
- field(s) provided by this service
+
+- `/src`: Source code of the service
+  - `authentication.rs` Header authentication logic of service
+  - `base_connection.rs` Generic GraphQL connection
+  - `foreign_types.rs` Datatypes which are not part of the services bounded context
+  - `http_event_service.rs` Handling of incoming events
+  - `main.rs` Service execution and schema generation
+  - `mutation_input_structs.rs` GraphQL input datatypes for mutations
+  - `mutation.rs` GraphQL mutations and associated functions
+  - `order_datatypes.rs` GraphQL datatypes for connection element ordering
+  - `product_variant_connection.rs` GraphQL connection of product variants
+  - `query.rs` GraphQL queries and associated functions
+  - `shoppingcart_item_connection.rs` GraphQL connection of shopping cart items
+  - `shoppingcart_item.rs` Shopping cart item datatype
+  - `shoppingcart.rs` Shopping cart datatype
+  - `user.rs` User with additional GraphQL field(s) provided by this service
 </div>
 
 ## Defined Events
