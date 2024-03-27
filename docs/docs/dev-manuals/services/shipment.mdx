@@ -31,14 +31,14 @@ Updates the status of a shipment.
 
 ```tsx
 {
-  status: ShipmentStatus
+ status: ShipmentStatus;
 }
 
 enum ShipmentStatus {
-  PENDING,
-  IN_PROGRESS,
-  DELIVERED,
-  FAILED
+ PENDING,
+ IN_PROGRESS,
+ DELIVERED,
+ FAILED
 }
 ```
 
@@ -86,10 +86,10 @@ The following types are used in the defined events:
 
 ```tsx
 enum ShipmentStatus {
-  PENDING,
-  IN_PROGRESS,
-  DELIVERED,
-  FAILED
+ PENDING,
+ IN_PROGRESS,
+ DELIVERED,
+ FAILED
 }
 ```
 
@@ -162,7 +162,7 @@ This event is published when a shipment method is archived.
 
 ```tsx
 {
-  id: string
+ id: string;
 }
 ```
 
