@@ -17,7 +17,7 @@ export default [
     {
         id: "inventory",
         path: "schemas/inventory.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/inventory"
     },
     {
         id: "notification",

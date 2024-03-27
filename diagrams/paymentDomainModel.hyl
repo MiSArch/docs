@@ -1,0 +1,43 @@
+classDiagram {
+    class("PaymentMethod") {
+        public {
+            name : string
+            description : string
+        }
+    } layout {
+        pos = apos(1390, 1670)
+    }
+
+    class("PaymentInformation") layout {
+        pos = apos(820, 1670)
+    }
+
+    class("Payment") {
+        public {
+            payedAt : "Date?"
+            amount : int
+        }
+    } layout {
+        pos = apos(280, 1670)
+    }
+
+    Payment --> PaymentInformation with {
+        label("1 : paymentInformation", 0.65, 12.1)
+        label("0..* : payments", 0.24, -26.1)
+        over = start(1).line(end(0.5))
+    }
+
+     PaymentInformation !--> PaymentMethod with {
+        label("1 : method", 0.775, 11.4)
+        label("0..*", 0.075, 16.6)
+        over = start(1).line(end(0.5))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+        }
+    }
+}
