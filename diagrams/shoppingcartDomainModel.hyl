@@ -1,0 +1,61 @@
+classDiagram {
+
+    class("ShoppingCart") {
+        public {
+            lastUpdatedAt : DateTime
+        }
+    } layout {
+        pos = apos(280, -40)
+    }
+
+    class("ShoppingCartItem") {
+        public {
+            count : int
+            addedAt : DateTime
+        }
+    } layout {
+        pos = apos(280, 110)
+    }
+
+    class("User") layout {
+        pos = rpos(ShoppingCart, -497.5, 0)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariant") layout {
+        pos = rpos(ShoppingCartItem, 495, 0)
+    } styles {
+        class += "imported"
+    }
+
+    ShoppingCartItem --> ProductVariant with {
+        label("1 : variant", 0.673, -24.5)
+        label("0..* : inCarts", 0.252, 6.9)
+        over = start(0).line(end(0.5))
+    }
+
+    ShoppingCart --> ShoppingCartItem with {
+        label("0..* : items", 0.71, -54.2)
+        label("1 : shoppingCart", 0.035, -64)
+        over = start(0.25).line(end(0.75))
+    }
+
+    User --> ShoppingCart with {
+        label("1 : cart", 0.719, -24.8)
+        label("1 : user", 0.169, 3.6)
+        over = start(0.005).line(end(0.5))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+
+}

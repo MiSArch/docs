@@ -1,0 +1,47 @@
+classDiagram {
+    class("Wishlist") {
+        public {
+            name : string
+            createdAt : DateTime
+            lastUpdatedAt : DateTime
+        }
+    } layout {
+        pos = apos(280, -220)
+    }
+
+    class("User") layout {
+        pos = rpos(Wishlist, -497.5, 0)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariant") layout {
+        pos = rpos(Wishlist, 547.5, 0)
+    } styles {
+        class += "imported"
+    }
+
+    User --> Wishlist with {
+        label("0..* : wishlists", 0.657, -37.8)
+        label("1 : user", 0.172, 3.8)
+        over = start(0).line(end(0.5))
+    }
+
+    Wishlist --> ProductVariant with {
+        label("0..* : productVariants", 0.648, -35)
+        label("0..* : inWishlists", 0.242, 5.8, 0)
+        over = start(0).line(end(0.5))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+
+}

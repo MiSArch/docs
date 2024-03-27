@@ -117,6 +117,12 @@ classDiagram {
         over = start(0.835).line(end(0.165))
     }
 
+    OrderItem !--> ProductVariantVersion with {
+        label("1 : productVariantVersion", 0.922, 106.8, 0)
+        label("0..*", 0.198, 31.8)
+        over = start(Position.Top).line(end(Position.Bottom))
+    }
+
     styles {
         cls("imported") {
             type("rect") {

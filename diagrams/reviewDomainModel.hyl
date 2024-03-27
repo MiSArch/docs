@@ -1,0 +1,66 @@
+classDiagram {
+
+    class("Review") {
+        public {
+            body : string
+            rating : int
+            date : DateTime
+            isHidden : boolean
+        }
+    } layout {
+        pos = apos(810, -320)
+    }
+
+    class("User") layout {
+        pos = rpos(Review, -450, 0)
+    } styles {
+        class += "imported"
+    }
+
+    class("Product") layout {
+        pos = rpos(Review, 0, 187.5)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariant") layout {
+        pos = rpos(Product, 0, 155)
+    } styles {
+        class += "imported"
+    }
+
+    ProductVariant --> Review with {
+        label("0..* : reviews", 0.94, -17)
+        label("1 : orderedProductVariant", 0.105, 4.2)
+        over = start(0).axisAligned(1, rpos(ProductVariant, 300, -197.5), 0, end(0))
+    }
+
+    Product !--> Review with {
+        label("0..* : reviews", 0.97, 60)
+        label("1", 0.27, 26.6)
+        over = start(0.75).line(end(0.25))
+    }
+
+    User --> Review with {
+        label("0..* : reviews", 0.647, -36.9)
+        label("1 : user", 0.21, 2.6)
+        over = start(Position.Right).line(end(Position.Left))
+    }
+
+    Product --> ProductVariant with {
+        label("1..* : variants", 0.6875, -62)
+        label("1 : product", 0.06, -43.1)
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+}
