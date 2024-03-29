@@ -17,7 +17,7 @@ Imported entities from other bounded contexts are marked with a dashed border.
 
 ## API
 
-The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/payment).
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/inventory).
 
 ## Technology Stack
 
@@ -127,7 +127,7 @@ n/a
 ### Subscribed Imported Events
 
 - [catalog/product-variant/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variantcreated): Used to import `ProductVariant` from the `Catalog` bounded context.
-- [order/order/created](/docs/docs/dev-manuals/services/order#orderordercreated): Used to reserve the `ProductItems` for an `Order`.
+- order/order/created: Used to reserve the `ProductItems` for an `Order`.
 
 ## Important ADRs
 

@@ -1,10 +1,33 @@
 classDiagram {
+    enum = {
+        (name, fields) = args
+        noedit {
+            class(name, keywords = list("enumeration")) {
+                sections += fields.map { "+" + it }
+            }
+        }
+    }
+
+    enum(
+        "InventoryStatus",
+        list(
+            "IN_STORAGE",
+            "RESERVED",
+            "IN_FULLFILLMENT",
+            "SHIPPED"
+        )
+    ) layout {
+        pos = apos(900, 630)
+    }
+
     class("ProductItem") {
         public {
-            isInInventory : boolean
+            inventoryStatus : inventoryStatus
+            orderId: string
+
         }
     } layout {
-        pos = apos(1517.5, 372.5)
+        pos = apos(1370, 600)
     }
 
     class("ProductVariant") {
@@ -12,20 +35,15 @@ classDiagram {
             isPubliclyVisible : boolean
         }
     } layout {
-        pos = apos(810, 50)
+        pos = apos(1370, 830)
     } styles {
         class += "imported"
     }
 
     ProductVariant --> ProductItem with {
-        label("0..* : productItems", 0.9375, 13)
-        label("1 : productVariant", 0.115, -27)
-        over = start(0.125).axisAligned(
-            0.511,
-            apos(1160, 190),
-            0,
-            end(Position.Left)
-        )
+        label("0..* : productItems", 0.85, -80.4)
+        label("1 : productVariant", 0.25, -80.4)
+        over = start(Position.Top).line(end(Position.Bottom))
     }
 
     styles {
