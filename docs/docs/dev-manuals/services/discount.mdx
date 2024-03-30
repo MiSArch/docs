@@ -63,33 +63,30 @@ The following types are used in the defined events:
 
 ```tsx
 interface Order {
-  id: string,
-  userId: string,
-  createdAt: Date,
-  orderStatus: OrderStatus,
-  placedAt?: Date,
-  rejectionReason?: RejectionReason,
-  orderItems: OrderItem[],
-  shipmentAddressId: string,
-  invoiceAddressId: string
+  id: string;
+  userId: string;
+  createdAt: Date;
+  orderStatus: OrderStatus;
+  placedAt: Date;
+  rejectionReason?: RejectionReason;
+  orderItems: OrderItem[];
+  shipmentAddressId: string;
+  invoiceAddressId: string;
+  compensatableOrderAmount: number;
+  paymentInformationId: string;
 }
 
 interface OrderItem {
-  id: string,
-  createdAt: Date,
-  productItemId?: string,
-  productVariantVersionId: string,
-  productVariantId: string,
-  taxRateVersionId: string,
-  count: number,
-  compensatableAmount: number,
-  shipment: Shipment,
-  discountIds: string[],
-}
-
-interface Shipment {
-  status: ShipmentStatus,
-  shipmentMethodId: string
+  id: string;
+  createdAt: Date;
+  productVariantId: string;
+  productVariantVersionId: string;
+  taxRateVersionId: string;
+  shoppingCartItemId: string;
+  count: number;
+  compensatableAmount: number;
+  shipmentMethodId: string;
+  discountIds: string[];
 }
 
 enum OrderStatus {
@@ -101,13 +98,6 @@ enum OrderStatus {
 enum RejectionReason {
   INVALID_ORDER_DATA,
   INVENTORY_RESERVATION_FAILED
-}
-
-enum ShipmentStatus {
-  PENDING,
-  IN_PROGRESS,
-  DELIVERED,
-  FAILED
 }
 ```
 
@@ -185,7 +175,7 @@ This event is thrown when the validation of an order caused by inventory/product
 
 ```tsx
 {
-  order: Order
+  order: Order;
 }
 ```
 
