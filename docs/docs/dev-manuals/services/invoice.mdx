@@ -92,7 +92,9 @@ enum RejectionReason {
 }
 
 interface Invoice {
-  content: number;
+  order_id: string;
+  issued_at: Date;
+  content: string;
 }
 ```
 
