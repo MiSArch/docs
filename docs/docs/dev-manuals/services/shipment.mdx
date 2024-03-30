@@ -31,7 +31,7 @@ Updates the status of a shipment.
 
 ```tsx
 {
-  status: ShipmentStatus
+  status: ShipmentStatus;
 }
 
 enum ShipmentStatus {
@@ -90,44 +90,6 @@ enum ShipmentStatus {
   IN_PROGRESS,
   DELIVERED,
   FAILED
-}
-
-interface Order {
-  id: string,
-  userId: string,
-  createdAt: Date,
-  orderStatus: OrderStatus,
-  placedAt?: Date,
-  rejectionReason?: RejectionReason,
-  orderItems: OrderItem[],
-  shipmentAddressId: string,
-  invoiceAddressId: string,
-  compensatableOrderAmount: number,
-  paymentInformationId: string
-}
-
-interface OrderItem {
-  id: string,
-  createdAt: Date,
-  productVariantVersionId: string,
-  productVariantId: string,
-  taxRateVersionId: string,
-  shoppingCartItemId: string,
-  count: number,
-  compensatableAmount: number,
-  shipmentMethodId: string,
-  discountIds: string[],
-}
-
-enum OrderStatus {
-  PENDING,
-  PLACED,
-  REJECTED
-}
-
-enum RejectionReason {
-  INVALID_ORDER_DATA,
-  INVENTORY_RESERVATION_FAILED
 }
 ```
 
@@ -200,7 +162,7 @@ This event is published when a shipment method is archived.
 
 ```tsx
 {
-  id: string
+  id: string;
 }
 ```
 

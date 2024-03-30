@@ -361,20 +361,26 @@ input CategoryOrderInput
   field: CategoryOrderField
 }
 
-"""Common order fields"""
+"""
+Describes the fields that a foreign types can be ordered by.
+
+Only the Id valid at the moment.
+"""
 enum CommonOrderField
   @join__type(graph: DISCOUNT)
+  @join__type(graph: ORDER)
   @join__type(graph: RETURN)
   @join__type(graph: SHOPPINGCART)
   @join__type(graph: WISHLIST)
 {
-  """Order entities by their id"""
-  ID @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: RETURN) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
+  """Orders by "id"."""
+  ID @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: ORDER) @join__enumValue(graph: RETURN) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
 }
 
-"""Discount order"""
+"""Specifies the order of foreign types."""
 input CommonOrderInput
   @join__type(graph: DISCOUNT)
+  @join__type(graph: ORDER)
   @join__type(graph: RETURN)
   @join__type(graph: SHOPPINGCART)
   @join__type(graph: WISHLIST)
@@ -525,6 +531,20 @@ input CreateCouponInput
   validUntil: DateTime!
 }
 
+"""All required informations to save an credit card"""
+input CreateCreditCardInformationInput
+  @join__type(graph: PAYMENT)
+{
+  """The card holders name"""
+  cardHolder: String!
+
+  """The credit cards number"""
+  cardNumber: String!
+
+  """The credit cards expiration date"""
+  expirationDate: String!
+}
+
 """Input for the createDiscount mutation."""
 input CreateDiscountInput
   @join__type(graph: DISCOUNT)
@@ -585,6 +605,25 @@ input CreateNumericalCategoryCharacteristicInput
 
   """The unit of the NumericalCategoryCharacteristic"""
   unit: String!
+}
+
+input CreateOrderInput
+  @join__type(graph: ORDER)
+{
+  """UUID of user owning the order."""
+  userId: UUID!
+
+  """OrderItems of order."""
+  orderItemInputs: [OrderItemInput!]!
+
+  """UUID of address to where the order should be shipped to."""
+  shipmentAddressId: UUID!
+
+  """UUID of address of invoice."""
+  invoiceAddressId: UUID!
+
+  """UUID of payment information that the order should be processed with."""
+  paymentInformationId: UUID!
 }
 
 """Input for the createProduct mutation"""
@@ -831,6 +870,8 @@ scalar DateTime
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: NOTIFICATION)
+  @join__type(graph: ORDER)
+  @join__type(graph: PAYMENT)
   @join__type(graph: RETURN)
   @join__type(graph: REVIEW)
   @join__type(graph: SHIPMENT)
@@ -847,13 +888,14 @@ discounted = original * (1 - discount1) * (1 - discount2) * ...
 type Discount implements Node
   @join__implements(graph: DISCOUNT, interface: "Node")
   @join__type(graph: DISCOUNT, key: "id", resolvable: true)
+  @join__type(graph: ORDER, key: "id", resolvable: false)
 {
   """
   The discount applied to the order item, e.g. 0.2 meaning a 20% reduction in price.
   Multiple discounts are applied multiplicatively:
   discounted = original * (1 - discount1) * (1 - discount2) * ...
   """
-  discount: Float!
+  discount: Float! @join__field(graph: DISCOUNT)
 
   """Get all categories to which this discount directly applies"""
   discountAppliesToCategories(
@@ -865,7 +907,7 @@ type Discount implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): CategoryConnection!
+  ): CategoryConnection! @join__field(graph: DISCOUNT)
 
   """Get all product variants to which this discount directly applies"""
   discountAppliesToProductVariants(
@@ -877,7 +919,7 @@ type Discount implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): ProductVariantConnection!
+  ): ProductVariantConnection! @join__field(graph: DISCOUNT)
 
   """Get all products to which this discount directly applies"""
   discountAppliesToProducts(
@@ -889,7 +931,7 @@ type Discount implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): ProductConnection!
+  ): ProductConnection! @join__field(graph: DISCOUNT)
 
   """Get all product variants to which this discount directly applies"""
   discountRequiresCoupon(
@@ -904,7 +946,7 @@ type Discount implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): CouponConnection!
+  ): CouponConnection! @join__field(graph: DISCOUNT)
 
   """Get all the usages of this discount by all users."""
   discountUsages(
@@ -916,7 +958,7 @@ type Discount implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): DiscountUsageConnection!
+  ): DiscountUsageConnection! @join__field(graph: DISCOUNT)
 
   """The ID of the node."""
   id: UUID!
@@ -924,21 +966,22 @@ type Discount implements Node
   """
   The maximum number of times a user can use this discount in bought ProductItems.
   """
-  maxUsagesPerUser: Int
+  maxUsagesPerUser: Int @join__field(graph: DISCOUNT)
 
   """The minimum order amount required to use this discount."""
-  minOrderAmount: Int
+  minOrderAmount: Int @join__field(graph: DISCOUNT)
 
   """The date and time from which the discount is valid."""
-  validFrom: DateTime!
+  validFrom: DateTime! @join__field(graph: DISCOUNT)
 
   """The date and time until which the discount is valid."""
-  validUntil: DateTime!
+  validUntil: DateTime! @join__field(graph: DISCOUNT)
 }
 
 """A connection to a list of `Discount` values."""
 type DiscountConnection
   @join__type(graph: DISCOUNT)
+  @join__type(graph: ORDER)
 {
   """Whether this connection has a next page"""
   hasNextPage: Boolean!
@@ -1100,6 +1143,8 @@ enum join__Graph {
   DISCOUNT @join__graph(name: "discount", url: "http://localhost:3500/v1.0/invoke/discount/method/graphql")
   INVENTORY @join__graph(name: "inventory", url: "http://localhost:3500/v1.0/invoke/inventory/method/graphql")
   NOTIFICATION @join__graph(name: "notification", url: "http://localhost:3500/v1.0/invoke/notification/method/graphql")
+  ORDER @join__graph(name: "order", url: "http://localhost:3500/v1.0/invoke/order/method/")
+  PAYMENT @join__graph(name: "payment", url: "http://localhost:3500/v1.0/invoke/payment/method/graphql")
   RETURN @join__graph(name: "return", url: "http://localhost:3500/v1.0/invoke/return/method/graphql")
   REVIEW @join__graph(name: "review", url: "http://localhost:3500/v1.0/invoke/review/method/")
   SHIPMENT @join__graph(name: "shipment", url: "http://localhost:3500/v1.0/invoke/shipment/method/graphql")
@@ -1108,6 +1153,12 @@ enum join__Graph {
   USER @join__graph(name: "user", url: "http://localhost:3500/v1.0/invoke/user/method/graphql")
   WISHLIST @join__graph(name: "wishlist", url: "http://localhost:3500/v1.0/invoke/wishlist/method/")
 }
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+  @join__type(graph: PAYMENT)
 
 scalar link__Import
 
@@ -1129,6 +1180,8 @@ type Mutation
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
+  @join__type(graph: ORDER)
+  @join__type(graph: PAYMENT)
   @join__type(graph: RETURN)
   @join__type(graph: REVIEW)
   @join__type(graph: SHIPMENT)
@@ -1265,6 +1318,35 @@ type Mutation
     """Input for the updateNotification mutation"""
     input: UpdateNotificationInput!
   ): Notification! @join__field(graph: NOTIFICATION)
+
+  """Creates an order with `OrderStatus::Pending`."""
+  createOrder(
+    """CreateOrderInput"""
+    input: CreateOrderInput!
+  ): Order! @join__field(graph: ORDER)
+
+  """
+  Places an existing order by changing its status to `OrderStatus::Placed`.
+  """
+  placeOrder(
+    """Uuid of order to place"""
+    id: UUID!
+  ): Order! @join__field(graph: ORDER)
+
+  """Adds a credit card to the users stored payment informations"""
+  createCreditCardPaymentInformation(input: CreateCreditCardInformationInput!): PaymentInformation! @join__field(graph: PAYMENT)
+
+  """Deletes a payment information by id"""
+  deletePaymentInformation(
+    """UUID of payment information to delete"""
+    id: UUID!
+  ): PaymentInformation! @join__field(graph: PAYMENT)
+
+  """Deletes a payment by id"""
+  deletePayment(
+    """UUID of payment to delete"""
+    id: UUID!
+  ): Payment! @join__field(graph: PAYMENT)
 
   """Create a new return"""
   createReturn(
@@ -1526,15 +1608,54 @@ input NumericalCategoryCharacteristicValueInput
   value: Float!
 }
 
-"""An order."""
+"""The Order of a user."""
 type Order implements Node
   @join__implements(graph: RETURN, interface: "Node")
   @join__implements(graph: SHIPMENT, interface: "Node")
+  @join__type(graph: ORDER, key: "id")
   @join__type(graph: RETURN, key: "id", resolvable: true)
   @join__type(graph: SHIPMENT, key: "id", resolvable: true)
 {
   """The ID of the node."""
   id: UUID!
+
+  """User."""
+  user: User! @join__field(graph: ORDER)
+
+  """Timestamp when Order was created."""
+  createdAt: DateTime! @join__field(graph: ORDER)
+
+  """The status of the Order."""
+  orderStatus: OrderStatus! @join__field(graph: ORDER)
+
+  """Timestamp of Order placement. `None` until Order is placed."""
+  placedAt: DateTime @join__field(graph: ORDER)
+
+  """
+  The rejection reason if status of the Order is `OrderStatus::Rejected`.
+  """
+  rejectionReason: RejectionReason @join__field(graph: ORDER)
+
+  """Address of invoice."""
+  invoiceAddress: UserAddress! @join__field(graph: ORDER)
+
+  """Total compensatable amount of order."""
+  compensatableOrderAmount: Int! @join__field(graph: ORDER)
+
+  """UUID of payment information that the order should be processed with."""
+  paymentInformationId: UUID! @join__field(graph: ORDER)
+
+  """Retrieves order items."""
+  orderItems(
+    """Describes that the `first` N order items should be retrieved."""
+    first: Int
+
+    """Describes how many order items should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which order items are retrieved."""
+    orderBy: CommonOrderInput
+  ): OrderItemConnection! @join__field(graph: ORDER)
 
   """Get all associated Shipments"""
   shipments(
@@ -1552,6 +1673,20 @@ type Order implements Node
   ): ShipmentConnection! @join__field(graph: SHIPMENT)
 }
 
+"""A connection of Orders."""
+type OrderConnection
+  @join__type(graph: ORDER)
+{
+  """The resulting entities."""
+  nodes: [Order!]!
+
+  """Whether this connection has a next page."""
+  hasNextPage: Boolean!
+
+  """The total amount of items in this connection."""
+  totalCount: Int!
+}
+
 """Order direction"""
 enum OrderDirection
   @join__type(graph: ADDRESS)
@@ -1559,6 +1694,8 @@ enum OrderDirection
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
+  @join__type(graph: ORDER)
+  @join__type(graph: PAYMENT)
   @join__type(graph: RETURN)
   @join__type(graph: REVIEW)
   @join__type(graph: SHIPMENT)
@@ -1568,21 +1705,58 @@ enum OrderDirection
   @join__type(graph: WISHLIST)
 {
   """Ascending order"""
-  ASC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: RETURN) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHIPMENT) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+  ASC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: ORDER) @join__enumValue(graph: PAYMENT) @join__enumValue(graph: RETURN) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHIPMENT) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
 
   """Descending order"""
-  DESC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: RETURN) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHIPMENT) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
+  DESC @join__enumValue(graph: ADDRESS) @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: INVENTORY) @join__enumValue(graph: NOTIFICATION) @join__enumValue(graph: ORDER) @join__enumValue(graph: PAYMENT) @join__enumValue(graph: RETURN) @join__enumValue(graph: REVIEW) @join__enumValue(graph: SHIPMENT) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: TAX) @join__enumValue(graph: USER) @join__enumValue(graph: WISHLIST)
 }
 
-"""An order item."""
+"""Describes an OrderItem of an Order."""
 type OrderItem implements Node
   @join__implements(graph: RETURN, interface: "Node")
   @join__implements(graph: SHIPMENT, interface: "Node")
+  @join__type(graph: ORDER, key: "id")
   @join__type(graph: RETURN, key: "id", resolvable: true)
   @join__type(graph: SHIPMENT, key: "id", resolvable: true)
 {
   """The ID of the node."""
   id: UUID!
+
+  """Timestamp when OrderItem was created."""
+  createdAt: DateTime! @join__field(graph: ORDER)
+
+  """Product variant associated with OrderItem."""
+  productVariant: ProductVariant! @join__field(graph: ORDER)
+
+  """Product variant version associated with OrderItem."""
+  productVariantVersion: ProductVariantVersion! @join__field(graph: ORDER)
+
+  """Tax rate version associated with OrderItem."""
+  taxRateVersion: TaxRateVersion! @join__field(graph: ORDER)
+
+  """Shopping cart item associated with OrderItem."""
+  shoppingCartItem: ShoppingCartItem! @join__field(graph: ORDER)
+
+  """Specifies the quantity of the OrderItem."""
+  count: Int! @join__field(graph: ORDER)
+
+  """Total cost of product item, which can also be refunded."""
+  compensatableAmount: Int! @join__field(graph: ORDER)
+
+  """Shipment method of order item."""
+  shipmentMethod: ShipmentMethod! @join__field(graph: ORDER)
+
+  """Retrieves discounts."""
+  discounts(
+    """Describes that the `first` N discounts should be retrieved."""
+    first: Int
+
+    """Describes how many discounts should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which discounts are retrieved."""
+    orderBy: CommonOrderInput
+  ): DiscountConnection! @join__field(graph: ORDER)
 
   """The return this order item was returned with."""
   returnedWith: Return @join__field(graph: RETURN)
@@ -1593,17 +1767,31 @@ type OrderItem implements Node
 
 """A connection to a list of `OrderItem` values."""
 type OrderItemConnection
+  @join__type(graph: ORDER)
   @join__type(graph: RETURN)
   @join__type(graph: SHIPMENT)
 {
-  """Whether this connection has a next page"""
-  hasNextPage: Boolean!
-
   """The resulting items."""
   nodes: [OrderItem!]!
 
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+
   """The total amount of items in this connection"""
   totalCount: Int!
+}
+
+input OrderItemInput
+  @join__type(graph: ORDER)
+{
+  """UUID of shopping cart item associated with order item."""
+  shoppingCartItemId: UUID!
+
+  """UUID of shipment method to use with order item."""
+  shipmentMethodId: UUID!
+
+  """UUIDs of coupons to use with order item."""
+  couponIds: [UUID!]!
 }
 
 """OrderItem order fields"""
@@ -1623,6 +1811,245 @@ input OrderItemOrderInput
 
   """The field to order by"""
   field: OrderItemOrderField
+}
+
+"""Describes the fields that a order can be ordered by."""
+enum OrderOrderField
+  @join__type(graph: ORDER)
+{
+  """Orders by "id"."""
+  ID @join__enumValue(graph: ORDER)
+
+  """Orders by "user_id"."""
+  USER_ID @join__enumValue(graph: ORDER)
+
+  """Orders by "name"."""
+  NAME @join__enumValue(graph: ORDER)
+
+  """Orders by "created_at"."""
+  CREATED_AT @join__enumValue(graph: ORDER)
+
+  """Orders by "last_updated_at"."""
+  LAST_UPDATED_AT @join__enumValue(graph: ORDER)
+}
+
+"""Specifies the order of orders."""
+input OrderOrderInput
+  @join__type(graph: ORDER)
+{
+  """Order direction of orders."""
+  direction: OrderDirection
+
+  """Field that orders should be ordered by."""
+  field: OrderOrderField
+}
+
+"""
+Describes if Order is placed, or yet pending. An Order can be rejected during its lifetime.
+"""
+enum OrderStatus
+  @join__type(graph: ORDER)
+{
+  """
+  Order is saved a a template, this status can only last for max. 1 hour.
+  """
+  PENDING @join__enumValue(graph: ORDER)
+
+  """
+  Order is placed, which means SAGA for payment, fullfill and other validity checks need to be triggered.
+  """
+  PLACED @join__enumValue(graph: ORDER)
+
+  """
+  Something went wrong with the order and it was compensated in all relevant serivces.
+  """
+  REJECTED @join__enumValue(graph: ORDER)
+}
+
+"""A payment of an invoice or return"""
+type Payment
+  @join__type(graph: PAYMENT, key: "id")
+{
+  """The uuid identifier of the payment"""
+  id: UUID!
+
+  """Payment Amount in the smallest currency unit (e.g. cents)"""
+  totalAmount: Float!
+
+  """Status of the payment"""
+  status: PaymentStatus!
+
+  """Used Payment Information"""
+  paymentInformation: PaymentInformation!
+
+  """Date of the payment"""
+  payedAt: DateTime
+
+  """Number of retries for the payment process"""
+  numberOfRetries: Float!
+}
+
+"""A connection of payments"""
+type PaymentConnection
+  @join__type(graph: PAYMENT)
+{
+  """The resulting items"""
+  nodes: [Payment!]
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+}
+
+"""Filtering options for payments"""
+input PaymentFilter
+  @join__type(graph: PAYMENT)
+{
+  """Current payment status"""
+  status: PaymentStatus
+
+  """Payment Information ID"""
+  paymentInformationId: String
+
+  """Payment method"""
+  paymentMethod: String
+
+  """Timebox start for payment creation"""
+  from: DateTime
+
+  """Timebox end for payment creation"""
+  to: DateTime
+}
+
+"""A stored payment information of an user"""
+type PaymentInformation
+  @join__type(graph: PAYMENT, key: "id")
+{
+  """The uuid identifier of the payment information"""
+  id: UUID!
+
+  """The corresponding payment method"""
+  paymentMethod: PaymentMethod!
+
+  """The details for the User to identify the payment method"""
+  publicMethodDetails: JSONObject
+
+  """The user who owns the payment information"""
+  user: User!
+
+  """A connection for an users payments made with a payment information."""
+  payments(
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: PaymentOrder
+
+    """Filtering"""
+    filter: PaymentFilter
+  ): PaymentConnection
+}
+
+"""A connection of payment informations"""
+type PaymentInformationConnection
+  @join__type(graph: PAYMENT)
+{
+  """The resulting items"""
+  nodes: [PaymentInformation!]
+
+  """The total amount of items in this connection"""
+  totalCount: Int!
+
+  """Whether this connection has a next page"""
+  hasNextPage: Boolean!
+}
+
+"""Filtering options for payment informations"""
+input PaymentInformationFilter
+  @join__type(graph: PAYMENT)
+{
+  """Connected user id"""
+  user: UUID
+
+  """Linked payment method"""
+  paymentMethod: PaymentMethod
+}
+
+"""Ordering options for payment informations"""
+input PaymentInformationOrder
+  @join__type(graph: PAYMENT)
+{
+  """The field to order by"""
+  field: PaymentInformationOrderField
+
+  """The direction to order by"""
+  direction: OrderDirection
+}
+
+"""The field to order payment informations by"""
+enum PaymentInformationOrderField
+  @join__type(graph: PAYMENT)
+{
+  """Order payment informations by their id"""
+  ID @join__enumValue(graph: PAYMENT)
+}
+
+"""The supported payment methods"""
+enum PaymentMethod
+  @join__type(graph: PAYMENT)
+{
+  """The user pays after ordering the product"""
+  INVOICE @join__enumValue(graph: PAYMENT)
+
+  """The user pays before the product is shipped"""
+  PREPAYMENT @join__enumValue(graph: PAYMENT)
+
+  """The amount is charged to the users credit card"""
+  CREDIT_CARD @join__enumValue(graph: PAYMENT)
+}
+
+"""Ordering options for payments"""
+input PaymentOrder
+  @join__type(graph: PAYMENT)
+{
+  """The field to order by"""
+  field: PaymentOrderField
+
+  """The direction to order by"""
+  direction: OrderDirection
+}
+
+"""The field to order Payments by"""
+enum PaymentOrderField
+  @join__type(graph: PAYMENT)
+{
+  """Order Payments by their ID"""
+  ID @join__enumValue(graph: PAYMENT)
+}
+
+"""The status of an payment of an invoice or return"""
+enum PaymentStatus
+  @join__type(graph: PAYMENT)
+{
+  """The payment was created but not yet processed"""
+  OPEN @join__enumValue(graph: PAYMENT)
+
+  """The payment is currently being processed"""
+  PENDING @join__enumValue(graph: PAYMENT)
+
+  """The payment was successfully processed and the amount was transfered"""
+  SUCCEEDED @join__enumValue(graph: PAYMENT)
+
+  """The payment processing failed indefinetely"""
+  FAILED @join__enumValue(graph: PAYMENT)
+
+  """The payment was sold to external inkasso service"""
+  INKASSO @join__enumValue(graph: PAYMENT)
 }
 
 """A product."""
@@ -1830,6 +2257,7 @@ type ProductVariant implements Node
   @join__type(graph: CATALOG, key: "id", resolvable: true)
   @join__type(graph: DISCOUNT, key: "id", resolvable: true)
   @join__type(graph: INVENTORY, key: "id")
+  @join__type(graph: ORDER, key: "id", resolvable: false)
   @join__type(graph: REVIEW, key: "id")
   @join__type(graph: SHOPPINGCART, key: "id", resolvable: false)
   @join__type(graph: WISHLIST, key: "id", resolvable: false)
@@ -1979,11 +2407,12 @@ input ProductVariantOrderInput
 type ProductVariantVersion implements Node
   @join__implements(graph: CATALOG, interface: "Node")
   @join__type(graph: CATALOG, key: "id", resolvable: true)
+  @join__type(graph: ORDER, key: "id", resolvable: false)
 {
   """
   The amount of days for which an instance of the ProductVariantVersion can be returned after purchase, if null can be returned indefinitely.
   """
-  canBeReturnedForDays: Int
+  canBeReturnedForDays: Int @join__field(graph: CATALOG)
 
   """Get all associated CategoryCharacteristicValues"""
   characteristicValues(
@@ -1995,34 +2424,34 @@ type ProductVariantVersion implements Node
 
     """Number of items to skip"""
     skip: Int
-  ): CategoryCharacteristicValueConnection!
+  ): CategoryCharacteristicValueConnection! @join__field(graph: CATALOG)
 
   """The date when the ProductVariantVersion version was created."""
-  createdAt: DateTime!
+  createdAt: DateTime! @join__field(graph: CATALOG)
 
   """The description of the ProductVariantVersion."""
-  description: String!
+  description: String! @join__field(graph: CATALOG)
 
   """The ID of the node."""
   id: UUID!
 
   """The name of the ProductVariantVersion."""
-  name: String!
+  name: String! @join__field(graph: CATALOG)
 
   """The ProductVariant this is a version of."""
-  productVariant: ProductVariant!
+  productVariant: ProductVariant! @join__field(graph: CATALOG)
 
   """The retail price of the ProductVariantVersion."""
-  retailPrice: Int!
+  retailPrice: Int! @join__field(graph: CATALOG)
 
   """The associated TaxRate."""
-  taxRate: TaxRate!
+  taxRate: TaxRate! @join__field(graph: CATALOG)
 
   """The version of the ProductVariantVersion."""
-  version: Int!
+  version: Int! @join__field(graph: CATALOG)
 
   """The weight of the ProductVariantVersion."""
-  weight: Float!
+  weight: Float! @join__field(graph: CATALOG)
 }
 
 """A connection to a list of `ProductVariantVersion` values."""
@@ -2132,6 +2561,8 @@ type Query
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
+  @join__type(graph: ORDER)
+  @join__type(graph: PAYMENT)
   @join__type(graph: RETURN)
   @join__type(graph: REVIEW)
   @join__type(graph: SHIPMENT)
@@ -2240,6 +2671,48 @@ type Query
     """The id of the notification"""
     id: UUID!
   ): Notification! @join__field(graph: NOTIFICATION)
+
+  """Retrieves order of specific id."""
+  order(
+    """UUID of order to retrieve."""
+    id: UUID!
+  ): Order! @join__field(graph: ORDER)
+
+  """Retrieves order_item of specific id."""
+  orderItem(
+    """UUID of order_item to retrieve."""
+    id: UUID!
+  ): OrderItem! @join__field(graph: ORDER)
+
+  """ Retrieves all payment informations matching the filter"""
+  paymentInformations(
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: PaymentInformationOrder
+
+    """Filtering"""
+    filter: PaymentInformationFilter
+  ): PaymentInformationConnection! @join__field(graph: PAYMENT)
+
+  """Retrieves all payments"""
+  payments(
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: PaymentOrder
+
+    """Filtering"""
+    filter: PaymentFilter
+  ): PaymentConnection! @join__field(graph: PAYMENT)
 
   """Get a return by id"""
   return(
@@ -2383,6 +2856,21 @@ input RegisterCouponInput
 
   """The user who wants to register the coupon."""
   userId: UUID!
+}
+
+"""
+Describes the reason why an Order was rejected, in case of rejection: `OrderStatus::Rejected`.
+"""
+enum RejectionReason
+  @join__type(graph: ORDER)
+{
+  """The order was rejected due to its invalid content."""
+  INVALID_ORDER_DATA @join__enumValue(graph: ORDER)
+
+  """
+  The inventory service was not able to reserve inventory items according to the order.
+  """
+  INVENTORY_RESERVATION_FAILED @join__enumValue(graph: ORDER)
 }
 
 """The input to reserve a batch of product items"""
@@ -2602,45 +3090,46 @@ input ShipmentFilterInput
   status: ShipmentStatus
 }
 
-"""A shipment method supported by the external provider."""
+"""Describes the method/provider that the shipment uses."""
 type ShipmentMethod implements Node
   @join__implements(graph: SHIPMENT, interface: "Node")
+  @join__type(graph: ORDER, key: "id", resolvable: false)
   @join__type(graph: SHIPMENT, key: "id", resolvable: true)
 {
+  """UUID of the shipment method."""
+  id: UUID!
+
   """If this shipment method is archived, the datetime it was archived."""
-  archivedAt: DateTime
+  archivedAt: DateTime @join__field(graph: SHIPMENT)
 
   """The base fees for the shipment method."""
-  baseFees: Int!
+  baseFees: Int! @join__field(graph: SHIPMENT)
 
   """Calculates the fees for a potential shipment."""
   calculateFees(
     """The input for the calculation."""
     items: [ProductVariantVersionWithQuantityInput!]!
-  ): Int!
+  ): Int! @join__field(graph: SHIPMENT)
 
   """The description of the shipment method."""
-  description: String!
+  description: String! @join__field(graph: SHIPMENT)
 
   """
   The reference of the shipment method used by the external shipment provider.
   """
-  externalReference: String!
+  externalReference: String! @join__field(graph: SHIPMENT)
 
   """The fees per item for the shipment method."""
-  feesPerItem: Int!
+  feesPerItem: Int! @join__field(graph: SHIPMENT)
 
   """The fees per kg for the shipment method."""
-  feesPerKg: Int!
-
-  """The ID of the node."""
-  id: UUID!
+  feesPerKg: Int! @join__field(graph: SHIPMENT)
 
   """If true, this shipment method is archived and can no longer be used."""
-  isArchived: Boolean!
+  isArchived: Boolean! @join__field(graph: SHIPMENT)
 
   """The name of the shipment method."""
-  name: String!
+  name: String! @join__field(graph: SHIPMENT)
 }
 
 """A connection to a list of `ShipmentMethod` values."""
@@ -2740,21 +3229,22 @@ type ShoppingCart
   ): ShoppingCartItemConnection!
 }
 
-"""The ShoppingCart of a user."""
+"""Foreign type of a shopping cart item."""
 type ShoppingCartItem
+  @join__type(graph: ORDER, key: "id", resolvable: false)
   @join__type(graph: SHOPPINGCART, key: "id")
 {
-  """ShoppingCartItem UUID."""
+  """UUID of the shopping cart item."""
   id: UUID!
 
   """Count of items in basket."""
-  count: Int!
+  count: Int! @join__field(graph: SHOPPINGCART)
 
   """Timestamp when ShoppingCartItem was added."""
-  addedAt: DateTime!
+  addedAt: DateTime! @join__field(graph: SHOPPINGCART)
 
   """Product variant of shopping cart item."""
-  productVariant: ProductVariant!
+  productVariant: ProductVariant! @join__field(graph: SHOPPINGCART)
 }
 
 """A connection of ShoppingCart Items."""
@@ -2849,25 +3339,26 @@ input TaxRateOrderInput
   field: TaxRateOrderField
 }
 
-"""A TaxRateVersion."""
+"""Foreign type of a tax rate version."""
 type TaxRateVersion implements Node
   @join__implements(graph: TAX, interface: "Node")
+  @join__type(graph: ORDER, key: "id", resolvable: false)
   @join__type(graph: TAX, key: "id", resolvable: true)
 {
-  """Time stamp when the TaxRateVersion was created"""
-  createdAt: DateTime!
-
-  """The ID of the node."""
+  """UUID of the tax rate."""
   id: UUID!
 
+  """Time stamp when the TaxRateVersion was created"""
+  createdAt: DateTime! @join__field(graph: TAX)
+
   """The rate of the TaxRateVersion"""
-  rate: Float!
+  rate: Float! @join__field(graph: TAX)
 
   """The associated TaxRate."""
-  taxRate: TaxRate!
+  taxRate: TaxRate! @join__field(graph: TAX)
 
   """Version of the TaxRateVersion"""
-  version: Int!
+  version: Int! @join__field(graph: TAX)
 }
 
 """A connection to a list of `TaxRateVersion` values."""
@@ -3121,6 +3612,8 @@ type User implements Node
   @join__type(graph: ADDRESS, key: "id", resolvable: true)
   @join__type(graph: DISCOUNT, key: "id", resolvable: true)
   @join__type(graph: NOTIFICATION, key: "id", resolvable: true)
+  @join__type(graph: ORDER, key: "id")
+  @join__type(graph: PAYMENT, key: "id")
   @join__type(graph: RETURN, key: "id", resolvable: true)
   @join__type(graph: REVIEW, key: "id")
   @join__type(graph: SHOPPINGCART, key: "id")
@@ -3184,6 +3677,33 @@ type User implements Node
     skip: Int
   ): NotificationConnection! @join__field(graph: NOTIFICATION)
 
+  """Retrieves orders of user."""
+  orders(
+    """Describes that the `first` N orders should be retrieved."""
+    first: Int
+
+    """Describes how many orders should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which orders are retrieved."""
+    orderBy: OrderOrderInput
+  ): OrderConnection! @join__field(graph: ORDER)
+
+  """A connection for an users payment informations."""
+  paymentInformations(
+    """Number of items to skip"""
+    skip: Int = 0
+
+    """Number of items to return"""
+    first: Int = 2147483647
+
+    """Ordering"""
+    orderBy: PaymentInformationOrder
+
+    """Filtering"""
+    filter: PaymentInformationFilter
+  ): PaymentInformationConnection @join__field(graph: PAYMENT)
+
   """Get all returns of this user"""
   returns(
     """Number of items to return"""
@@ -3246,6 +3766,7 @@ type UserAddress implements Address & Node
   @join__implements(graph: ADDRESS, interface: "Node")
   @join__implements(graph: SHIPMENT, interface: "Address")
   @join__type(graph: ADDRESS, key: "id", resolvable: true)
+  @join__type(graph: ORDER, key: "id", resolvable: false)
   @join__type(graph: SHIPMENT, key: "id", resolvable: false)
 {
   """If this address is archived, the datetime it was archived."""
@@ -3363,6 +3884,8 @@ scalar UUID
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
   @join__type(graph: NOTIFICATION)
+  @join__type(graph: ORDER)
+  @join__type(graph: PAYMENT)
   @join__type(graph: RETURN)
   @join__type(graph: REVIEW)
   @join__type(graph: SHIPMENT)
