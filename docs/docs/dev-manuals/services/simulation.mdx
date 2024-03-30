@@ -29,35 +29,15 @@ The repository is structured as follows:
 <div className="repository-structure" >
 
 - `/src/`: Source code of the service
-  - `events/`: Dapr event handling
-    - `dto/`: Event DTOs
-  - `graphql-types/`: Shared Types for graphQL
-  - `health/`: GraphQL API
-  - `open-orders/`: Module for imported, pending `Orders`
-    - `entities/`: Imported Order persistet entities
-- `payment/`: Module for `Payments`
-  - `dto`: Inventory DTOs
-  - `entities/`: Inventory persistet entities
-- `payment-information/`: Module for `PaymentInformations`
-  - `dto`: PaymentInformation DTOs
-  - `entities/`: PaymentInformation persistet entities
-- `product-method/`: Folder for everything related to `PaymentMethods` Module
-- `payment-provider-connection/`: Module for the communication with external payment Providers
-  - `dto`: Payment Provider Communication DTOs
-  - `payment-processors/`: Payment processing logic for each `PaymentMethod`
+  - `event-processor/`: Internal simulation of event processing out of the queue
+    - `dto/`: Event DTOs to send back to services
+- `payment/`: Module for Registering and manually updating payments
+  - `dto`: Payment Registering and updating DTOs
 - `shared/`: Shared Code between different modules
-  - `constants`: Shared constants
-  - `decorators`: Shared decorators
   - `enums`: Shared enumerators
-  - `guards`: Shared guards
-  - `interfaces`: Shared interfaces
   - `logger`: Logging configuration
-  - `pipes`: Shared Pipelines
-  - `scalars`: Shared graphQL scalars
-  - `utils`: Shared helpers
-  - `validators`: Shared validators
-- `.dapr`: Dapr Configuration
-- `.github`: Github Actions
+- `shipment/`: Module for Registering and manually updating shipments
+  - `dto`: Shipment Registering and updating DTOs
 
 </div>
 

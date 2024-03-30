@@ -36,7 +36,7 @@ The repository is structured as follows:
 - `/src/`: Source code of the service
   - `events/`: Dapr event handling
     - `dto/`: Event DTOs
-  - `health/`: GraphQL API
+  - `health/`: Health API
   - `inventory/`: `ProductItem` Module
     - `dto`: Inventory DTOs
     - `entities/`: Inventory persistet entities
@@ -52,14 +52,8 @@ The repository is structured as follows:
     - `logger`: Logging configuration
     - `scalars`: Shared graphQL scalars
     - `utils`: Shared helpers
-- `.dapr`: Dapr Configuration
-- `.github`: Github Actions
 
 </div>
-
-## Business Processes
-
-The inventory service is part of the [Buy](/docs/docs/dev-manuals/architecture/business-processes.md#buy-process) and [Return](/docs/docs/dev-manuals/architecture/business-processes.md#return-process) process.
 
 ## Defined Events
 
