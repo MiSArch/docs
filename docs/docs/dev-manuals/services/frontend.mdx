@@ -19,6 +19,7 @@ First things first, the GitHub **repository** can be found [here](https://github
 ## Repository Structure
 
 <div className="repository-structure">
+
 - `/src/`: The source code
   - `assets/`: assets to include in the website. Currently unused.
   - `components/`: [Single-File Components](https://vuejs.org/glossary/#single-file-component) that can be reused -- this is basically an internal UI components library.
@@ -31,6 +32,7 @@ First things first, the GitHub **repository** can be found [here](https://github
   - `styles/`: Files dedicated to styling the web application -- this has been left untouched since the initialization of the repository.
   - `util/`: Utility source code.
   - `views/`: SFCs, each of which represents a single web page and therefore a route of the Vue Router.
+
 </div>
 
 ### Files That Play An Important Role
@@ -90,23 +92,23 @@ The store manages:
 /**
  * The GraphQL client to use for all GraphQL requests.
  */
-const client = useClient()
+const client = useClient();
 
 /**
  * Gets the "entire" product from the catalog service.
  */
 const product = asyncComputed(
-    async () => {
-        return client.getProduct({
-            id: id.value,
-        })
-    },
-    null,
-    {
-        onError: (e) => pushErrorNotification(errorMessages.getProduct, e),
-        shallow: false,
-    }
-)
+  async () => {
+    return client.getProduct({
+      id: id.value
+    });
+  },
+  null,
+  {
+    onError: (e) => pushErrorNotification(errorMessages.getProduct, e),
+    shallow: false
+  }
+);
 ```
 
 Note that the GraphQL query "behind" `getProduct()` has been defined in `src/graphql/catalog.graphql`.
