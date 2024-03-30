@@ -12,8 +12,8 @@
         "serve": "docusaurus serve",
         "write-translations": "docusaurus write-translations",
         "write-heading-ids": "docusaurus write-heading-ids",
-        "format": "prettier --write --embedded-language-formatting=off \"**/*.{ts,json,js,tsx,jsx,md,mdx}\"",
-        "format:check": "prettier --check --embedded-language-formatting=off \"**/*.{ts,json,js,tsx,jsx,md,mdx}\"",
+        "format": "prettier --write \"**/*.{ts,json,js,tsx,jsx,md,mdx}\"",
+        "format:check": "prettier --check \"**/*.{ts,json,js,tsx,jsx,md,mdx}\"",
         "render-diagrams": "node scripts/renderDiagrams.js",
         "update-graphql-docs": "node scripts/updateGraphQLDocs.mjs"
     },
@@ -70,7 +70,6 @@
                     "tabWidth": 2
                 }
             }
-        ],
-        "embedded-language-formatting": "off"
+        ]
     }
 }

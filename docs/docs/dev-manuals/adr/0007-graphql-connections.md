@@ -27,47 +27,47 @@ A typical GraphQL schema will look like this:
 
 ```graphql
 type Query {
- "Get a list of entities"
- entities(
-  "Number of items to skip"
-  skip: Int
-  "Number of items to return"
-  first: Int
-  "Ordering"
-  orderby: EntityOrder
- ): EntityConnection!
+  "Get a list of entities"
+  entities(
+    "Number of items to skip"
+    skip: Int
+    "Number of items to return"
+    first: Int
+    "Ordering"
+    orderby: EntityOrder
+  ): EntityConnection!
 }
 
 "A connection to a list of Entity values."
 type EntityConnection {
- "Whether this connection has a next page"
- hasNextPage: Boolean!
- "The resulting entities."
- nodes: [Entity!]!
- "The total amount of items in this connection"
- totalCount: Int!
+  "Whether this connection has a next page"
+  hasNextPage: Boolean!
+  "The resulting entities."
+  nodes: [Entity!]!
+  "The total amount of items in this connection"
+  totalCount: Int!
 }
 
 "Entity order"
 input EntityOrderInput {
- "The field to order by"
- field: EntityOrderField
- "The direction to order by"
- direction: OrderDirection
+  "The field to order by"
+  field: EntityOrderField
+  "The direction to order by"
+  direction: OrderDirection
 }
 
 "Order direction"
 enum OrderDirection {
- "Ascending order"
- ASC
- "Descending order"
- DESC
+  "Ascending order"
+  ASC
+  "Descending order"
+  DESC
 }
 
 "Entity order fields"
 enum EntityOrderField {
- "Order entities by their id"
- ID
+  "Order entities by their id"
+  ID
 }
 ```
 
@@ -78,16 +78,16 @@ To prevent conflicts between GraphQL type names, the following types MUST be use
 ```graphql
 "Common order"
 input CommonOrderInput {
- "The field to order by"
- field: CommonOrderField
- "The direction to order by"
- direction: OrderDirection
+  "The field to order by"
+  field: CommonOrderField
+  "The direction to order by"
+  direction: OrderDirection
 }
 
 "Common order fields"
 enum CommonOrderField {
- "Order entities by their id"
- ID
+  "Order entities by their id"
+  ID
 }
 ```
 
