@@ -95,27 +95,7 @@ export default {
                     index: true
                 },
                 loaders: {
-                    GraphQLFileLoader: {
-                        module: "@graphql-tools/graphql-file-loader",
-                        options: {
-                            schemas: [
-                                buildSchema(`
-                                    scalar FieldSet
-                                    scalar link__Purpose
-                                    scalar link__Import
-                                    directive @key(fields: FieldSet!, resolvable: Boolean = true) repeatable on OBJECT | INTERFACE
-                                    directive @shareable on FIELD_DEFINITION | OBJECT
-                                    directive @link(
-                                        url: String!,
-                                        as: String,
-                                        for: link__Purpose,
-                                        import: [link__Import]
-                                    ) repeatable on SCHEMA
-                                    directive @inaccessible on FIELD_DEFINITION | INTERFACE | OBJECT | UNION | ARGUMENT_DEFINITION | SCALAR | ENUM | ENUM_VALUE | INPUT_OBJECT | INPUT_FIELD_DEFINITION
-                                `)
-                            ]
-                        }
-                    }
+                    GraphQLFileLoader: "@graphql-tools/graphql-file-loader"
                 }
             }
         ]),
