@@ -39,6 +39,7 @@ The repository is structured as follows:
   - `main.rs` Service execution and schema generation
   - `order.rs` Order datatype
   - `query.rs` GraphQL queries and associated functions
+
 </div>
 
 ## Defined Events
@@ -51,47 +52,47 @@ The following types are used in the defined events:
 
 ```tsx
 interface Order {
- id: string;
- userId: string;
- createdAt: Date;
- orderStatus: OrderStatus;
- placedAt: Date;
- rejectionReason?: RejectionReason;
- orderItems: OrderItem[];
- shipmentAddressId: string;
- invoiceAddressId: string;
- compensatableOrderAmount: number;
- paymentInformationId;
- string;
+  id: string;
+  userId: string;
+  createdAt: Date;
+  orderStatus: OrderStatus;
+  placedAt: Date;
+  rejectionReason?: RejectionReason;
+  orderItems: OrderItem[];
+  shipmentAddressId: string;
+  invoiceAddressId: string;
+  compensatableOrderAmount: number;
+  paymentInformationId;
+  string;
 }
 
 interface OrderItem {
- id: string;
- createdAt: Date;
- productVariantId: string;
- productVariantVersionId: string;
- taxRateVersionId: string;
- shoppingCartItemId: string;
- count: number;
- compensatableAmount: number;
- shipmentMethodId;
- string;
- discountIds: string[];
+  id: string;
+  createdAt: Date;
+  productVariantId: string;
+  productVariantVersionId: string;
+  taxRateVersionId: string;
+  shoppingCartItemId: string;
+  count: number;
+  compensatableAmount: number;
+  shipmentMethodId;
+  string;
+  discountIds: string[];
 }
 
 enum OrderStatus {
- PENDING,
- PLACED,
- REJECTED
+  PENDING,
+  PLACED,
+  REJECTED
 }
 
 enum RejectionReason {
- INVALID_ORDER_DATA,
- INVENTORY_RESERVATION_FAILED
+  INVALID_ORDER_DATA,
+  INVENTORY_RESERVATION_FAILED
 }
 
 interface Invoice {
- content: number;
+  content: number;
 }
 ```
 
