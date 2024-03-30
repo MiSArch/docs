@@ -67,9 +67,10 @@
                     "*.mdx"
                 ],
                 "options": {
-                    "tabWidth": 1
+                    "tabWidth": 2
                 }
             }
-        ]
+        ],
+        "embedded-language-formatting": "off"
     }
 }
