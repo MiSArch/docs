@@ -1,0 +1,122 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Payment Service
+
+The payment service consists of the bounded contexts `Payment`, `PaymentInformation` and `PaymentMethod`.
+It is responsible for handling the payment prozess and managing `Users` payment Infotmations. It is part of the order and return saga, where it captures the payments for `Orders` or refunds the payment after an `Return`.
+It _is not a payment provider_ but simulates communicating with one via the `Simulation` Service.
+
+## Domain Model
+
+CustomImage path="/renderedDiagrams/inventoryDomainModel" width="1542.5" height="663.25" />
+
+## API
+
+The service provides a GraphQL API.
+
+### REST API
+
+The service provides a REST API which is used by the external payment provider to inform about payment status changes.
+
+## Technology Stack
+
+- **Language**: TypeScript
+- **Framework**: NestJS
+- **GraphQL Library**: @nestjs/graphql with @nestjs/apollo (code first)
+- **Database**: MongoDB
+- **Entity Management**: Mongoose
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/`: Source code of the service
+  - `events/`: Dapr event handling
+    - `dto/`: Event DTOs
+  - `graphql-types/`: Shared Types for graphQL
+  - `health/`: Health API
+  - `open-orders/`: Module for imported, pending `Orders`
+    - `entities/`: Imported Order persistet entities
+- `payment/`: Module for `Payments`
+  - `dto`: Inventory DTOs
+  - `entities/`: Inventory persistet entities
+- `payment-information/`: Module for `PaymentInformations`
+  - `dto`: PaymentInformation DTOs
+  - `entities/`: PaymentInformation persistet entities
+- `product-method/`: Folder for everything related to `PaymentMethods` Module
+- `payment-provider-connection/`: Module for the communication with external payment Providers
+  - `dto`: Payment Provider Communication DTOs
+  - `payment-processors/`: Payment processing logic for each `PaymentMethod`
+- `shared/`: Shared Code between different modules
+  - `constants`: Shared constants
+  - `decorators`: Shared decorators
+  - `enums`: Shared enumerators
+  - `guards`: Shared guards
+  - `interfaces`: Shared interfaces
+  - `logger`: Logging configuration
+  - `pipes`: Shared Pipelines
+  - `scalars`: Shared graphQL scalars
+  - `utils`: Shared helpers
+  - `validators`: Shared validators
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the payment service and can be used by other services.
+
+### Published Defined Events
+
+#### payment/payment/enabled
+
+This event is published when all steps necessary to be able to process a payment were successfully completed.
+It indicates, that other services can continue the order saga.
+
+```tsx
+{
+  order: Order;
+}
+```
+
+#### payment/payment/captured
+
+This event is published when the full payment amount was successfully captured.
+
+```tsx
+{
+  order: Order;
+}
+```
+
+#### payment/payment/payment-failed
+
+This event is published when the payment fails finally after its retries.
+
+```tsx
+{
+  order: Order,
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the catalog service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to create default payment Methods for each user when created.
+- order/order/created: Used to start the payment process after the previous steps finished successfully.
+
+## Important ADRs
+
+- [Service Health Endpoint](/docs/docs/dev-manuals/adr/health-endpoint)
