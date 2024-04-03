@@ -1,0 +1,59 @@
+classDiagram {
+    enum = {
+        (name, fields) = args
+        noedit {
+            class(name, keywords = list("enumeration")) {
+                sections += fields.map { "+" + it }
+            }
+        }
+    }
+
+    enum(
+        "PaymentStatus",
+        list(
+            "OPEN",
+            "PENDING",
+            "SUCCEEDED",
+            "FAILED",
+            "INKASSO"
+        )
+    ) layout {
+        pos = apos(900, 640)
+    }
+
+    class("PaymentMethod") {
+        public {
+            name : string
+        }
+    } layout {
+        pos = apos(1370, 400)
+    }
+
+    class("Payment") {
+        public {
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(1370, 900)
+    }
+
+    class("PaymentInformation") {
+        public {
+            isPubliclyVisible : boolean
+        }
+    } layout {
+        pos = apos(1370, 650)
+    }
+
+     Payment --> PaymentInformation with {
+        label("1 : paymentInformation", 0.76, -100)
+        label("0..* : payments", 0.24, -100)
+        over = start(Position.Top).line(end(Position.Bottom))
+    }
+
+     PaymentInformation !--> PaymentMethod with {
+        label("1 : method", 0.775, -50)
+        label("0..*", 0.225, -40)
+        over = start(Position.Top).line(end(Position.Bottom))
+    }
+}
