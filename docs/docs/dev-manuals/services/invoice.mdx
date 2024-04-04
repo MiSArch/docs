@@ -1,0 +1,136 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Invoice Service
+
+The invoice service provides the bounded context `Invoice`.
+It is responsible for managing invoices of orders.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/invoiceDomainModel" width="735" height="250" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the GraphQL API documentation (TODO).
+
+## Technology Stack
+
+- **Language**: Rust
+- **Framework**: [axum](https://docs.rs/axum/latest/axum/)
+- **GraphQL Library**: [async_graphql](https://docs.rs/async-graphql/latest/async_graphql/)
+- **Database**: MongoDB
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure">
+
+- `/src`: Source code of the service
+  - `authentication.rs` Header authentication logic of service
+  - `http_event_service.rs` Handling of incoming events
+  - `invoice.rs` Invoice datatype
+  - `main.rs` Service execution and schema generation
+  - `order.rs` Order datatype
+  - `query.rs` GraphQL queries and associated functions
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the invoice service and can be used by other services.
+
+### Type Definitions
+
+The following types are used in the defined events:
+
+```tsx
+interface Order {
+  id: string;
+  userId: string;
+  createdAt: Date;
+  orderStatus: OrderStatus;
+  placedAt: Date;
+  rejectionReason?: RejectionReason;
+  orderItems: OrderItem[];
+  shipmentAddressId: string;
+  invoiceAddressId: string;
+  compensatableOrderAmount: number;
+  paymentInformationId;
+  string;
+}
+
+interface OrderItem {
+  id: string;
+  createdAt: Date;
+  productVariantId: string;
+  productVariantVersionId: string;
+  taxRateVersionId: string;
+  shoppingCartItemId: string;
+  count: number;
+  compensatableAmount: number;
+  shipmentMethodId;
+  string;
+  discountIds: string[];
+}
+
+enum OrderStatus {
+  PENDING,
+  PLACED,
+  REJECTED
+}
+
+enum RejectionReason {
+  INVALID_ORDER_DATA,
+  INVENTORY_RESERVATION_FAILED
+}
+
+interface Invoice {
+  order_id: string;
+  issued_at: Date;
+  content: string;
+}
+```
+
+### Published Defined Events
+
+#### invoice/invoice/created
+
+This event is published when an invoice for an order is created.
+
+```tsx
+{
+  order: Order,
+  invoice: Invoice,
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the invoice service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- [discount/order/validation-succeeded](/docs/docs/dev-manuals/services/discount#discountordervalidation-succeeded): Triggers this service to create an invoice and emit following event: `invoice/invoice/created`
+- [address/vendor-address/created](/docs/docs/dev-manuals/services/address#addressvendor-addresscreated): Used to obtain vendor address.
+- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to synchronize user addresses on users.
+- [address/user-address/created](/docs/docs/dev-manuals/services/address#addressuser-addresscreated): Used to obtain user address.
+- [address/user-address/archived](/docs/docs/dev-manuals/services/address#addressuser-addresscreated): Used to obtain user address.
+
+## Important ADRs
+
+n/a

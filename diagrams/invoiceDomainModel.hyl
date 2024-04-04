@@ -1,0 +1,52 @@
+classDiagram {
+    class("Invoice") {
+        public {
+            totalInvoiceAmount : int
+            dateIssued : Date
+        }
+    } layout {
+        pos = apos(280, 1350)
+    }
+
+    class("Order") layout {
+        pos = apos(280, 1187.5)
+    } styles {
+        class += "imported"
+    }
+
+    class("Address", abstract = true) layout {
+        pos = apos(-135, 1187.5)
+    } styles {
+        class += "imported"
+    }
+
+    Invoice --> Address with {
+        over = start(0.485).axisAligned(1, end(0.324))
+        label("1 : invoiceAddress", 0.65, 86)
+        label("0..* : invoicesAsCustomer", 0.089, -4.7)
+    }
+
+    Invoice --> Address with {
+        over = start(0.585).axisAligned(1, end(0.162))
+        label("1 : vendorAddress", 0.65, 83.6)
+        label("0..* : invoicesAsVendor", 0.178, -5.9)
+    }
+
+    Order --> Invoice with {
+        over = start(0.25).line(end(0.75))
+        label("1 : invoice", 0.768, -50.7)
+        label("1 : order", 0.055, -38.3)
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+
+}

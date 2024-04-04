@@ -1,0 +1,78 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Review Service
+
+The review service provides the bounded context `Review`.
+It is responsible for managing reviews of users.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/reviewDomainModel" width="955.875" height="450.325" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/review).
+
+## Technology Stack
+
+- **Language**: Rust
+- **Framework**: [axum](https://docs.rs/axum/latest/axum/)
+- **GraphQL Library**: [async_graphql](https://docs.rs/async-graphql/latest/async_graphql/)
+- **Database**: MongoDB
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure">
+
+- `/src`: Source code of the service
+  - `authentication.rs` Header authentication logic of service
+  - `base_connection.rs` Generic GraphQL connection
+  - `http_event_service.rs` Handling of incoming events
+  - `main.rs` Service execution and schema generation
+  - `mutation_input_structs.rs` GraphQL input datatypes for mutations
+  - `mutation.rs` GraphQL mutations and associated functions
+  - `order_datatypes.rs` GraphQL datatypes for connection element ordering
+  - `product_variant_connection.rs` GraphQL connection of product variants
+  - `query.rs` GraphQL queries and associated functions
+  - `review_connection.rs` GraphQL connection of review
+  - `review.rs` Review datatype
+  - `user.rs` User with additional GraphQL field(s) provided by this service
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the review service and can be used by other services.
+
+### Published Defined Events
+
+n/a
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the review service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+- [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to validate that reviews belong to an existing user
+- [catalog/product-variant/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variantcreated): Used to validate that product variants contained in reviews exist
+
+## Important ADRs
+
+n/a

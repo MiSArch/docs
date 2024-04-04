@@ -1,0 +1,142 @@
+classDiagram {
+    class("Order") {
+        public {
+            date : DateTime
+        }
+    } layout {
+        pos = apos(280, 970)
+    }
+
+    class("OrderItem") {
+        public {
+            compensatableAmount : int
+        }
+    } layout {
+        pos = rpos(Order, 500, 0)
+    }
+
+    class("TaxRateVersion") layout {
+        pos = rpos(OrderItem, 500, 0)
+    } styles {
+        class += "imported"
+    }
+
+    class("TaxRate") layout {
+        pos = rpos(TaxRateVersion, 0, -155)
+    } styles {
+        class += "imported"
+    }
+
+    class("User") layout {
+        pos = rpos(Order, 0, -155)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariantVersion") layout {
+        pos = rpos(OrderItem, 0, -155)
+    } styles {
+        class += "imported"
+    }
+
+    class("Discount") layout {
+        pos = rpos(OrderItem, 0, 155)
+    } styles {
+        class += "imported"
+    }
+
+    class("Discount") layout {
+        pos = rpos(OrderItem, 0, 155)
+    } styles {
+        class += "imported"
+    }
+
+    class("Coupon") layout {
+        pos = rpos(Discount, 0, 155)
+    } styles {
+        class += "imported"
+    }
+
+    class("PaymentInformation") layout {
+        pos = rpos(Order, 0, 155)
+    } styles {
+        class += "imported"
+    }
+
+    class("ShipmentMethod") layout {
+        pos = rpos(PaymentInformation, 0, 155)
+    } styles {
+        class += "imported"
+    }
+
+    class("ProductVariant") layout {
+        pos = rpos(ProductVariantVersion, 0, -155)
+    } styles {
+        class += "imported"
+    }
+
+    User --> Order with {
+        label("0..* : orders", 0.756, 58.3)
+        label("1 : user", 0.079, -32.7)
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    Order --> OrderItem with {
+        label("1..* : items", 0.659, -26.7)
+        label("1 : order", 0.16, 5.9)
+        over = start(0).line(end(0.5))
+    }
+
+    OrderItem !--> TaxRateVersion with {
+        label("1 : taxRateVersion", 0.641, 21.5)
+        label("0..*", 0.087, -35)
+        over = start(0).line(end(0.5))
+    }
+
+    OrderItem !--> ProductVariantVersion with {
+        label("1 : productVariantVersion", 0.922, 106.8, 0)
+        label("0..*", 0.198, 31.8)
+        over = start(Position.Top).line(end(Position.Bottom))
+    }
+
+    ProductVariant --> ProductVariantVersion with {
+        label("1..* : versions", 0.65, -59.9)
+        label("1 : productVariant", 0.1375, -67.8)
+        over = start(0.1875).line(end(0.8125))
+    }
+
+    ProductVariant !--> ProductVariantVersion with {
+        label("1 : currentVersion", 0.665, 77.3)
+        label("0..1", 0.055, -33.1)
+        over = start(0.25).line(end(0.75))
+    }
+
+    OrderItem --> Discount with {
+        label("0..* : discounts", 0.758, 70.3)
+        label("0..* : usedWith", 0.031, -55.3)
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    TaxRate !--> TaxRateVersion with {
+        label("1 : currentVersion", 0.805, -79.9)
+        label("0..1", 0.07, -35.5)
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    ProductVariantVersion !--> TaxRate with {
+        label("1 : taxRate", 0.754, 15.1)
+        label("0..*", 0.084, -33.1)
+        over = start(Position.Right).line(end(Position.Left))
+    }
+
+    styles {
+        cls("imported") {
+            type("rect") {
+                strokeDash = 5
+            }
+            type("path") {
+                strokeDash = 5
+            }
+        }
+    }
+}
