@@ -32,7 +32,6 @@ export default {
                     sidebarPath: require.resolve("./sidebars.mjs"),
                     remarkPlugins: [remarkMath],
                     rehypePlugins: [rehypeKatex],
-                    routeBasePath: "/"
                 },
                 theme: {
                     customCss: require.resolve("./src/css/custom.css")
