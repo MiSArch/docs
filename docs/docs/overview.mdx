@@ -10,6 +10,7 @@ import CustomImage from "@site/src/components/CustomImage";
 Welcome to the MisArch project - A representable microservice reference architecture
 
 ### Project Purpose
+
 Modern software systems often adhere to the Microservices architectural style, where applications are composed of multiple independently developed microservices.
 Well-known applications following this style include Netflix and Amazon.
 These individual microservices often communicate through synchronous calls (REST, GraphQL, etc.) or asynchronous calls (gRPC, messaging, etc.).
@@ -25,16 +26,18 @@ The aim of this development project is to create such a reference architecture.
 
 ### Comparison with exisiting Reference Architectures
 
-| Feature | [T-Store](https://github.com/DescartesResearch/TeaStore) | [T2-Store](https://github.com/t2-project) | [TrainTicket](https://github.com/hechuan73/train_ticket) | MisArch |
-| --- | --- | --- | --- |--- |
-| # Microservices | 5 | 6 | 41 | 15 |
-| Multilanguage | - | - | X | X |
-| Asynchronous Communication | - | - | X | X |
-| Technologies | - | Kubernetes | Kubernetes | GraphQL, Kubernetes |
-| Configurable System Behaviour | - | - | - | X |
+| Feature                       | [T-Store](https://github.com/DescartesResearch/TeaStore) | [T2-Store](https://github.com/t2-project) | [TrainTicket](https://github.com/hechuan73/train_ticket) | MisArch             |
+| ----------------------------- | -------------------------------------------------------- | ----------------------------------------- | -------------------------------------------------------- | ------------------- |
+| # Microservices               | 5                                                        | 6                                         | 41                                                       | 15                  |
+| Multilanguage                 | -                                                        | -                                         | X                                                        | X                   |
+| Asynchronous Communication    | -                                                        | -                                         | X                                                        | X                   |
+| Technologies                  | -                                                        | Kubernetes                                | Kubernetes                                               | GraphQL, Kubernetes |
+| Configurable System Behaviour | -                                                        | -                                         | -                                                        | X                   |
 
 ### Documentation
-See 
+
+See
+
 - [Installation](/category/installation) for details regarding system requirements and setup
 - [Architecture](/category/architecture) for the architectural process
 - [Services](/category/services) for detailed documentation of every service
@@ -44,18 +47,26 @@ See
 - /graphql/\<service\> for the individual service GraphQL schema
 
 ### Repository Structure
+
 The MisArch-project is structured under the [MisArch](https://github.com/MiSArch) Github organization.
 
 The source code of this documentation is stored in the [Documentation repository](https://github.com/MiSArch/docs).
 
 #### Frontend
+
 - [MisArch Frontend](https://github.com/MiSArch/frontend)
+
 #### Infrastructure
+
 These repositories include the different DevOps approaches.
+
 - [Docker](https://github.com/MiSArch/infrastructure-docker)
 - [Kubernetes](https://github.com/MiSArch/infrastructure-k8s)
+
 #### Microservices
+
 These repositories include the core microservices.
+
 - [Address](https://github.com/MiSArch/address)
 - [Catalog](https://github.com/MiSArch/catalog)
 - [Discount](https://github.com/MiSArch/discount)
@@ -75,16 +86,24 @@ These repositories include the core microservices.
 - [Wishlist](https://github.com/MiSArch/wishlist)
 
 #### Helpers
+
 These repositories provide additional (non-core) functionalities
+
 - [GraphQL Schema Store](https://github.com/MiSArch/schemas)
 - [GraphQL Schema Transformation](https://github.com/MiSArch/graphql-schema-transform)
 - [Keycloak Extension for User Creation Events](https://github.com/MiSArch/keycloak-user-creation-events)
 
 ### Domain
+
 An [extensive Tradeoff Analysis](/docs/dev-manuals/architecture/domain-tradeoff-analysis) regarding different possible domains for the reference architecture was conducted.
 The e-commerce domain was identified as most promising candidat to fullfill the given requirments.
 The model shows all entities and relationships of the reference ecommerce shop.
-<CustomImage path="/renderedDiagrams/domainModelBC" width="2820.5" height="2398.5" />
+
+<CustomImage
+  path="/renderedDiagrams/domainModelBC"
+  width="2820.5"
+  height="2398.5"
+/>
 :::info
 
 Bounded contexts that are implemented within one service are highlighted with a purple frame.
