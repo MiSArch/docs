@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useHistory } from "@docusaurus/router";
 
 export default function Home() {
-  const history = useHistory();
+    const history = useHistory();
 
-  useEffect(() => {
-      history.push('/docs');
-  }, []);
+    useEffect(() => {
+        history.push("/docs");
+    }, []);
 
-  return null;
+    return null;
 }
