@@ -158,7 +158,7 @@ On the left side, we find the menu. There, we can navigate to the individual cat
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-first-visit"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -167,7 +167,7 @@ On the left side, we find the menu. There, we can navigate to the individual cat
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-assigning-roles-in-keycloak"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -177,7 +177,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-switching-user-role"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -186,7 +186,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-adding-category"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -195,7 +195,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-adding-product"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -204,7 +204,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-restocking-product"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -213,7 +213,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-product-customer"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -222,7 +222,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-shopping-cart"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -231,7 +231,7 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-wishlists"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
