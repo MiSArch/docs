@@ -40,7 +40,7 @@ We note that some steps need to be taken before you can simply visit the online 
 4. Keycloak redirects us or returns us to the online store. Now we are logged in.
 5. By default, we only have the permissions of a customer. That means we still can't do anything because there are no products in the online store yet.
 6. Therefore, we need to add additional permissions to our new user so that we can manage the online store. To do this, we navigate to Keycloak: http://localhost:4000/keycloak/
-7. We click on "Administration Console" and log in with the username "admin". The password is the same as the username.
+7. We click on "Administration Console" and log in with the username "admin" and password "admin".
 8. In the top left corner, there is a dropdown menu. There you can select the so-called _realm_. We switch to "Misarch".
 9. Then we navigate to "Users" in the side menu. Now, the URL should look like this: http://localhost:4000/keycloak/admin/master/console/#/Misarch/users
 10. The user we created should now be listed under Users.
