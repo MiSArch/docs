@@ -35,7 +35,7 @@ We note that some steps need to be taken before you can simply visit the online 
 ### User Management
 
 1. At the beginning, there are no users in the system. Consequently, when we navigate to the online store, we are not logged in as a user and in the top right corner it says "LOGIN".
-2. Clicking on "LOGIN" will redirect us to Keycloak. Here we have two options: We could try to log in with an existing user via username and password — Spoiler: This is impossible because there are no users yet — or we register a new user. To do this, we click on the "Register" link at the bottom of the dialog.
+2. Clicking on "LOGIN" will redirect us to Keycloak. Here we have two options: We could try to log in with an existing user via username and password — this is impossible because there are no users yet — or we register a new user. To do this, we click on the "Register" link at the bottom of the dialog.
 3. We fill out the registration form and submit it by pressing the "Register" button.
 4. Keycloak redirects us or returns us to the online store. Now we are logged in.
 5. By default, we only have the permissions of a customer. That means we still can't do anything because there are no products in the online store yet.
