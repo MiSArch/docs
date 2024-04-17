@@ -75,9 +75,9 @@ To manage the online store, we need to log in with a user who has either the "ad
 13. It's important to know that the system absolutely needs at least one tax rate in order to create a product.
 14. Now navigate in the menu to "Manage Categories".
 15. The page is structured analogously to the "Manage Tax Rates" page: In the top right corner, you'll find a toolbar button labeled "ADD CATEGORY". Click on it to open a dialog to create a new product category.
-16. Categories are optional. That means they are not mandatory in order to create products.
+16. Categories are optional. That means they are not mandatory in order to create products. We decided to organize the online store's products into categories. A product can be part of multiple categories. For instance, a CD could be part of a category named "CDs" and at the same time be part of category named "Music". There are no relationships between categories. Each and every category stands for itself.
 17. The dialog represents a form; we can give the category a name and a description.
-18. On the right side of the dialog, you'll find an action button with a plus symbol. Clicking on it expands the dialog, allowing us to create as many so-called characteristics of this category as we want. We can select the type of characteristic and add the name and a description. Additionally, there's a possibility to remove a characteristic at the bottom left.
+18. On the right side of the dialog, you'll find an action button with a plus symbol. Clicking on it expands the dialog, allowing us to create as many so-called characteristics of this category as we want. We can select the type of characteristic and add the name and a description. Additionally, there's a possibility to remove a characteristic at the bottom left. Regarding the type of characteristics, product catgories can have filterable characteristics and these can be categorical (i.e. genre of music) or numerical (i.e. publishing year).
 19. In the top right corner, there's a "SAVE" button to initiate the creation of the category in the backend.
 20. Very important: Even if the creation of the category has been successful on the service side, the category is not listed on the "Manage Categories" page -- this feature is still missing.
 21. Now navigate through the menu to "Manage Products" to finally create a product.
