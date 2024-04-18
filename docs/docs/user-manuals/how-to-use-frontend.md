@@ -8,7 +8,8 @@ import CustomImage from "@site/src/components/CustomImage";
 
 ## Version to which this Document Refers
 
-To be precise, [this is the latest commit](https://github.com/MiSArch/frontend/commit/c7b74ec563058a66df03108ba27249450a00ce7e) of the Frontend version that was used when creating this document.
+To be precise, [v0.0.4](https://github.com/MiSArch/frontend/releases/tag/v0.0.4) is the latest version of the Frontend at the time of writing this document.
+This guide might not completely apply to newer versions.
 
 ## Purpose of this Document
 
@@ -21,11 +22,15 @@ The Frontend is still in development and therefore this document refers to exact
 
 ## Where to Find the Frontend
 
-If we deploy the MiSArch system — the whole infrastructure — on our local machine we will find the Frontend at the following URL: http://localhost:4000.
+If we deploy the MiSArch system — the whole infrastructure — on our local machine using Docker, we will find the Frontend under <http://localhost:4000>.
 
 ## Step-by-step User Guide
 
-This section primarily describes step-by-step how to operate the Frontend so that each feature can be tried out. This is because some features are only available if you have exercised another feature in advance. For example, you have to have created a product before you can order it in the online store. Let's start with user management. This is where Keycloak comes into play. Once we know how to register a user and assign them permissions to manage the online store, we move on to managing the online store — how do we add products? How do we restock the products? How do we create tax rates? In the third subsection, we then use the frontend from the customer's perspective.
+This section primarily describes step-by-step how to operate the Frontend so that each feature can be tried out. This is because some features are only available if you have executed something else previously.
+For example, you must have created a product before you can order it in the online store.
+Let's start with user management.
+This is where Keycloak comes into play.
+Once we know how to register a user and assign them permission to manage the online store, we move on to managing the online store — how do we add products? How do we restock the products? How do we create tax rates? In the third subsection, we then use the frontend from the customer's perspective.
 We note that some steps need to be taken before you can simply visit the online store to try out features from the customer's perspective. The three subsections represent the three superordinate roles that you can or even have to take on in the meantime when operating the frontend:
 
 - Keycloak administrator
@@ -40,7 +45,7 @@ We note that some steps need to be taken before you can simply visit the online 
 4. Keycloak redirects us or returns us to the online store. Now we are logged in.
 5. By default, we only have the permissions of a customer. That means we still can't do anything because there are no products in the online store yet.
 6. Therefore, we need to add additional permissions to our new user so that we can manage the online store. To do this, we navigate to Keycloak: http://localhost:4000/keycloak/
-7. We click on "Administration Console" and log in with the username "admin" and password "admin".
+7. We click on "Administration Console" and log in with the username "admin" and password "admin" (or if we changed the password, use whatever has been configured).
 8. In the top left corner, there is a dropdown menu. There you can select the so-called _realm_. We switch to "Misarch".
 9. Then we navigate to "Users" in the side menu. Now, the URL should look like this: http://localhost:4000/keycloak/admin/master/console/#/Misarch/users
 10. The user we created should now be listed under Users.
@@ -58,7 +63,8 @@ We note that some steps need to be taken before you can simply visit the online 
 
 ### Managing the Online Store
 
-To manage the online store, we need to log in with a user who has either the "admin" or "employee" role, or even both. In the previous section, we created such a user using Keycloak.
+To manage the online store, we need to log in with a user who has the `employee` role. In the previous section, we created such a user using Keycloak.
+Preferably, our user should even have `admin` capabilities to manage further configurations.
 
 1. We now proceed by ensuring that we are logged in with such a user.
 2. If necessary, we need to switch the user role to either "admin" or "employee". See Step 19 in the previous section.
@@ -75,7 +81,7 @@ To manage the online store, we need to log in with a user who has either the "ad
 13. It's important to know that the system absolutely needs at least one tax rate in order to create a product.
 14. Now navigate in the menu to "Manage Categories".
 15. The page is structured analogously to the "Manage Tax Rates" page: In the top right corner, you'll find a toolbar button labeled "ADD CATEGORY". Click on it to open a dialog to create a new product category.
-16. Categories are optional. That means they are not mandatory in order to create products. We decided to organize the online store's products into categories. A product can be part of multiple categories. For instance, a CD could be part of a category named "CDs" and at the same time be part of category named "Music". There are no relationships between categories. Each and every category stands for itself.
+16. Categories are optional. That means they are not mandatory in order to create products. We decided to organize the online store's products into categories. A product can be part of multiple categories. For instance, a CD could be part of a category named `CDs` and at the same time be part of category named `Music`. There are no relationships between categories. Each and every category stands for itself. In particular, we cannot nest categories such as saying `CDs` are a subcategory of `Music`
 17. The dialog represents a form; we can give the category a name and a description.
 18. On the right side of the dialog, you'll find an action button with a plus symbol. Clicking on it expands the dialog, allowing us to create as many so-called characteristics of this category as we want. We can select the type of characteristic and add the name and a description. Additionally, there's a possibility to remove a characteristic at the bottom left. Regarding the type of characteristics, product catgories can have filterable characteristics and these can be categorical (i.e. genre of music) or numerical (i.e. publishing year).
 19. In the top right corner, there's a "SAVE" button to initiate the creation of the category in the backend.
