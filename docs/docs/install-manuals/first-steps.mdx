@@ -1,0 +1,38 @@
+---
+id: first-steps
+title: First Steps
+sidebar_position: 2
+---
+
+There are three ways to start the MisArch project.
+
+1. Using prebuilt docker images (Recommended, if no code changes are necessary)
+2. Rebuilding docker images (Recommended, when modifiying parts of the system)
+3. Kubernetes (Recommended for tests of real-world environments)
+
+### Docker Compose
+
+First clone the repository for the one-click docker setup:
+
+```sh
+git clone https://github.com/MiSArch/infrastructure-docker.git
+git submodule update  --recursive --init
+```
+
+#### Using prebuilt images
+
+This approach does not reflect changes in the source code. It always starts the current (published) version of the services.
+
+```sh
+docker compose up
+```
+
+##### Building containers
+
+Builds the containers using git submodules. This allows versioning and reflects code changes in the respective submodules.
+
+```sh
+docker compose -f docker-compose-dev.yaml up
+```
+
+### Kubernetes
