@@ -22,7 +22,7 @@ The Frontend is still in development and therefore this document refers to exact
 
 ## Where to Find the Frontend
 
-If we deploy the MiSArch system — the whole infrastructure — on our local machine using Docker, we will find the Frontend under <http://localhost:4000>.
+If we deploy the MiSArch system — the whole infrastructure — on our local machine using Docker, we will find the Frontend at the following URL: `http://localhost:4000`.
 
 ## Step-by-step User Guide
 
