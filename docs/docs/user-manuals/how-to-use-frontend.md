@@ -220,6 +220,8 @@ On the left side, we find the menu. There, we can navigate to the individual cat
 - In the "Add Product" dialog, there is no indication that the retail price must be entered in cents.
 - Products cannot be changed via the front end. The features that should allow a user to manage product variants or define a new version of a variant are still missing.
 - If a message is displayed, you must close it by clicking either on "CLOSE ALL" or on the close button of the individual message. But not by simply clicking somewhere outside the message center. Because then the next message would no longer be displayed until you reload the page. This is a bug.
+- During checkout, on the "Shipment" page, if the user clicks on one of the listed products, they will get redirected to the product page which means that the checkout process gets canceled immediately -- actually, the user should have to confirm their intention to navigate to the product and thereby cancel the checkout process.
+- During checkout, reloading the page "breaks" the checkout process which means it has to be started from the beginning.
 
 ## Screenshots
 
@@ -327,7 +329,7 @@ Note that a user always has the `buyer` role, even when the corresponding checkb
 
 <CustomImage
     path="/images/further-screenshots/screenshot-token-retrieval"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -336,7 +338,7 @@ Note that a user always has the `buyer` role, even when the corresponding checkb
 
 <CustomImage
     path="/images/further-screenshots/screenshot-graphiql-create-shipment-method"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -345,7 +347,7 @@ Note that a user always has the `buyer` role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-delivery-address-selected"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -354,7 +356,7 @@ Note that a user always has the `buyer` role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-order-summary-pending"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
@@ -363,7 +365,7 @@ Note that a user always has the `buyer` role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-order-successful"
-    extension="png"
+    extension="webp"
     height="2112"
     width="3248"
 />
