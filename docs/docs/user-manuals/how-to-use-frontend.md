@@ -53,9 +53,9 @@ We note that some steps need to be taken before you can simply visit the online 
 12. This takes us to the "User details".
 13. We go to the "Role mapping" tab.
 14. We click on the blue "Assign role" button. A dialog opens.
-15. We check the "admin" and "employee" roles and confirm the dialog with "Assign".
+15. We check the roles `admin` and `employee` and confirm the dialog with "Assign".
 16. Now the user has all available roles in the system, so the user can both administer the online store and shop in the online store.
-17. We navigate back to the online store. We should still be logged in. The view has changed because now we are logged in not as a customer but as a store employee or administrator. If not, just reload the page.
+17. We navigate back to the online store. We should still be logged in. The view has changed because now we are logged in not as a customer but as a store `admin` and `employee`. If not, just reload the page.
 18. Now the main menu is on the right instead of the left side, and it points to pages that allow store management.
 19. Very important! If we wanted to change the current user role, we could do so. In the top right corner, there is a button labeled "SWITCH USER ROLE". Clicking on it opens a dialog.
 20. In the dropdown, we can select one of the available roles. The selection takes effect immediately, and we must explicitly close the dialog by clicking "CANCEL".
@@ -67,7 +67,7 @@ To manage the online store, we need to log in with a user who has the `employee`
 Preferably, our user should even have `admin` capabilities to manage further configurations.
 
 1. We now proceed by ensuring that we are logged in with such a user.
-2. If necessary, we need to switch the user role to either "admin" or "employee". See Step 19 in the previous section.
+2. If necessary, we need to switch the user role to either `admin` or `employee`. See Step 19 in the previous section.
 3. On the right side, you'll now find the menu. First, navigate to "Manage Tax Rates".
 4. The page that now appears has a toolbar at the top. In the top right corner, you'll find a button labeled "ADD TAX RATE". Click on it.
 5. A dialog will open. Now we can create a tax rate, with a name, description, and the percentage to be applied.
@@ -116,13 +116,13 @@ Preferably, our user should even have `admin` capabilities to manage further con
 
 #### Adding a Shipment Method to Allow Users to Checkout
 
-Before we can place an order as customers in the online store, at least one shipping method must be added to the system. In the long term, the frontend should provide users with the roles of employee or admin with a way to do this. Currently, however, it is necessary to execute the GraphQL mutation intended for the shipment methods via GraphiQL in order to add a shipment method. Here's how it works:
+Before we can place an order as customers in the online store, at least one shipping method must be added to the system. In the long term, the frontend should provide users with the roles of `admin` or `employee` with a way to do this. Currently, however, it is necessary to execute the GraphQL mutation intended for the shipment methods via GraphiQL in order to add a shipment method. Here's how it works:
 
 1. Navigate to GraphiQL; the URL is: `http://localhost:8080/graphql`
 2. In the lower part of the editor, we find two tabs: "Variables" and "Headers"
 3. Switch to "Headers"
 4. We intend to set the "Authorization" header so that we are authorized for the GraphQL operations.
-5. We need a token. We obtain this by switching back to the frontend, logging in with a user who has one of the two roles: employee or admin, opening the JavaScript console, and searching for the logged token. We copy this token completely. [Also, see this screenshot.](#retrieving-the-authorization-token)
+5. We need a token. We obtain this by switching back to the frontend, logging in with a user who has one of the two roles: `admin` or `employee`, opening the JavaScript console, and searching for the logged token. We copy this token completely. [Also, see this screenshot.](#retrieving-the-authorization-token)
 6. Then we can (back in GraphiQL) set the header:
 
 ```json
@@ -156,7 +156,7 @@ mutation MyMutation {
 
 ### Being a Customer
 
-If we are logged in with a user who has multiple user roles, then we need to switch to the "buyer" role in order to actually be a customer or potential buyer in the store. Alternatively, we could simply register another user, but not assign the "admin" or "employee" roles to them in Keycloak. A registered user only has the default "buyer" role, as long as we do not assign more roles in Keycloak. Without a logged-in user, you can still see what a customer is supposed to see, but some features are not accessible then.
+If we are logged in with a user who has multiple user roles, then we need to switch to the `buyer` role in order to actually be a customer or potential buyer in the store. Alternatively, we could simply register another user, but not assign the `admin` or `employee` roles to them in Keycloak. A registered user only has the default `buyer` role, as long as we do not assign more roles in Keycloak. Without a logged-in user, you can still see what a customer is supposed to see, but some features are not accessible then.
 
 #### Navigation
 
@@ -240,7 +240,7 @@ On the left side, we find the menu. There, we can navigate to the individual cat
     height="2112"
     width="3248"
 />
-Note that a user always has the "buyer" role, even when the corresponding checkbox has not been checked in the dialog. The reason for that is that the "buyer" role is part of the default roles that every user has.
+Note that a user always has the `buyer` role, even when the corresponding checkbox has not been checked in the dialog. The reason for that is that the `buyer` role is part of the default roles that every user has.
 
 ### Switching the User Role
 
