@@ -203,7 +203,7 @@ On the left side, we find the menu. There, we can navigate to the individual cat
 9. By checking the checkbox, a second card for the billing address is added to the screen.
 10. By clicking "PROCEED" we can continue with our checkout and move on to specifying shipment information.
 11. On the Shipment page we can choose a shipment method for each product that we want to order.
-12. If we have selected one for each product we can proceed to the Payment page.
+12. If we have selected one for each product, we can proceed to the Payment page.
 13. The Payment page has radio buttons for each available payment method.
 14. When selecting credit card, one can select one from their existing credit cards or add a new one, just like with the addresses before.
 15. After having selected a payment method, we can click on "CREATE ORDER" to create the order and therefore reserve the order items for an hour.
