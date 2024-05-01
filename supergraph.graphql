@@ -869,6 +869,7 @@ scalar DateTime
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
+  @join__type(graph: INVOICE)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: ORDER)
   @join__type(graph: PAYMENT)
@@ -1135,6 +1136,18 @@ enum Gender
   OTHER @join__enumValue(graph: USER)
 }
 
+"""Invoice of an order."""
+type Invoice
+  @join__type(graph: INVOICE, key: "id")
+{
+  id: UUID!
+  orderId: UUID!
+  issuedAt: DateTime!
+  content: String!
+  userAddress: UserAddress!
+  vendorAddress: VendorAddress!
+}
+
 scalar join__FieldSet
 
 enum join__Graph {
@@ -1142,6 +1155,7 @@ enum join__Graph {
   CATALOG @join__graph(name: "catalog", url: "http://localhost:3500/v1.0/invoke/catalog/method/graphql")
   DISCOUNT @join__graph(name: "discount", url: "http://localhost:3500/v1.0/invoke/discount/method/graphql")
   INVENTORY @join__graph(name: "inventory", url: "http://localhost:3500/v1.0/invoke/inventory/method/graphql")
+  INVOICE @join__graph(name: "invoice", url: "http://localhost:3500/v1.0/invoke/invoice/method/")
   MEDIA @join__graph(name: "media", url: "http://localhost:3500/v1.0/invoke/media/method/")
   NOTIFICATION @join__graph(name: "notification", url: "http://localhost:3500/v1.0/invoke/notification/method/graphql")
   ORDER @join__graph(name: "order", url: "http://localhost:3500/v1.0/invoke/order/method/")
@@ -1650,12 +1664,16 @@ input NumericalCategoryCharacteristicValueInput
 type Order implements Node
   @join__implements(graph: RETURN, interface: "Node")
   @join__implements(graph: SHIPMENT, interface: "Node")
+  @join__type(graph: INVOICE, key: "id")
   @join__type(graph: ORDER, key: "id")
   @join__type(graph: RETURN, key: "id", resolvable: true)
   @join__type(graph: SHIPMENT, key: "id", resolvable: true)
 {
   """The ID of the node."""
   id: UUID!
+
+  """Invoice of the order."""
+  invoice: Invoice! @join__field(graph: INVOICE)
 
   """User."""
   user: User! @join__field(graph: ORDER)
@@ -2610,6 +2628,7 @@ type Query
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
+  @join__type(graph: INVOICE)
   @join__type(graph: MEDIA)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: ORDER)
@@ -2716,6 +2735,12 @@ type Query
     """UUID of the user"""
     id: UUID!
   ): ProductItem! @join__field(graph: INVENTORY)
+
+  """Query for invoice of specific id."""
+  invoice(
+    """UUID of invoice to retrieve."""
+    id: UUID!
+  ): Invoice! @join__field(graph: INVOICE)
 
   """Returns all medias of the service."""
   getMedias(
@@ -3829,6 +3854,7 @@ type UserAddress implements Address & Node
   @join__implements(graph: ADDRESS, interface: "Node")
   @join__implements(graph: SHIPMENT, interface: "Address")
   @join__type(graph: ADDRESS, key: "id", resolvable: true)
+  @join__type(graph: INVOICE, key: "id", resolvable: false)
   @join__type(graph: ORDER, key: "id", resolvable: false)
   @join__type(graph: SHIPMENT, key: "id", resolvable: false)
 {
@@ -3946,6 +3972,7 @@ scalar UUID
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
+  @join__type(graph: INVOICE)
   @join__type(graph: MEDIA)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: ORDER)
@@ -3964,6 +3991,7 @@ type VendorAddress implements Address & Node
   @join__implements(graph: ADDRESS, interface: "Node")
   @join__implements(graph: SHIPMENT, interface: "Address")
   @join__type(graph: ADDRESS, key: "id", resolvable: true)
+  @join__type(graph: INVOICE, key: "id", resolvable: false)
   @join__type(graph: SHIPMENT, key: "id", resolvable: false)
 {
   """The city part of the address"""
