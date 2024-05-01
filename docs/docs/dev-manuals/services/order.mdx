@@ -60,9 +60,9 @@ This section lists events that are defined by the order service and can be used 
 interface Order {
   id: string;
   userId: string;
-  createdAt: Date;
+  createdAt: string;
   orderStatus: OrderStatus;
-  placedAt: Date;
+  placedAt: string;
   rejectionReason?: RejectionReason;
   orderItems: OrderItem[];
   shipmentAddressId: string;
@@ -73,7 +73,7 @@ interface Order {
 
 interface OrderItem {
   id: string;
-  createdAt: Date;
+  createdAt: string;
   productVariantId: string;
   productVariantVersionId: string;
   taxRateVersionId: string;

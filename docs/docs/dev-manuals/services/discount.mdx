@@ -65,9 +65,9 @@ The following types are used in the defined events:
 interface Order {
   id: string;
   userId: string;
-  createdAt: Date;
+  createdAt: string;
   orderStatus: OrderStatus;
-  placedAt: Date;
+  placedAt: string;
   rejectionReason?: RejectionReason;
   orderItems: OrderItem[];
   shipmentAddressId: string;
@@ -78,7 +78,7 @@ interface Order {
 
 interface OrderItem {
   id: string;
-  createdAt: Date;
+  createdAt: string;
   productVariantId: string;
   productVariantVersionId: string;
   taxRateVersionId: string;
@@ -204,7 +204,7 @@ n/a
 
 ### Subscribed Imported Events
 
-- inventory/product-item/reservation-succeeded (TODO link): Causes a validation of the order to check if the discounts can still be applied.
+- [inventory/product-item/reservation-succeeded](/docs/docs/dev-manuals/services/inventory#inventoryproduct-itemreservation-succeeded): Causes a validation of the order to check if the discounts can still be applied.
 - [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to import `User` from the `User` bounded context.
 - [catalog/category/created](/docs/docs/dev-manuals/services/catalog#catalogcategorycreated): Used to import `Category` from the `Category` bounded context.
 - [catalog/product/created](/docs/docs/dev-manuals/services/catalog#catalogproductcreated): Used to import `Product` from the `Catalog` bounded context.
