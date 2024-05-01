@@ -54,9 +54,9 @@ The following types are used in the defined events:
 interface Order {
   id: string;
   userId: string;
-  createdAt: Date;
+  createdAt: string;
   orderStatus: OrderStatus;
-  placedAt: Date;
+  placedAt: string;
   rejectionReason?: RejectionReason;
   orderItems: OrderItem[];
   shipmentAddressId: string;
@@ -68,7 +68,7 @@ interface Order {
 
 interface OrderItem {
   id: string;
-  createdAt: Date;
+  createdAt: string;
   productVariantId: string;
   productVariantVersionId: string;
   taxRateVersionId: string;
@@ -92,8 +92,8 @@ enum RejectionReason {
 }
 
 interface Invoice {
-  order_id: string;
-  issued_at: Date;
+  orderId: string;
+  issuedAt: string;
   content: string;
 }
 ```

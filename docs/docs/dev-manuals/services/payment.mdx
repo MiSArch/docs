@@ -69,7 +69,7 @@ This section lists events that are defined by the payment service and can be use
 
 ### Published Defined Events
 
-#### payment/payment/enabled
+#### payment/payment/payment-enabled
 
 This event is published when all steps necessary to be able to process a payment were successfully completed.
 It indicates, that other services can continue the order saga.
@@ -80,7 +80,7 @@ It indicates, that other services can continue the order saga.
 }
 ```
 
-#### payment/payment/captured
+#### payment/payment/payment-processed
 
 This event is published when the full payment amount was successfully captured.
 
@@ -115,7 +115,7 @@ n/a
 ### Subscribed Imported Events
 
 - [user/user/created](/docs/docs/dev-manuals/services/user#userusercreated): Used to create default payment Methods for each user when created.
-- order/order/created: Used to start the payment process after the previous steps finished successfully.
+- [order/order/created](/docs/docs/dev-manuals/services/order#orderordercreated): Used to start the payment process after the previous steps finished successfully.
 
 ## Important ADRs
 
