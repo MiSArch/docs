@@ -20,9 +20,24 @@ export default [
         docs: "/docs/docs/dev-manuals/services/inventory"
     },
     {
+        id: "invoice",
+        path: "schemas/invoice.graphql",
+        docs: "/docs/docs/dev-manuals/services/invoice"
+    },
+    {
+        id: "media",
+        path: "schemas/media.graphql",
+        docs: false
+    },
+    {
         id: "notification",
         path: "schemas/notification.graphql",
         docs: "/docs/docs/dev-manuals/services/notification"
+    },
+    {
+        id: "order",
+        path: "schemas/order.graphql",
+        docs: "/docs/docs/dev-manuals/services/order"
     },
     {
         id: "return",
@@ -32,7 +47,7 @@ export default [
     {
         id: "review",
         path: "schemas/review.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/review"
     },
     {
         id: "shipment",
@@ -42,7 +57,7 @@ export default [
     {
         id: "shoppingcart",
         path: "schemas/shoppingcart.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/shoppingcart"
     },
     {
         id: "tax",
@@ -57,6 +72,6 @@ export default [
     {
         id: "wishlist",
         path: "schemas/wishlist.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/wishlist"
     }
 ]
