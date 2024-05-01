@@ -53,9 +53,9 @@ We note that some steps need to be taken before you can simply visit the online 
 12. This takes us to the "User details".
 13. We go to the "Role mapping" tab.
 14. We click on the blue "Assign role" button. A dialog opens.
-15. We check the "admin" and "employee" roles and confirm the dialog with "Assign".
+15. We check the roles `admin` and `employee` and confirm the dialog with "Assign".
 16. Now the user has all available roles in the system, so the user can both administer the online store and shop in the online store.
-17. We navigate back to the online store. We should still be logged in. The view has changed because now we are logged in not as a customer but as a store employee or administrator. If not, just reload the page.
+17. We navigate back to the online store. We should still be logged in. The view has changed because now we are logged in not as a customer but as a store `admin` and `employee`. If not, just reload the page.
 18. Now the main menu is on the right instead of the left side, and it points to pages that allow store management.
 19. Very important! If we wanted to change the current user role, we could do so. In the top right corner, there is a button labeled "SWITCH USER ROLE". Clicking on it opens a dialog.
 20. In the dropdown, we can select one of the available roles. The selection takes effect immediately, and we must explicitly close the dialog by clicking "CANCEL".
@@ -67,7 +67,7 @@ To manage the online store, we need to log in with a user who has the `employee`
 Preferably, our user should even have `admin` capabilities to manage further configurations.
 
 1. We now proceed by ensuring that we are logged in with such a user.
-2. If necessary, we need to switch the user role to either "admin" or "employee". See Step 19 in the previous section.
+2. If necessary, we need to switch the user role to either `admin` or `employee`. See Step 19 in the previous section.
 3. On the right side, you'll now find the menu. First, navigate to "Manage Tax Rates".
 4. The page that now appears has a toolbar at the top. In the top right corner, you'll find a button labeled "ADD TAX RATE". Click on it.
 5. A dialog will open. Now we can create a tax rate, with a name, description, and the percentage to be applied.
@@ -114,9 +114,49 @@ Preferably, our user should even have `admin` capabilities to manage further con
 46. As a result, the product page also indicates that the product is in stock.
 47. The lower half of the product view shows what the customer would see if they visited the product page. More on this in the next subsection.
 
+#### Adding a Shipment Method to Allow Users to Checkout
+
+Before we can place an order as customers in the online store, at least one shipping method must be added to the system. In the long term, the frontend should provide users with the roles of `admin` or `employee` with a way to do this. Currently, however, it is necessary to execute the GraphQL mutation intended for the shipment methods via GraphiQL in order to add a shipment method. Here's how it works:
+
+1. Navigate to GraphiQL; the URL is: `http://localhost:8080/graphql`
+2. In the lower part of the editor, we find two tabs: "Variables" and "Headers"
+3. Switch to "Headers"
+4. We intend to set the "Authorization" header so that we are authorized for the GraphQL operations.
+5. We need a token. We obtain this by switching back to the frontend, logging in with a user who has one of the two roles: `admin` or `employee`, opening the JavaScript console, and searching for the logged token. We copy this token completely. [Also, see this screenshot.](#retrieving-the-authorization-token)
+6. Then we can (back in GraphiQL) set the header:
+
+```json
+{
+  "Authorization": "Bearer TOKEN"
+}
+```
+
+Replace _TOKEN_ with the actual token we copied earlier. 7. Now we can execute the GraphQL mutation `createShipmentMethod` to create a shipment method; for example, with the following inputs:
+
+```graphql
+mutation MyMutation {
+  createShipmentMethod(
+    input: {
+      baseFees: 5
+      description: "DHL rules the world."
+      externalReference: ""
+      feesPerItem: 1
+      feesPerKg: 5
+      name: "DHL"
+    }
+  ) {
+    id
+  }
+}
+```
+
+[Executing the GraphQL operation should look like this.](#adding-a-shipment-method-to-allow-users-to-checkout)
+
+8. Now we have defined a shipping method. This is now available to customers or buyers during checkout.
+
 ### Being a Customer
 
-If we are logged in with a user who has multiple user roles, then we need to switch to the "buyer" role in order to actually be a customer or potential buyer in the store. Alternatively, we could simply register another user, but not assign the "admin" or "employee" roles to them in Keycloak. A registered user only has the default "buyer" role, as long as we do not assign more roles in Keycloak. Without a logged-in user, you can still see what a customer is supposed to see, but some features are not accessible then.
+If we are logged in with a user who has multiple user roles, then we need to switch to the `buyer` role in order to actually be a customer or potential buyer in the store. Alternatively, we could simply register another user, but not assign the `admin` or `employee` roles to them in Keycloak. A registered user only has the default `buyer` role, as long as we do not assign more roles in Keycloak. Without a logged-in user, you can still see what a customer is supposed to see, but some features are not accessible then.
 
 #### Navigation
 
@@ -150,6 +190,29 @@ On the left side, we find the menu. There, we can navigate to the individual cat
 6. We confirm the assignment of the wishlists by clicking "SAVE".
 7. The product has been added to the wishlist. However, there is no green message displayed. If we wanted to make sure, we would need to navigate to the wishlists and check if the product is listed there.
 
+#### The Checkout / Making an Order
+
+1. We make sure that we have added something to the shopping cart and navigate to the shopping cart.
+2. We click on "PROCEED TO CHECKOUT".
+3. First of all, we have to specify the delivery address. If we had already added one to the system, we could select that one from the dropdown that says "Delivery Address".
+4. We click on "USE DIFFERENT ADDRESS" in order to add a new address.
+5. An input form appears that lets us specify the information of the address: name, street, city, postal code, and country -- to name the most important fields.
+6. By clicking on "SAVE ADDRESS" we request the backend to save the address. If successful, we get a green success notification.
+7. After having added a new address, the new one gets selected automatically from the dropdown.
+8. If we want the billing address to be a different one from the delivery address, we can check the checkbox that says "The billing address differs from the billing address", right below the card displaying information regarding the delivery address.
+9. By checking the checkbox, a second card for the billing address is added to the screen.
+10. By clicking "PROCEED" we can continue with our checkout and move on to specifying shipment information.
+11. On the Shipment page we can choose a shipment method for each product that we want to order.
+12. If we have selected one for each product, we can proceed to the Payment page.
+13. The Payment page has radio buttons for each available payment method.
+14. When selecting credit card, one can select one from their existing credit cards or add a new one, just like with the addresses before.
+15. After having selected a payment method, we can click on "CREATE ORDER" to create the order and therefore reserve the order items for an hour.
+16. That means the status of the order is "Pending". We have yet to place the order.
+17. To do so, we just have to click on "Place Order Now".
+18. A dialog pops up asking us to confirm our action.
+19. If we click "CONFIRM", the order gets placed.
+20. That means, the order summary is displayed and a success notification if the placement was successful.
+
 ## Known Issues and Bugs
 
 - The manage-categories page does not list any categories.
@@ -157,6 +220,8 @@ On the left side, we find the menu. There, we can navigate to the individual cat
 - In the "Add Product" dialog, there is no indication that the retail price must be entered in cents.
 - Products cannot be changed via the front end. The features that should allow a user to manage product variants or define a new version of a variant are still missing.
 - If a message is displayed, you must close it by clicking either on "CLOSE ALL" or on the close button of the individual message. But not by simply clicking somewhere outside the message center. Because then the next message would no longer be displayed until you reload the page. This is a bug.
+- During checkout, on the "Shipment" page, if the user clicks on one of the listed products, they will get redirected to the product page which means that the checkout process gets canceled immediately -- actually, the user should have to confirm their intention to navigate to the product and thereby cancel the checkout process.
+- During checkout, reloading the page "breaks" the checkout process which means it has to be started from the beginning.
 
 ## Screenshots
 
@@ -177,7 +242,7 @@ On the left side, we find the menu. There, we can navigate to the individual cat
     height="2112"
     width="3248"
 />
-Note that a user always has the "buyer" role, even when the corresponding checkbox has not been checked in the dialog. The reason for that is that the "buyer" role is part of the default roles that every user has.
+Note that a user always has the `buyer` role, even when the corresponding checkbox has not been checked in the dialog. The reason for that is that the `buyer` role is part of the default roles that every user has.
 
 ### Switching the User Role
 
@@ -215,6 +280,24 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
     width="3248"
 />
 
+### Retrieving the Token
+
+<CustomImage
+    path="/images/further-screenshots/screenshot-token-retrieval"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
+### Creating a Shipment Method via GraphiQL Mesh
+
+<CustomImage
+    path="/images/further-screenshots/screenshot-graphiql-create-shipment-method"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
 ### A Product — What the Customer Sees
 
 <CustomImage
@@ -237,6 +320,51 @@ Note that a user always has the "buyer" role, even when the corresponding checkb
 
 <CustomImage
     path="/images/frontend-screenshots/screenshot-wishlists"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
+### Retrieving the Authorization Token
+
+<CustomImage
+    path="/images/further-screenshots/screenshot-token-retrieval"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
+### Creating a Shipment Method via GraphiQL Mesh
+
+<CustomImage
+    path="/images/further-screenshots/screenshot-graphiql-create-shipment-method"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
+### Selecting a Delivery Address
+
+<CustomImage
+    path="/images/frontend-screenshots/screenshot-delivery-address-selected"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
+### Order Summary (order has yet to be placed)
+
+<CustomImage
+    path="/images/frontend-screenshots/screenshot-order-summary-pending"
+    extension="webp"
+    height="2112"
+    width="3248"
+/>
+
+### Order has been Placed successfully
+
+<CustomImage
+    path="/images/frontend-screenshots/screenshot-order-successful"
     extension="webp"
     height="2112"
     width="3248"
