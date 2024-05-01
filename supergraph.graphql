@@ -1142,6 +1142,7 @@ enum join__Graph {
   CATALOG @join__graph(name: "catalog", url: "http://localhost:3500/v1.0/invoke/catalog/method/graphql")
   DISCOUNT @join__graph(name: "discount", url: "http://localhost:3500/v1.0/invoke/discount/method/graphql")
   INVENTORY @join__graph(name: "inventory", url: "http://localhost:3500/v1.0/invoke/inventory/method/graphql")
+  MEDIA @join__graph(name: "media", url: "http://localhost:3500/v1.0/invoke/media/method/")
   NOTIFICATION @join__graph(name: "notification", url: "http://localhost:3500/v1.0/invoke/notification/method/graphql")
   ORDER @join__graph(name: "order", url: "http://localhost:3500/v1.0/invoke/order/method/")
   PAYMENT @join__graph(name: "payment", url: "http://localhost:3500/v1.0/invoke/payment/method/graphql")
@@ -1174,11 +1175,37 @@ enum link__Purpose {
   EXECUTION
 }
 
+"""Media object with associated path and id."""
+type Media
+  @join__type(graph: MEDIA, key: "id")
+{
+  """Media UUID."""
+  id: UUID!
+
+  """Pre-signed path for the media."""
+  path: String!
+}
+
+"""A connection of Medias."""
+type MediaConnection
+  @join__type(graph: MEDIA)
+{
+  """The resulting entities."""
+  nodes: [Media!]!
+
+  """Whether this connection has a next page."""
+  hasNextPage: Boolean!
+
+  """The total amount of items in this connection."""
+  totalCount: Int!
+}
+
 type Mutation
   @join__type(graph: ADDRESS)
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
+  @join__type(graph: MEDIA)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: ORDER)
   @join__type(graph: PAYMENT)
@@ -1306,6 +1333,17 @@ type Mutation
 
   """Reserves a batch of product items of a chosen product variant"""
   reserveProductItemBatch(input: ReserveProductItemsBatchInput!): [ProductItem!]! @join__field(graph: INVENTORY)
+
+  """
+  Uploads a media to MinIO.
+  
+  Saves the file under a new UUID with its suitable file extension in MinIO.
+  Sends an event when a media file was uploaded.
+  """
+  uploadMedia(
+    """Media file to upload."""
+    mediaFile: Upload!
+  ): UUID! @join__field(graph: MEDIA)
 
   """Create a new notification"""
   createNotification(
@@ -1914,7 +1952,7 @@ input PaymentFilter
   paymentInformationId: String
 
   """Payment method"""
-  paymentMethod: String
+  paymentMethod: PaymentMethod
 
   """Timebox start for payment creation"""
   from: DateTime
@@ -2058,6 +2096,7 @@ type Product implements Node
   @join__implements(graph: DISCOUNT, interface: "Node")
   @join__type(graph: CATALOG, key: "id", resolvable: true)
   @join__type(graph: DISCOUNT, key: "id", resolvable: true)
+  @join__type(graph: REVIEW, key: "id")
 {
   """Get all associated Categories"""
   categories(
@@ -2109,6 +2148,21 @@ type Product implements Node
     """Number of items to skip"""
     skip: Int
   ): DiscountConnection! @join__field(graph: DISCOUNT)
+
+  """Retrieves reviews of product."""
+  reviews(
+    """Describes that the `first` N reviews should be retrieved."""
+    first: Int
+
+    """Describes how many reviews should be skipped at the beginning."""
+    skip: Int
+
+    """Specifies the order in which reviews are retrieved."""
+    orderBy: ReviewOrderInput
+  ): ReviewConnection! @join__field(graph: REVIEW)
+
+  """Retrieves average rating of product."""
+  averageRating: Float! @join__field(graph: REVIEW)
 }
 
 """A connection to a list of `Product` values."""
@@ -2342,11 +2396,7 @@ type ProductVariant implements Node
     orderBy: ReviewOrderInput
   ): ReviewConnection! @join__field(graph: REVIEW)
 
-  """
-  Retrieves average rating of product variant.
-  
-  Filters reviews with `is_visible == false` to exclude them from the average rating.
-  """
+  """Retrieves average rating of product variant."""
   averageRating: Float! @join__field(graph: REVIEW)
 }
 
@@ -2560,6 +2610,7 @@ type Query
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
+  @join__type(graph: MEDIA)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: ORDER)
   @join__type(graph: PAYMENT)
@@ -2665,6 +2716,15 @@ type Query
     """UUID of the user"""
     id: UUID!
   ): ProductItem! @join__field(graph: INVENTORY)
+
+  """Returns all medias of the service."""
+  getMedias(
+    """Describes that the `first` N medias should be retrieved."""
+    first: Int
+
+    """Describes how many medias should be skipped at the beginning."""
+    skip: Int
+  ): MediaConnection! @join__field(graph: MEDIA)
 
   """Get a notification by id"""
   notification(
@@ -3602,6 +3662,9 @@ input UpdateWishlistInput
   name: String
 }
 
+scalar Upload
+  @join__type(graph: MEDIA)
+
 """A user."""
 type User implements Node
   @join__implements(graph: ADDRESS, interface: "Node")
@@ -3883,6 +3946,7 @@ scalar UUID
   @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: INVENTORY)
+  @join__type(graph: MEDIA)
   @join__type(graph: NOTIFICATION)
   @join__type(graph: ORDER)
   @join__type(graph: PAYMENT)
