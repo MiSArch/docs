@@ -1,0 +1,87 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Media Service
+
+The media service provides the bounded context `Media`.
+It is responsible for managing medias.
+The media services uses a Nginx reverse proxy to make the fixed domain of MinIO pre-signed URLs configurable through environment variables.
+
+The service parses the following environment variables:
+
+- `MINIO_ENDPOINT`: configurable domain of the MinIO instance.
+- `PATH_EXPIRATION_TIME`: validity duration of MinIO pre-signed URLs.
+- `PROXY_PATH`: path to include in the pre-signed URLs.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/mediaDomainModel" width="735" height="250" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the GraphQL API documentation (TODO).
+
+## Technology Stack
+
+- **Language**: Rust
+- **Framework**: [axum](https://docs.rs/axum/latest/axum/)
+- **GraphQL Library**: [async_graphql](https://docs.rs/async-graphql/latest/async_graphql/)
+- **Database**: MinIO
+- **Reverse Proxy**: Nginx [nginx](https://nginx.org/en/)
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure">
+
+- `/src`: Source code of the service
+  - `authentication.rs` Header authentication logic of service
+  - `main.rs` Service execution and schema generation
+  - `media_connection.rs` GraphQL connection of medias
+  - `media.rs` Media datatype
+  - `mutation.rs` GraphQL mutations and associated functions
+  - `query.rs` GraphQL queries and associated functions
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the media service and can be used by other services.
+
+### Published Defined Events
+
+#### media/media/created
+
+This event is published when an media for an order is created.
+
+```tsx
+{
+  id: string;
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the media service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+n/a
+
+## Important ADRs
+
+n/a
