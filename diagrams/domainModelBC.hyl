@@ -294,7 +294,11 @@ classDiagram {
         pos = apos(810, 280)
     }
 
-    class("Media") layout {
+    class("Media") {
+        public {
+            path : string
+        }
+    } layout {
         width = 196.500137712
         pos = apos(810, 500)
     }

@@ -27,7 +27,7 @@ export default [
     {
         id: "media",
         path: "schemas/media.graphql",
-        docs: false
+        docs: "/docs/docs/dev-manuals/services/media"
     },
     {
         id: "notification",
