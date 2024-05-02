@@ -102,7 +102,8 @@ This includes the initial version created when a product variant is created.
   canBeReturnedForDays?: number,
   productVariantId: string,
   taxRateId: string,
-  weight: number
+  weight: number,
+  mediaIds: string[]
 }
 ```
 
@@ -158,6 +159,7 @@ n/a
 ### Subscribed Imported Events
 
 - [tax/tax-rate/created](/docs/docs/dev-manuals/services/tax#taxtax-rate-versioncreated): Used to import `TaxRate` from the `Tax` bounded context.
+- [media/media/created](/docs/docs/dev-manuals/services/media#mediamediacreated): Used to import `Media` from the `Media` bounded context.
 
 ## Important ADRs
 
