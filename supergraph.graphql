@@ -361,24 +361,22 @@ input CategoryOrderInput
   field: CategoryOrderField
 }
 
-"""
-Describes the fields that a foreign types can be ordered by.
-
-Only the Id valid at the moment.
-"""
+"""Common order fields"""
 enum CommonOrderField
+  @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: ORDER)
   @join__type(graph: RETURN)
   @join__type(graph: SHOPPINGCART)
   @join__type(graph: WISHLIST)
 {
-  """Orders by "id"."""
-  ID @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: ORDER) @join__enumValue(graph: RETURN) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
+  """Order entities by their id"""
+  ID @join__enumValue(graph: CATALOG) @join__enumValue(graph: DISCOUNT) @join__enumValue(graph: ORDER) @join__enumValue(graph: RETURN) @join__enumValue(graph: SHOPPINGCART) @join__enumValue(graph: WISHLIST)
 }
 
-"""Specifies the order of foreign types."""
+"""Discount order"""
 input CommonOrderInput
+  @join__type(graph: CATALOG)
   @join__type(graph: DISCOUNT)
   @join__type(graph: ORDER)
   @join__type(graph: RETURN)
@@ -684,6 +682,9 @@ input CreateProductVariantVersionInput
 
   """The description of the ProductVariant."""
   description: String!
+
+  """The associated Media files."""
+  mediaIds: [UUID!]!
 
   """The name of the ProductVariant."""
   name: String!
@@ -1189,28 +1190,31 @@ enum link__Purpose {
   EXECUTION
 }
 
-"""Media object with associated path and id."""
-type Media
+"""A Media file."""
+type Media implements Node
+  @join__implements(graph: CATALOG, interface: "Node")
+  @join__type(graph: CATALOG, key: "id", resolvable: false)
   @join__type(graph: MEDIA, key: "id")
 {
-  """Media UUID."""
+  """The ID of the node."""
   id: UUID!
 
   """Pre-signed path for the media."""
-  path: String!
+  path: String! @join__field(graph: MEDIA)
 }
 
-"""A connection of Medias."""
+"""A connection to a list of `Media` values."""
 type MediaConnection
+  @join__type(graph: CATALOG)
   @join__type(graph: MEDIA)
 {
-  """The resulting entities."""
-  nodes: [Media!]!
-
-  """Whether this connection has a next page."""
+  """Whether this connection has a next page"""
   hasNextPage: Boolean!
 
-  """The total amount of items in this connection."""
+  """The resulting items."""
+  nodes: [Media!]!
+
+  """The total amount of items in this connection"""
   totalCount: Int!
 }
 
@@ -2503,6 +2507,18 @@ type ProductVariantVersion implements Node
   """The ID of the node."""
   id: UUID!
 
+  """Get all associated Medias"""
+  medias(
+    """Number of items to return"""
+    first: Int
+
+    """Ordering"""
+    orderBy: CommonOrderInput
+
+    """Number of items to skip"""
+    skip: Int
+  ): MediaConnection! @join__field(graph: CATALOG)
+
   """The name of the ProductVariantVersion."""
   name: String! @join__field(graph: CATALOG)
 
@@ -2552,6 +2568,9 @@ input ProductVariantVersionInput
 
   """The description of the ProductVariant."""
   description: String!
+
+  """The associated Media files."""
+  mediaIds: [UUID!]!
 
   """The name of the ProductVariant."""
   name: String!
