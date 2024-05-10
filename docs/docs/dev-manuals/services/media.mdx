@@ -3,7 +3,7 @@ import CustomImage from "@site/src/components/CustomImage";
 # Media Service
 
 The media service provides the bounded context `Media`.
-It is responsible for managing media files.
+It is responsible for managing media files such as images.
 The media services uses a Nginx reverse proxy to make the fixed domain of MinIO pre-signed URLs configurable through environment variables.
 
 A pre-signed URL is used as a reference to a specific media. It is generated for each `Media` entity when the `path` attribute is requested.
