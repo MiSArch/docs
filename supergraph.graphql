@@ -41,6 +41,9 @@ interface Address implements Node
   """The ID of the node."""
   id: UUID!
 
+  """The name of the address"""
+  name: Name @join__field(graph: ADDRESS)
+
   """The postal code part of the address"""
   postalCode: String! @join__field(graph: ADDRESS)
 
@@ -622,6 +625,9 @@ input CreateOrderInput
 
   """UUID of payment information that the order should be processed with."""
   paymentInformationId: UUID!
+
+  """VAT number."""
+  vatNumber: String!
 }
 
 """Input for the createProduct mutation"""
@@ -812,6 +818,9 @@ input CreateUserAddressInput
   """The country part of the address to create"""
   country: String!
 
+  """The name of the address to create"""
+  name: NameInput
+
   """The postal code part of the address to create"""
   postalCode: String!
 
@@ -837,6 +846,9 @@ input CreateVendorAddressInput
 
   """The country part of the address to create"""
   country: String!
+
+  """The name of the address to create"""
+  name: NameInput
 
   """The postal code part of the address to create"""
   postalCode: String!
@@ -1383,10 +1395,12 @@ type Mutation
 
   """
   Places an existing order by changing its status to `OrderStatus::Placed`.
+  
+  Adds optional payment authorization input to order DTO when placing order.
   """
   placeOrder(
-    """Uuid of order to place"""
-    id: UUID!
+    """PlaceOrderInput"""
+    input: PlaceOrderInput!
   ): Order! @join__field(graph: ORDER)
 
   """Adds a credit card to the users stored payment informations"""
@@ -1526,6 +1540,29 @@ type Mutation
     """UUID of wishlist to delete."""
     id: UUID!
   ): Boolean! @join__field(graph: WISHLIST)
+}
+
+"""A name consisting of a firstName and lastName."""
+type Name
+  @join__type(graph: ADDRESS)
+  @join__type(graph: USER)
+{
+  """The first name of the user"""
+  firstName: String!
+
+  """The last name of the user"""
+  lastName: String!
+}
+
+"""A name consisting of a firstName and lastName."""
+input NameInput
+  @join__type(graph: ADDRESS)
+{
+  """The first name of the user"""
+  firstName: String!
+
+  """The last name of the user"""
+  lastName: String!
 }
 
 """An object with an ID."""
@@ -1949,6 +1986,13 @@ type Payment
   numberOfRetries: Float!
 }
 
+input PaymentAuthorizationInput
+  @join__type(graph: ORDER)
+{
+  """CVC/CVV number of 3-4 digits."""
+  cvc: Int
+}
+
 """A connection of payments"""
 type PaymentConnection
   @join__type(graph: PAYMENT)
@@ -2110,6 +2154,16 @@ enum PaymentStatus
 
   """The payment was sold to external inkasso service"""
   INKASSO @join__enumValue(graph: PAYMENT)
+}
+
+input PlaceOrderInput
+  @join__type(graph: ORDER)
+{
+  """UUID of order to place."""
+  id: UUID!
+
+  """Optional payment authorization data."""
+  paymentAuthorization: PaymentAuthorizationInput
 }
 
 """A product."""
@@ -3842,14 +3896,11 @@ type User implements Node
   """The date when the user joined"""
   dateJoined: DateTime! @join__field(graph: USER)
 
-  """The first name of the user"""
-  firstName: String! @join__field(graph: USER)
-
   """The gender of the user"""
   gender: Gender @join__field(graph: USER)
 
-  """The last name of the user"""
-  lastName: String! @join__field(graph: USER)
+  """The name of the user"""
+  name: Name! @join__field(graph: USER)
 
   """The username of the user"""
   username: String! @join__field(graph: USER)
@@ -3894,6 +3945,9 @@ type UserAddress implements Address & Node
 
   """If true, this address is archived and can no longer be used."""
   isArchived: Boolean! @join__field(graph: ADDRESS)
+
+  """The name of the address"""
+  name: Name @join__field(graph: ADDRESS)
 
   """The postal code part of the address"""
   postalCode: String! @join__field(graph: ADDRESS)
@@ -4024,6 +4078,9 @@ type VendorAddress implements Address & Node
 
   """The ID of the node."""
   id: UUID!
+
+  """The name of the address"""
+  name: Name @join__field(graph: ADDRESS)
 
   """The postal code part of the address"""
   postalCode: String! @join__field(graph: ADDRESS)
