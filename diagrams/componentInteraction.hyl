@@ -1,0 +1,117 @@
+classDiagram {
+    component = {
+        name = it
+        noedit {
+            comp = class(name, keywords = list("component")) styles {
+                minHeight = 80
+                minWidth = 250
+            }
+
+            element(
+                path(
+                    path = "M 2950 1737 L 2966 1737 L 2966 1757 L 2950 1757 L 2950 1753 L 2946 1753 L 2946 1749 L 2950 1749 L 2950 1745 L 2946 1745 L 2946 1741 L 2950 1741 Z M 2950 1741 L 2954 1741 L 2954 1745 L 2950 1745 M 2950 1749 L 2954 1749 L 2954 1753 L 2950 1753"
+                )
+            ) layout {
+                width = 20
+                pos = rpos(lpos(comp, Position.TopRight), -26, 7)
+            } styles {
+                type("path") {
+                    stroke = var("primary")
+                    stretch = "uniform"
+                }
+            }
+
+            comp
+        }
+    }
+
+    service = component("User") layout {
+        width = 300
+    }
+
+    ecs = component("Experiment Config Sidecar") layout {
+        pos = rpos(service, 0, 200)
+        width = 170
+    }
+
+    daprSidecar = component("Dapr Sidecar") layout {
+        pos = rpos(ecs, -0, 200)
+        width = 300
+    }
+
+    database = component("User Database") layout {
+        pos = rpos(service, 530, 0)
+    }
+
+    service2 = component("Other Service") layout {
+        pos = rpos(service, -530, 0)
+        width = 300
+    }
+
+    ecs2 = component("Experiment Config Sidecar") layout {
+        pos = rpos(service2, 0, 200)
+        width = 170
+    }
+
+    daprSidecar2 = component("Dapr Sidecar") layout {
+        pos = rpos(ecs2, 0, 200)
+        width = 300
+    }
+
+    eventBus = component("Event Bus") layout {
+        pos = rpos(daprSidecar2, 0, 230)
+        width = 830
+    }
+
+    service --* database with {
+        over = start(0).line(end(0.5))
+        label("DB connection", 0.51425, -21)
+    }
+
+    service2 --> daprSidecar2 with {
+        over = start(Position.BottomRight + 0.08).line(end(Position.TopRight - 0.08))
+    }
+
+    daprSidecar2 --> eventBus with {
+        over = start(Position.BottomRight + 0.08).line(end(0.6865))
+    }
+
+    ecsPos = 0.711875
+
+    ecsPos2 = 0.819875
+
+    ecs --> service with {
+        over = start(ecsPos2).line(end(Position.BottomLeft - 0.11))
+    }
+
+    daprSidecar --> ecs with {
+        over = start(Position.TopLeft + 0.11).line(end(1 - ecsPos2))
+    }
+
+    eventBus --> daprSidecar with {
+        over = start(0.824375).line(end(Position.BottomLeft - 0.11))
+    }
+
+    service2 ..> daprSidecar2 with {
+        over = start(Position.BottomRight + 0.03).line(end(Position.TopRight - 0.03))
+    }
+
+    daprSidecar2 ..> daprSidecar with {
+        over = start(0).line(end(0.5))
+    }
+
+    daprSidecar ..> ecs with {
+        over = start(Position.TopLeft + 0.05).line(end(1 - ecsPos))
+    }
+
+    ecs ..> service with {
+        over = start(ecsPos).line(end(Position.BottomLeft - 0.05))
+    }
+
+    styles {
+        cls("class-element") {
+            hAlign = HAlign.Left
+        }
+    }
+
+}
