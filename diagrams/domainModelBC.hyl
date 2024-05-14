@@ -3,7 +3,6 @@ showBoundedContexts = true
 highlightBoundedContexts = true
 highlightBoundedContextsMore = true
 highlightCrossContextRelations = false
-highlightCompletionStatus = false
 
 boundedContexts = []
 
@@ -892,46 +891,6 @@ classDiagram {
             over = start(Position.Top).axisAligned(0, end(0.085))
         } withClass "ccr"
 
-        if(highlightCompletionStatus) {
-            // Legend
-            element(rect {
-                vbox {
-                    hbox {
-                        ellipse(class = list("completed-package"), fill = "green", fillOpacity = 0.4, stroke = "transparent")
-                        text {
-                            span(text = "Completed", fontSize = 64)
-                        }
-                    }
-                    hbox {
-                        ellipse(class = list("wip-package"), fill = "yellow", fillOpacity = 0.4, stroke = "transparent")
-                        text {
-                            span(text = "Work in progress ", fontSize = 64)
-                        }
-                    }
-                    hbox {
-                        ellipse(class = list("package"), fill = "blue", fillOpacity = 0.4, stroke = "transparent")
-                        text {
-                            span(text = "Yet to be done", fontSize = 64)
-                        }
-                    }
-                }
-            }) layout {
-                pos = apos(-800, -272)
-            } styles {
-                any {
-                    stroke = var("primary")
-                    vAlign = VAlign.Center
-                }
-                type("ellipse") {
-                    width = 64
-                    height = 64
-                    margin = 25
-                }
-                type("vbox") {
-                    margin = 25
-                }
-            }
-        }
     }
 
     styles {
@@ -953,30 +912,6 @@ classDiagram {
                 }
             }
         }
-        if(highlightCompletionStatus) {
-            cls("completed-package") {
-                vars {
-                    primary = "green"
-                }
-                any {
-                    type("rect") {
-                        fill = "green"
-                        fillOpacity = 0.2
-                    }
-                }
-            }
-            cls("wip-package") {
-                vars {
-                    primary = "yellow"
-                }
-                any {
-                    type("rect") {
-                        fill = "yellow"
-                        fillOpacity = 0.2
-                    }
-                }
-            }
-        }
         if(highlightCrossContextRelations) {
             cls("ccr") {
                 variables.primary = "red"
@@ -985,32 +920,6 @@ classDiagram {
                 }
             }
         }
-    }
-
-    if(highlightCompletionStatus) {
-        boundedContexts.account withClass "completed-package"
-        boundedContexts.address withClass "completed-package"
-        boundedContexts.category withClass "completed-package"
-        boundedContexts.categoryvalue withClass "completed-package"
-        boundedContexts.discount withClass "completed-package"
-        boundedContexts.genders withClass "completed-package"
-        boundedContexts.inventory withClass "completed-package"
-        boundedContexts.invoice withClass "completed-package"
-        boundedContexts.notification withClass "completed-package"
-        boundedContexts.order withClass "completed-package"
-        boundedContexts.payment withClass "completed-package"
-        boundedContexts.product withClass "completed-package"
-        boundedContexts.review withClass "completed-package"
-        boundedContexts.return withClass "completed-package"
-        boundedContexts.shipment withClass "completed-package"
-        boundedContexts.shipmentstatuses withClass "completed-package"
-        boundedContexts.shopping withClass "completed-package"
-        boundedContexts.tax withClass "completed-package"
-        boundedContexts.user withClass "completed-package"
-        boundedContexts.userroles withClass "completed-package"
-        boundedContexts.wishlist withClass "completed-package"
-        boundedContexts.media withClass "completed-package"
-        boundedContexts.name withClass "completed-package"
     }
 
 }
