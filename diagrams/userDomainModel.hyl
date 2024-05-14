@@ -14,19 +14,29 @@ classDiagram {
             dateJoined : DateTime
             birthday : "Date?"
             gender : "Gender?"
-            firstName: string
-            lastName: string
+            name : Name
             username : string
         }
     } layout {
         pos = apos(-240, 830)
     }
 
-    enum (
+    enum(
         "Gender",
         list("MALE", "FEMALE", "DIVERSE", "OTHER")
     ) layout {
-        pos = apos(-240, 617.5)
+        pos = apos(-240, 617)
+    }
+
+    class(
+        "Name", keywords = list("dataType")
+    ) {
+        public {
+            firstName : string
+            lastName : string
+        }
+    }  layout {
+        pos = apos(125.5, 617)
     }
 
 }

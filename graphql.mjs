@@ -40,6 +40,11 @@ export default [
         docs: "/docs/docs/dev-manuals/services/order"
     },
     {
+        id: "payment",
+        path: "schemas/payment.graphql",
+        docs: "/docs/docs/dev-manuals/services/payment"
+    },
+    {
         id: "return",
         path: "schemas/return.graphql",
         docs: "/docs/docs/dev-manuals/services/return"
