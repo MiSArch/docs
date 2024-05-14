@@ -58,7 +58,7 @@ classDiagram {
 
         boundedContexts.invoice = package("Invoice") layout {
             width = 463
-            height = 204.75
+            height = 222.83647123
             pos = apos(7.5, 1212.5)
         }
 
@@ -76,7 +76,7 @@ classDiagram {
 
         boundedContexts.address = package("Address") layout {
             width = 708
-            height = 416.75
+            height = 431.219176984
             pos = apos(-770, 882.5)
         }
 
@@ -157,13 +157,23 @@ classDiagram {
         pos = apos(110, -560)
     }
 
-    boundedContexts.genders = enum (
+    boundedContexts.genders = enum(
         "Gender",
         list("MALE", "FEMALE", "DIVERSE", "OTHER")
     ) layout {
         pos = apos(-257.5, -560)
-
     }
+
+    boundedContexts.name = class(
+        "Name", keywords = list("dataType")
+    ) {
+        public {
+            firstName : string
+            lastName : string
+        }
+    }  layout {
+        pos = apos(-634.5, -560)
+    } withClass "v-top"
 
     class("AuthCredential") layout {
         width = 144.728151114
@@ -184,8 +194,7 @@ classDiagram {
             dateJoined : DateTime
             birthday : "Date?"
             gender : "Gender?"
-            firstName: string
-            lastName: string
+            name: Name
             username : string
         }
     } layout {
@@ -199,7 +208,8 @@ classDiagram {
             city : string
             postalCode : string
             country : string
-            companyName : string
+            companyName : "string?"
+            name : "Name?"
         }
     } layout {
         pos = apos(-240, 1185)
@@ -387,6 +397,7 @@ classDiagram {
         public {
             totalInvoiceAmount : int
             dateIssued : Date
+            vatNumber: "string?"
         }
     } styles {
 
@@ -687,7 +698,7 @@ classDiagram {
         User --> Notification with {
             label("0..* : notifications", 0.63, -13.5)
             label("1 : user", 0.155, 24.8)
-            over = start(0.575).line(end(0.025))
+            over = start(0.5865).line(end(0.025))
         } withClass "ccr"
 
         ProductVariant --> ProductItem with {
@@ -905,7 +916,7 @@ classDiagram {
                     }
                 }
             }) layout {
-                pos = apos(-800, -200)
+                pos = apos(-800, -272)
             } styles {
                 any {
                     stroke = var("primary")
@@ -924,9 +935,6 @@ classDiagram {
     }
 
     styles {
-        cls("class-element") {
-            vAlign = VAlign.Center
-        }
         cls("v-top") {
             vAlign = VAlign.Top
         }
@@ -987,7 +995,7 @@ classDiagram {
         boundedContexts.discount withClass "completed-package"
         boundedContexts.genders withClass "completed-package"
         boundedContexts.inventory withClass "completed-package"
-        boundedContexts.invoice withClass "wip-package"
+        boundedContexts.invoice withClass "completed-package"
         boundedContexts.notification withClass "completed-package"
         boundedContexts.order withClass "completed-package"
         boundedContexts.payment withClass "completed-package"
@@ -1001,6 +1009,8 @@ classDiagram {
         boundedContexts.user withClass "completed-package"
         boundedContexts.userroles withClass "completed-package"
         boundedContexts.wishlist withClass "completed-package"
+        boundedContexts.media withClass "completed-package"
+        boundedContexts.name withClass "completed-package"
     }
 
 }

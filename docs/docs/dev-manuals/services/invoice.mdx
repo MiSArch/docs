@@ -7,7 +7,7 @@ It is responsible for managing invoices of orders.
 
 ## Domain Model
 
-<CustomImage path="/renderedDiagrams/invoiceDomainModel" width="735" height="250" />
+<CustomImage path="/renderedDiagrams/invoiceDomainModel" width="810" height="168.5" />
 
 :::info
 
@@ -62,8 +62,9 @@ interface Order {
   shipmentAddressId: string;
   invoiceAddressId: string;
   compensatableOrderAmount: number;
-  paymentInformationId;
-  string;
+  paymentInformationId: string;
+  paymentAuthorization?: PaymentAuthorization;
+  vatNumber?: string;
 }
 
 interface OrderItem {
@@ -75,9 +76,12 @@ interface OrderItem {
   shoppingCartItemId: string;
   count: number;
   compensatableAmount: number;
-  shipmentMethodId;
-  string;
+  shipmentMethodId: string;
   discountIds: string[];
+}
+
+interface PaymentAuthorization {
+  cvc: number;
 }
 
 enum OrderStatus {
