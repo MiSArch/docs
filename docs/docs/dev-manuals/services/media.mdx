@@ -10,6 +10,7 @@ A pre-signed URL is used as a reference to a specific media. It is generated for
 This is necessary for access control to specific media files. A `Media` entity cannot be queried by a user client directly.
 It is used in within the service mesh by other services to reference medias in the services datatypes.
 Pre-signed URLs link media to authenticated service datatypes, chaining authentication. Each request of the `path` attribute on `Media` generates a new pre-signed URL with a limited validity duration.
+In other words, presigned URLS are generated automatically without any interference and attachments will always vanish once the presigned URL is no longer valid
 
 The service parses the following environment variables:
 
