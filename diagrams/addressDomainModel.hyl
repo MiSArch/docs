@@ -7,7 +7,8 @@ classDiagram {
             city : string
             postalCode : string
             country : string
-            companyName : string
+            companyName : "string?"
+            name : "Name?"
         }
     } layout {
         pos = apos(-240, 1185)
@@ -44,6 +45,17 @@ classDiagram {
         label("0..* : addresses", 0.66, 70.1)
         label("1 : user", 0.03, 48.2)
         over = start(0.25).line(end(0.75))
+    }
+
+    class(
+        "Name", keywords = list("dataType")
+    ) {
+        public {
+            firstName : string
+            lastName : string
+        }
+    }  layout {
+        pos = apos(-602.5, 866.5)
     }
 
     styles {

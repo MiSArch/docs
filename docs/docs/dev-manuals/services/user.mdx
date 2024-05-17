@@ -7,7 +7,7 @@ It is responsible for managing users by interacting with Keycloak.
 
 ## Domain Model
 
-<CustomImage path="/renderedDiagrams/userDomainModel" width="320" height="390.375" />
+<CustomImage path="/renderedDiagrams/userDomainModel" width="685.5" height="381.5" />
 
 ## API
 
@@ -50,6 +50,13 @@ The repository is structured as follows:
 
 This section lists events that are defined by the user service and can be used by other services.
 
+```tsx
+interface Name {
+  firstName: string;
+  lastName: string;
+}
+```
+
 ### Published Defined Events
 
 #### user/user/created
@@ -60,8 +67,7 @@ This event is published when a new user is created.
 {
   id: string,
   username: string,
-  firstName: string,
-  lastName: string,
+  name: Name,
   dateJoined: string
 }
 ```

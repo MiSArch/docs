@@ -3,7 +3,6 @@ showBoundedContexts = true
 highlightBoundedContexts = true
 highlightBoundedContextsMore = true
 highlightCrossContextRelations = false
-highlightCompletionStatus = false
 
 boundedContexts = []
 
@@ -58,7 +57,7 @@ classDiagram {
 
         boundedContexts.invoice = package("Invoice") layout {
             width = 463
-            height = 204.75
+            height = 222.83647123
             pos = apos(7.5, 1212.5)
         }
 
@@ -76,7 +75,7 @@ classDiagram {
 
         boundedContexts.address = package("Address") layout {
             width = 708
-            height = 416.75
+            height = 431.219176984
             pos = apos(-770, 882.5)
         }
 
@@ -157,13 +156,23 @@ classDiagram {
         pos = apos(110, -560)
     }
 
-    boundedContexts.genders = enum (
+    boundedContexts.genders = enum(
         "Gender",
         list("MALE", "FEMALE", "DIVERSE", "OTHER")
     ) layout {
         pos = apos(-257.5, -560)
-
     }
+
+    boundedContexts.name = class(
+        "Name", keywords = list("dataType")
+    ) {
+        public {
+            firstName : string
+            lastName : string
+        }
+    }  layout {
+        pos = apos(-634.5, -560)
+    } withClass "v-top"
 
     class("AuthCredential") layout {
         width = 144.728151114
@@ -184,8 +193,7 @@ classDiagram {
             dateJoined : DateTime
             birthday : "Date?"
             gender : "Gender?"
-            firstName: string
-            lastName: string
+            name: Name
             username : string
         }
     } layout {
@@ -199,7 +207,8 @@ classDiagram {
             city : string
             postalCode : string
             country : string
-            companyName : string
+            companyName : "string?"
+            name : "Name?"
         }
     } layout {
         pos = apos(-240, 1185)
@@ -391,6 +400,7 @@ classDiagram {
         public {
             totalInvoiceAmount : int
             dateIssued : Date
+            vatNumber: "string?"
         }
     } styles {
 
@@ -691,7 +701,7 @@ classDiagram {
         User --> Notification with {
             label("0..* : notifications", 0.63, -13.5)
             label("1 : user", 0.155, 24.8)
-            over = start(0.575).line(end(0.025))
+            over = start(0.5865).line(end(0.025))
         } withClass "ccr"
 
         ProductVariant --> ProductItem with {
@@ -885,52 +895,9 @@ classDiagram {
             over = start(Position.Top).axisAligned(0, end(0.085))
         } withClass "ccr"
 
-        if(highlightCompletionStatus) {
-            // Legend
-            element(rect {
-                vbox {
-                    hbox {
-                        ellipse(class = list("completed-package"), fill = "green", fillOpacity = 0.4, stroke = "transparent")
-                        text {
-                            span(text = "Completed", fontSize = 64)
-                        }
-                    }
-                    hbox {
-                        ellipse(class = list("wip-package"), fill = "yellow", fillOpacity = 0.4, stroke = "transparent")
-                        text {
-                            span(text = "Work in progress ", fontSize = 64)
-                        }
-                    }
-                    hbox {
-                        ellipse(class = list("package"), fill = "blue", fillOpacity = 0.4, stroke = "transparent")
-                        text {
-                            span(text = "Yet to be done", fontSize = 64)
-                        }
-                    }
-                }
-            }) layout {
-                pos = apos(-800, -200)
-            } styles {
-                any {
-                    stroke = var("primary")
-                    vAlign = VAlign.Center
-                }
-                type("ellipse") {
-                    width = 64
-                    height = 64
-                    margin = 25
-                }
-                type("vbox") {
-                    margin = 25
-                }
-            }
-        }
     }
 
     styles {
-        cls("class-element") {
-            vAlign = VAlign.Center
-        }
         cls("v-top") {
             vAlign = VAlign.Top
         }
@@ -949,30 +916,6 @@ classDiagram {
                 }
             }
         }
-        if(highlightCompletionStatus) {
-            cls("completed-package") {
-                vars {
-                    primary = "green"
-                }
-                any {
-                    type("rect") {
-                        fill = "green"
-                        fillOpacity = 0.2
-                    }
-                }
-            }
-            cls("wip-package") {
-                vars {
-                    primary = "yellow"
-                }
-                any {
-                    type("rect") {
-                        fill = "yellow"
-                        fillOpacity = 0.2
-                    }
-                }
-            }
-        }
         if(highlightCrossContextRelations) {
             cls("ccr") {
                 variables.primary = "red"
@@ -981,30 +924,6 @@ classDiagram {
                 }
             }
         }
-    }
-
-    if(highlightCompletionStatus) {
-        boundedContexts.account withClass "completed-package"
-        boundedContexts.address withClass "completed-package"
-        boundedContexts.category withClass "completed-package"
-        boundedContexts.categoryvalue withClass "completed-package"
-        boundedContexts.discount withClass "completed-package"
-        boundedContexts.genders withClass "completed-package"
-        boundedContexts.inventory withClass "completed-package"
-        boundedContexts.invoice withClass "wip-package"
-        boundedContexts.notification withClass "completed-package"
-        boundedContexts.order withClass "completed-package"
-        boundedContexts.payment withClass "completed-package"
-        boundedContexts.product withClass "completed-package"
-        boundedContexts.review withClass "completed-package"
-        boundedContexts.return withClass "completed-package"
-        boundedContexts.shipment withClass "completed-package"
-        boundedContexts.shipmentstatuses withClass "completed-package"
-        boundedContexts.shopping withClass "completed-package"
-        boundedContexts.tax withClass "completed-package"
-        boundedContexts.user withClass "completed-package"
-        boundedContexts.userroles withClass "completed-package"
-        boundedContexts.wishlist withClass "completed-package"
     }
 
 }

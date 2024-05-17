@@ -3,6 +3,7 @@ classDiagram {
         public {
             totalInvoiceAmount : int
             dateIssued : Date
+            vatNumber : "string?"
         }
     } layout {
         pos = apos(280, 1350)

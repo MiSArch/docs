@@ -6,4 +6,23 @@ import CustomImage from "@site/src/components/CustomImage";
 
 # Component Diagram
 
-<CustomImage path="/diagrams/componentDiagram" width="2430" height="2751" />
+Overview of the main components and their interactions in the Misarch architecture.
+Databases, dapr, and event buses are ommited for clarity.
+
+Explanation:
+
+- **dottet line**: synchronous communication
+- **solid line**: asynchronous communication
+
+<CustomImage path="/renderedDiagrams/component" width="2702.5" height="1678.5" />
+
+## Interaction Between Components
+
+Interaction between components via dapr, detailing synchronous and asynchronous communication.
+
+Explanation:
+
+- **dottet line**: synchronous communication (dapr service invocation)
+- **solid line**: asynchronous communication (dapr pub/sub)
+
+<CustomImage path="/renderedDiagrams/componentInteraction" width="1330" height="730" />

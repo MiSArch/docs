@@ -1,0 +1,307 @@
+classDiagram {
+    component = {
+        name = it
+        noedit {
+            comp = class(name, keywords = list("component")) styles {
+                minHeight = 80
+                minWidth = 250
+            }
+
+            element(
+                path(
+                    path = "M 2950 1737 L 2966 1737 L 2966 1757 L 2950 1757 L 2950 1753 L 2946 1753 L 2946 1749 L 2950 1749 L 2950 1745 L 2946 1745 L 2946 1741 L 2950 1741 Z M 2950 1741 L 2954 1741 L 2954 1745 L 2950 1745 M 2950 1749 L 2954 1749 L 2954 1753 L 2950 1753"
+                )
+            ) layout {
+                width = 20
+                pos = rpos(lpos(comp, Position.TopRight), -26, 7)
+            } styles {
+                type("path") {
+                    stroke = var("primary")
+                    stretch = "uniform"
+                }
+            }
+
+            comp
+        }
+    }
+
+    Services = package("Services") layout {
+        width = 2288
+        height = 1518
+        pos = apos(-775, -502.5)
+    }
+
+    Catalog = component("Catalog") layout {
+        pos = apos(810, -137.5)
+    }
+
+    Tax = component("Tax") layout {
+        pos = rpos(Catalog, 480, 0)
+    }
+
+    Inventory = component("Inventory") layout {
+        pos = rpos(Tax, 0, 200)
+    }
+
+
+    Review = component("Review") layout {
+        pos = rpos(Catalog, 0, -230)
+    }
+    
+    ShoppingCart = component("ShoppingCart") layout {
+        pos = apos(336, -65)
+    }
+
+    Wishlist = component("Wishlist") layout {
+        pos = rpos(ShoppingCart, 0, 136.5)
+    }
+
+    Discount = component("Discount") layout {
+        pos = rpos(ShoppingCart, 0, 268.5)
+    }
+
+    User = component("User") layout {
+        pos = apos(-186.5, 454.5)
+    }
+
+    Notification = component("Notification") layout {
+        pos = rpos(User, -400, 0)
+    }
+
+    Keycloak = component("Keycloak") layout {
+        pos = rpos(User, 0, -199)
+    }
+
+    Address = component("Address") layout {
+        pos = rpos(User, 0, 162.5)
+    }
+
+    Order = component("Order") layout {
+        pos = rpos(Inventory, 0, 374)
+    }
+
+    Return = component("Return") layout {
+        pos = apos(589.5, 359.5)
+    }
+
+    Invoice = component("Invoice") layout {
+        pos = apos(459.5, 580.5)
+    }
+
+    Shipment = component("Shipment") layout {
+        pos = apos(829.5, 669)
+    }
+
+    Payment = component("Payment") layout {
+        pos = rpos(Shipment, 0, 200)
+    }
+
+    Gateway = component("Gateway") layout {
+        pos = apos(-1044.5, 283.5)
+    }
+
+    Simulation = component("Simulation") layout {
+        pos = apos(614.5, 1116)
+    }
+
+    Media = component("Media") layout {
+        pos = rpos(Tax, 0, -230)
+    }
+
+    Frontend = component("Frontend") layout {
+        pos = rpos(Gateway, 0, -230)
+    }
+
+    ExperimentConfig = component("Experiment Config ") layout {
+        pos = rpos(Gateway, 0, 230)
+    }
+
+    ExperimentConfigFrontend = component("Experiment Config Frontend") layout {
+        pos = rpos(ExperimentConfig, 0, 230)
+    }
+
+
+    Gateway ..> Services with {
+        over = start(0.989).line(end(0.496))
+    }
+
+    Tax --> Catalog with {
+        over = start(0.535).axisAligned(0, end(0.966))
+    }
+
+    Catalog --> Inventory with {
+        over = start(0.044).axisAligned(0.5, end(0.5))
+    }
+
+    Catalog --> Order with {
+        over = start(0.125).axisAligned(-0.491, end(0.706))
+    }
+
+    User --> Address with {
+        over = start(0.25).axisAligned(-0.565, end(0.75))
+    }
+
+    Inventory --> Discount with {
+        over = start(0.375).axisAligned(0.5, end(0.976))
+    }
+
+    User --> Discount with {
+        over = start(0.875).axisAligned(0.5, end(0.438))
+    }
+
+    Catalog --> Discount with {
+        over = start(0.5).axisAligned(0.5, end(0.875))
+    }
+
+    Order --> Inventory with {
+        over = start(0.75).axisAligned(-0.667, end(0.25))
+    }
+
+    User --> Notification with {
+        over = start(0.5).axisAligned(0.5, end(0))
+    }
+
+    User --> Payment with {
+        over = start(0).axisAligned(0.306, end(0.5645))
+    }
+
+    Order --> Payment with {
+        over = start(0.226).axisAligned(0, end(0.105))
+    }
+
+    Shipment --> Return with {
+        over = start(0.684).axisAligned(-0.507, end(0.216))
+    }
+
+    Order --> Return with {
+        over = start(0.515).axisAligned(0.255, end(0.103))
+    }
+
+    Catalog --> Return with {
+        over = start(0.225).axisAligned(0, end(0))
+    }
+
+    Address --> Shipment with {
+        over = start(0.093).axisAligned(0.5, end(0.5745))
+    }
+
+    Catalog --> Shipment with {
+        over = start(0.161).axisAligned(1, end(0.824))
+    }
+
+    Shipment --> Notification with {
+        over = start(0.490125).axisAligned(-1, end(0.184))
+    }
+
+    Payment --> Shipment with {
+        over = start(0.766).axisAligned(-0.352, end(0.234))
+    }
+
+    Keycloak --> User with {
+        over = start(0.25).axisAligned(-0.57, end(0.75))
+    }
+
+    Discount --> Invoice with {
+        over = start(0.217).axisAligned(-0.572, end(0.66))
+    }
+
+    Address --> Invoice with {
+        over = start(0).axisAligned(0.5, end(0.469))
+    }
+
+    User --> Invoice with {
+        over = start(0.1).axisAligned(0.5, end(0.559))
+    }
+
+    Discount --> Order with {
+        over = start(0.168).axisAligned(-0.626, end(0.625))
+    }
+
+    Tax --> Order with {
+        over = start(0).axisAligned(1, rpos(Order, 182.5, -267.5), 0, end(0))
+    }
+
+    Shipment --> Order with {
+        over = start(0.987).axisAligned(-1, end(0.311))
+    }
+
+    User --> Order with {
+        over = start(0).axisAligned(0.5, end(0.443))
+    }
+
+    Address --> Order with {
+        over = start(0.26).axisAligned(0, rpos(Address, 0, 340), -1, end(0.141))
+    }
+
+    User --> Review with {
+        over = start(0.875).axisAligned(0.116, end(0.476))
+    }
+
+    Catalog --> Review with {
+        over = start(Position.Top).axisAligned(1, end(Position.Bottom))
+    }
+
+    User --> ShoppingCart with {
+        over = start(0.875).axisAligned(0.5, end(0.485))
+    }
+
+    Catalog --> ShoppingCart with {
+        over = start(0.5).axisAligned(0.5, end(0))
+    }
+
+    User --> Wishlist with {
+        over = start(0.875).axisAligned(0.5, end(0.454))
+    }
+
+    Catalog --> Wishlist with {
+        over = start(0.5).axisAligned(0.5, end(0))
+    }
+
+    Payment --> Notification with {
+        over = start(0.485625).axisAligned(-1, end(0.275))
+    }
+
+    list([Shipment, 0.41325], [Payment, 0.434125]).forEach {
+        (start, pos) = it
+        Simulation <..> start with {
+            over = start(Position.Top).axisAligned(0, end(pos))
+        }
+    }
+
+    Order ..> Shipment with {
+        over = start(0.353).axisAligned(0, end(0.9))
+    }
+
+    Order ..> Payment with {
+        over = start(0.353).axisAligned(0, end(0.875))
+    }
+
+    Order ..> Inventory with {
+        over = start(0.806).axisAligned(-0.75, end(0.194))
+    }
+
+    Order ..> Discount with {
+        over = start(0.659).axisAligned(-0.233, end(0.125))
+    }
+
+    Invoice --> Payment with {
+        over = start(0.249).axisAligned(-0.29, end(0.678125))
+    }
+
+    Media --> Catalog with {
+        over = start(0.315).axisAligned(-0.55, end(0.815))
+    }
+
+    Frontend ..> Gateway with {
+        over = start(Position.Bottom).line(end(Position.Top))
+    }
+
+    ExperimentConfig <--> Services with {
+        over = start(0).line(end(0.457625))
+    }
+
+    ExperimentConfigFrontend ..> ExperimentConfig with {
+        over = start(Position.Top).line(end(Position.Bottom))
+    }
+
+}
