@@ -1,0 +1,102 @@
+import CustomImage from "@site/src/components/CustomImage";
+
+# Media Service
+
+The media service provides the bounded context `Media`.
+It is responsible for managing media files such as images.
+The media services uses a Nginx reverse proxy to make the fixed domain of MinIO pre-signed URLs configurable through environment variables.
+
+A pre-signed URL is used as a reference to a specific media. It is generated for each `Media` entity when the `path` attribute is requested.
+This is necessary for access control to specific media files. A `Media` entity cannot be queried by a user client directly.
+It is used in within the service mesh by other services to reference medias in the services datatypes.
+Pre-signed URLs link media to authenticated service datatypes, chaining authentication. Each request of the `path` attribute on `Media` generates a new pre-signed URL with a limited validity duration.
+In other words, presigned URLS are generated automatically without any interference and attachments will always vanish once the presigned URL is no longer valid
+
+The service parses the following environment variables:
+
+- `MINIO_ENDPOINT`: configurable domain of the MinIO instance.
+- `PATH_EXPIRATION_TIME`: validity duration of MinIO pre-signed URLs in seconds. A resource can no longer be reached under the pre-signed URL after the pre-signed URL is expired.
+- `PROXY_PATH`: path to include in the pre-signed URLs.
+
+## Domain Model
+
+<CustomImage path="/renderedDiagrams/mediaDomainModel" width="216.50013771199997" height="93.5" />
+
+:::info
+
+Imported entities from other bounded contexts are marked with a dashed border.
+
+:::
+
+## API
+
+The service provides a GraphQL API, which is documented in the GraphQL API documentation (TODO).
+
+## Technology Stack
+
+- **Language**: Rust
+- **Framework**: [axum](https://docs.rs/axum/latest/axum/)
+- **GraphQL Library**: [async_graphql](https://docs.rs/async-graphql/latest/async_graphql/)
+- **Database**: MinIO
+- **Reverse Proxy**: Nginx [nginx](https://nginx.org/en/)
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure">
+
+- `/src`: Source code of the service
+  - `authentication.rs` Header authentication logic of service
+  - `main.rs` Service execution and schema generation
+  - `media_connection.rs` GraphQL connection of medias
+  - `media.rs` Media datatype
+  - `mutation.rs` GraphQL mutations and associated functions
+  - `query.rs` GraphQL queries and associated functions
+
+</div>
+
+## Domain entities
+
+```
+interface Media {
+   id: string;
+   path: string,
+}
+```
+
+## Defined Events
+
+This section lists events that are defined by the media service and can be used by other services.
+
+### Published Defined Events
+
+#### media/media/created
+
+This event is published when a media is created.
+
+```tsx
+{
+  id: string;
+}
+```
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the media service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+n/a
+
+## Important ADRs
+
+n/a
