@@ -1,0 +1,166 @@
+# Experiment Config Service
+
+The Experiment Config Service stores all available services and their replicas in memory.
+It additionally queries each service's sidecar for variable definitions - in [JSONSchema](https://json-schema.org/).
+It enables the configuration of the whole MisArch system.
+
+## REST API
+
+The service provides a REST API over wgich configurations can be queried and made.
+The API is also used by the [Experiment Config Frontend](https://github.com/MiSArch/experiment-config-frontend)
+
+#### Common Types
+
+**ServiceConfiguration**
+
+```tsx
+  name: string;
+  replicas: ServiceReplica[];
+  globalVariables: ConfigurationVariable[];
+  variableDefinitions: ConfigurationVariableDefinition[];
+```
+
+**ServiceReplica**
+
+```tsx
+  id: string;
+  replicaVariables: ConfigurationVariable[];
+  lastSeen?: Date;
+```
+
+**ConfigurationVariable**
+
+```tsx
+key: string;
+value: any;
+```
+
+**ConfigurationVariableDefinition**
+
+```tsx
+key: string;
+type: JSONSchemaType<any>;
+defaultValue: any;
+```
+
+### Service Level Endpoints
+
+#### GET `/configuration/`
+
+Returns all current `ServiceConfiguration`'s.
+
+#### GET `/configuration/names`
+
+Returns the names of all current services.
+
+#### GET `/configuration/{service}/defined-variables`
+
+Returns all `ConfigurationVariableDefinition`'s of the service with the name `{service}`.
+
+#### GET `configuration/{service}/variables`
+
+Returns the current values of all service `ConfigurationVariable`'s
+
+#### GET `configuration/{service}/replicas`
+
+Returns the `ServiceReplica`'s of the service with the name `{service}`.
+
+#### GET `configuration/{service}/variables/{variable}`
+
+Returns the `ConfigurationVariable` `{variable}` for the service with the name `{service}`
+
+#### PUT `configuration/{service}/variables`
+
+Batch updates the global configuration of the service with the name `{service}`
+and overwrites all replica configurations with the global configuration.
+
+**Body**
+
+```tsx
+{
+  variables: ConfigurationVariable[];
+}
+```
+
+#### PUT `configuration/{service}/variables/{variable}`
+
+Updates the configuration with the key `{variable}` of the service with the name `{service}`
+and overwrites all replica configurations with the global configuration.
+
+**Body**
+
+```tsx
+{
+  value: any;
+}
+```
+
+### Replica Level Endpoints
+
+#### GET `/configuration/{service}/replicas/{replica}/variables`
+
+Returns all `ConfigurationVariable`'s of the replica with the ID `{replica}`
+of the service with the name `{service}`
+
+#### GET `/configuration/{service}/replicas/{replica}/variables/{variable}`
+
+Returns the `ConfigurationVariable` with the key `{variable}` of the replica with the ID `{replica}`
+of the service with the name `{service}`
+
+#### PUT `configuration/{service}/replicas/{replica}/variables`
+
+Batch updates configuration of the relica with the ID `{replica}`
+of the service with the name `{service}`.
+
+**Body**
+
+```tsx
+{
+  variables: ConfigurationVariable[];
+}
+```
+
+#### PUT `configuration/{service}/replicas/{replica}/variables/{variable}`
+
+Updates the configuration with the key `{variable}`
+of the replica with the ID `{replica}` of the service with the name `{service}`.
+
+**Body**
+
+```tsx
+{
+  value: any;
+}
+```
+
+## Technology Stack
+
+- **Language**: TypeScript
+- **Framework**: NestJS
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/`: Source code of the service
+  - `configuration/`: Internal simulation of event processing out of the queue
+    - `dto/`: Event DTOs to send back to services
+    - `entities/`: Event DTOs to send back to services
+  - `event/`: Module for Registering and manually updating payments
+    - `dto`: Payment Registering and updating DTOs
+  - `shared/`: Shared Code between different modules
+    - `logger`: Logging Configuration
+    - `pipes`: Internal Pipes
+  - `health/`: Module application healthchecks.
+
+</div>
+
+### Subscribed Imported Events
+
+- heartbeat: Registers available replicas.
+
+## Important ADRs
+
+- [Service Health Endpoint](/docs/docs/dev-manuals/adr/health-endpoint)

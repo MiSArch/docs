@@ -1,0 +1,32 @@
+# Experiment Config Frontend
+
+The frontend is a convenience feature to allow easier configuration of the current services and replicas.
+It dynamically loads all available variables from all services and validates made configurations via their JSONSchema.
+
+### REST API
+
+The service provides a REST API which is used by the payment and shipping service, to register about new events to simulate. Additionally, users can query all currently queued events and manually change the status of events.
+
+## Technology Stack
+
+- **Language**: TypeScript
+- **Framework**: Angular
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure" >
+
+- `/src/app`: Source code of the webapplication
+  - `configuration-manager/`: Component to configure available services and replicas
+  - `home/`: Home component with service name overview
+
+</div>
+
+## Files That Play An Important Role
+
+- `app.config.ts`: Configures Routes and application-wide imnports
+- `app.routes.ts`: Defines the routes and connected components
+- `configuration.service.ts`: Service that interfaces the experiment-config service
+- `model.ts`: Defines the expected data structure from the experiment-config service
