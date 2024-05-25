@@ -33,18 +33,23 @@ The repository is structured as follows:
 <div className="repository-structure">
 
 - `/src`: Source code of the service
-  - `authentication.rs` Header authentication logic of service
-  - `base_connection.rs` Generic GraphQL connection
-  - `http_event_service.rs` Handling of incoming events
-  - `main.rs` Service execution and schema generation
-  - `mutation_input_structs.rs` GraphQL input datatypes for mutations
-  - `mutation.rs` GraphQL mutations and associated functions
-  - `order_datatypes.rs` GraphQL datatypes for connection element ordering
-  - `product_variant_connection.rs` GraphQL connection of product variants
-  - `query.rs` GraphQL queries and associated functions
-  - `review_connection.rs` GraphQL connection of review
-  - `review.rs` Review datatype
-  - `user.rs` User with additional GraphQL field(s) provided by this service
+  - `/authorization.rs`: Header authorization logic of service
+  - `/event`: Dapr event handling
+    - `/http_event_service.rs`: Handling of incoming events
+  - `/graphql`: GraphQL API
+    - `/model`: GraphQL types
+      - `/connection`: GraphQL connection types
+        - `/base_connection.rs`: Generic GraphQL connection
+        - `/review_connection.rs`: GraphQL connection of review
+      - `/order_datatypes.rs`: GraphQL datatypes for connection element ordering
+      - `/product.rs`: GraphQL product foreign datatype with additional GraphQL field(s) provided by this service
+      - `/product_variant.rs`: GraphQL product variant foreign datatype with additional GraphQL field(s) provided by this service
+      - `/review.rs`: Review datatype
+      - `/user.rs`: GraphQL user foreign dataype with additional GraphQL field(s) provided by this service
+    - `/mutation_input_structs.rs`: GraphQL input datatypes for mutations
+    - `/mutation.rs`: GraphQL mutations and associated functions
+    - `/query.rs`: GraphQL queries and associated functions
+  - `/main.rs`: Service execution and schema generation
 
 </div>
 
