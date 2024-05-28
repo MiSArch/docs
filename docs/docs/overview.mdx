@@ -30,9 +30,9 @@ The aim of this development project is to create such a reference architecture.
 | ----------------------------- | --------------------------------------------------------- | ----------------------------------------- | -------------------------------------------------------- | ------------------------------------------ |
 | # Microservices               | 5                                                         | 6                                         | 41                                                       | 17 ( + 3 non-domain services)              |
 | Multilanguage                 | -                                                         | -                                         | ✔                                                       | ✔                                         |
-| Asynchronous Communication    | -                                                         | -                                         | ✔                                                       | ✔                                         |
+| Asynchronous Communication    | -                                                         | Partial                                   | ✔                                                       | ✔                                         |
 | Technologies                  | -                                                         | Kubernetes                                | Kubernetes                                               | Dapr, Keycloak, Minio, GraphQL, Kubernetes |
-| Configurable System Behaviour | -                                                         | -                                         | -                                                        | ✔                                         |
+| Configurable System Behaviour | -                                                         | SLO Violations                            | Predefined Faults                                        | ✔                                         |
 
 ### Documentation
 
@@ -41,7 +41,8 @@ See
 - [Installation](/docs/category/installation) for details regarding system requirements and setup
 - [Usage](/docs/category/usage) for user manuals, e.g. the [Frontend User Guide](/docs/docs/user-manuals/how-to-use-frontend)
 - [Architecture](/docs/category/architecture) for the architectural process
-- [Services & System Components](/docs/category/services--system-components) for detailed documentation of every service
+- [Services & System Components](/docs/category/domain-services--system-components) for detailed documentation of every domain service or system components
+- [Infrastructure, Experiments & Others](/docs/category/infrastructure-experiments--others) for detailed documentation of the infrastructure and supporting services
 - [Architectural Decision Records](/docs/category/adrs) for the architectural decisions
 - [Tooling](/docs/category/tooling) for the tooling setup
 - [GraphQL](/docs/graphql/schema) for federated GraphQL schema

@@ -23,15 +23,19 @@ The repository is structured as follows:
 <div className="repository-structure" >
 
 - `/src/`: Source code of the service
+  - `configuration`: Module, that exposes service configuration to experiment config sidecar
+    - `variable-definitions`: Includes the type defintions for all internal variables
+  - `connector`: Module for HTTP requests to MisArch microservices
   - `event-processor/`: Internal simulation of event processing out of the queue
     - `dto/`: Event DTOs to send back to services
-- `payment/`: Module for Registering and manually updating payments
-  - `dto`: Payment Registering and updating DTOs
-- `shared/`: Shared Code between different modules
-  - `enums`: Shared enumerators
-  - `logger`: Logging configuration
-- `shipment/`: Module for Registering and manually updating shipments
-  - `dto`: Shipment Registering and updating DTOs
+  - `health`: Health Module
+  - `payment/`: Module for Registering and manually updating payments
+    - `dto`: Payment Registering and updating DTOs
+  - `shared/`: Shared Code between different modules
+    - `enums`: Shared enumerators
+    - `logger`: Logging configuration
+  - `shipment/`: Module for Registering and manually updating shipments
+    - `dto`: Shipment Registering and updating DTOs
 
 </div>
 

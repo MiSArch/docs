@@ -122,6 +122,11 @@ n/a
 
 - [catalog/product-variant/created](/docs/docs/dev-manuals/services/catalog#catalogproduct-variantcreated): Used to import `ProductVariant` from the `Catalog` bounded context.
 - [order/order/created](/docs/docs/dev-manuals/services/order#orderordercreated): Used to reserve the `ProductItems` for an `Order`.
+- [payment/payment/payment-enabled](/docs/docs/dev-manuals/services/payment#paymentpayment-enabled): Send Inventory to Fullfillment
+- [payment/payment/payment-failed](/docs/docs/dev-manuals/services/payment#paymentpayment-failed): Releases Product Items related to the order
+- [shipment/shipment/status-updated](/docs/docs/dev-manuals/services/shipment#shipmentshipmentstatus-updated): Updates the inventory status based on the shipment status
+- [shipment/shipment/created](/docs/docs/dev-manuals/services/shipment#shipmentshipmentcreated): Updates the inventory status based on the shipment status
+- [discount/order/validation-failed](/docs/docs/dev-manuals/services/shipment#discountordervalidation-failed): Releases Product Items related to the order
 
 ## Important ADRs
 

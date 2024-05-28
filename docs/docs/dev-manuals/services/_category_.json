@@ -1,8 +1,8 @@
 {
-    "label": "Services & System Components",
+    "label": "Domain Services & System Components",
     "position": 2,
     "link": {
         "type": "generated-index",
-        "description": "The services the MiSArch project consists of."
+        "description": "The domain services the MiSArch project consists of."
     }
 }
