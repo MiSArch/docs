@@ -1,0 +1,53 @@
+# Gateway
+
+The gateway is the entry point for the MisArch system.
+It is responsible for routing requests to the correct service and handling authentication.
+Requests are forwarded via dapr service invocation to the respective service.
+
+## API
+
+The gateway provides a GraphQL API, which is documented in the [GraphQL API documentation](/docs/graphql/schema).
+
+## Technology Stack
+
+- **Language**: TypeScript
+- **Framework**: GraphQL Mesh
+
+## Repository Structure
+
+<div className="repository-structure" >
+
+- `/meshrc.yaml`: Configuration for GraphQL Mesh
+- `/envelopPlugin.ts`: Custom Envelop plugin for authentication
+- `/supergraph.yaml`: Supergraph configuration passed to Apollo Rover
+
+</div>
+
+## Defined Events
+
+This section lists events that are defined by the catalog service and can be used by other services.
+
+### Published Defined Events
+
+n/a
+
+### Subscribed Defined Events
+
+n/a
+
+## Imported Events
+
+This section lists events defined by other services that are used by the catalog service.
+
+### Published Imported Events
+
+n/a
+
+### Subscribed Imported Events
+
+n/a
+
+## Important ADRs
+
+- [Use GraphQL API Gateway](/docs/docs/dev-manuals/adr/use-graphql-api-gateway)
+- [Use GraphQL Federation for API Gateway](/docs/docs/dev-manuals/adr/use-graphql-federation)

@@ -47,12 +47,18 @@ The repository is structured as follows:
 <div className="repository-structure">
 
 - `/src`: Source code of the service
-  - `authentication.rs` Header authentication logic of service
-  - `main.rs` Service execution and schema generation
-  - `media_connection.rs` GraphQL connection of medias
-  - `media.rs` Media datatype
-  - `mutation.rs` GraphQL mutations and associated functions
-  - `query.rs` GraphQL queries and associated functions
+  - `/authorization.rs`: Header authorization logic of service
+  - `/event`: Dapr event handling
+    - `/model`: Event DTOs
+      - `/media_dto.rs`: Media DTO
+  - `/graphql`: GraphQL API
+    - `/model`: GraphQL types
+      - `/connection`: GraphQL connection types
+        - `/media_connection.rs`: GraphQL connection of medias
+      - `/media.rs`: Media datatype
+    - `/mutation.rs`: GraphQL mutations and associated functions
+    - `/query.rs`: GraphQL queries and associated functions
+  - `/main.rs`: Service execution and schema generation
 
 </div>
 
