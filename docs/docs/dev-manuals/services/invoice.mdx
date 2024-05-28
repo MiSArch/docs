@@ -33,12 +33,18 @@ The repository is structured as follows:
 <div className="repository-structure">
 
 - `/src`: Source code of the service
-  - `authentication.rs` Header authentication logic of service
-  - `http_event_service.rs` Handling of incoming events
-  - `invoice.rs` Invoice datatype
-  - `main.rs` Service execution and schema generation
-  - `order.rs` Order datatype
-  - `query.rs` GraphQL queries and associated functions
+  - `/event`: Dapr event handling
+    - `/http_event_service.rs`: Handling of incoming events
+    - `/model`: Event DTOs
+      - `/invoice_created_dto.rs`: Invoice created event DTO
+      - `/invoice_dto.rs`: Invoice DTO
+  - `/graphql`: GraphQL API
+    - `/model`: GraphQL types
+      - `/foreign_types.rs`: Datatypes which are not part of the services bounded context
+      - `/invoice.rs`: Invoice datatype
+      - `/order.rs`: Order datatype
+    - `/query.rs`: GraphQL queries and associated functions
+  - `/main.rs`: Service execution and schema generation
 
 </div>
 

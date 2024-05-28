@@ -1514,7 +1514,7 @@ type Mutation
   """
   Adds a wishlist with a user_id, a list of product_variant_ids and a name.
   
-  Formats UUIDs as hyphenated lowercase Strings.
+  Formats UUIDs as hyphenated lowercase strings.
   """
   createWishlist(
     """CreateWishlistInput"""
@@ -1522,16 +1522,16 @@ type Mutation
   ): Wishlist! @join__field(graph: WISHLIST)
 
   """
-  Updates name and/or product_variant_ids of a specific wishlist referenced with an id.
+  Updates name and/or product_variant_ids of a specific wishlist referenced with an UUID.
   
-  Formats UUIDs as hyphenated lowercase Strings.
+  Formats UUIDs as hyphenated lowercase strings.
   """
   updateWishlist(
     """UpdateWishlistInput"""
     input: UpdateWishlistInput!
   ): Wishlist! @join__field(graph: WISHLIST)
 
-  """Deletes wishlist of id."""
+  """Deletes wishlist of UUID."""
   deleteWishlist(
     """UUID of wishlist to delete."""
     id: UUID!
@@ -2984,7 +2984,7 @@ type Query
     skip: Int
   ): UserConnection! @join__field(graph: USER)
 
-  """Retrieves wishlist of specific id."""
+  """Retrieves wishlist of specific UUID."""
   wishlist(
     """UUID of wishlist to retrieve."""
     id: UUID!
@@ -4090,7 +4090,7 @@ type VendorAddress implements Address & Node
   street2: String! @join__field(graph: ADDRESS)
 }
 
-"""The Wishlist of a user."""
+"""The wishlist of a user."""
 type Wishlist
   @join__type(graph: WISHLIST, key: "id")
 {
@@ -4100,13 +4100,13 @@ type Wishlist
   """User."""
   user: User!
 
-  """Name of Wishlist."""
+  """Name of wishlist."""
   name: String!
 
-  """Timestamp when Wishlist was created."""
+  """Timestamp when wishlist was created."""
   createdAt: DateTime!
 
-  """Timestamp when Wishlist was last updated."""
+  """Timestamp when wishlist was last updated."""
   lastUpdatedAt: DateTime!
 
   """Retrieves product variants."""
@@ -4124,7 +4124,7 @@ type Wishlist
   ): ProductVariantConnection!
 }
 
-"""A connection of Wishlists."""
+"""A connection of wishlists."""
 type WishlistConnection
   @join__type(graph: WISHLIST)
 {
