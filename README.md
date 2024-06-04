@@ -8,6 +8,22 @@ This documentation for MiSArch is built using [Docusaurus 2](https://docusaurus.
 npm i
 ```
 
+### Submodules
+
+In both sections of this _README_, [Local Development](#local-development) and [Build](#build), the following command will be issued:
+
+```
+npm run update-graphql-docs
+```
+
+`update-graphql-docs` creates the GraphQL API documentation and for it to work it expects the submodule [schemas](https://github.com/MiSArch/schemas.git) to be initialized and up-to-date. Because of that we have to execute the following command at first (ideally right after `npm i`):
+
+```
+git submodule update --init
+```
+
+Note that `npm run render-diagrams` does not depend on the submodule.
+
 ### Local Development
 
 ```
