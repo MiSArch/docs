@@ -67,22 +67,6 @@ The repository is structured as follows:
 This section lists events that are defined by the order service and can be used by other services.
 
 ```tsx
-interface Order {
-  id: string;
-  userId: string;
-  createdAt: string;
-  orderStatus: OrderStatus;
-  placedAt: string;
-  rejectionReason?: RejectionReason;
-  orderItems: OrderItem[];
-  shipmentAddressId: string;
-  invoiceAddressId: string;
-  compensatableOrderAmount: number;
-  paymentInformationId: string;
-  paymentAuthorization?: PaymentAuthorization;
-  vatNumber?: string;
-}
-
 interface OrderItem {
   id: string;
   createdAt: string;
@@ -118,7 +102,37 @@ enum RejectionReason {
 
 This event is published when an order is placed, which means its order status is set to `PLACED`.
 
-This events body is similar to the `interface Order`.
+```tsx
+{
+  id: string;
+  userId: string;
+  createdAt: string;
+  orderStatus: OrderStatus;
+  placedAt: string;
+  rejectionReason?: RejectionReason;
+  orderItems: OrderItem[];
+  shipmentAddressId: string;
+  invoiceAddressId: string;
+  compensatableOrderAmount: number;
+  paymentInformationId: string;
+  paymentAuthorization?: PaymentAuthorization;
+  vatNumber?: string;
+}
+```
+
+#### order/order-compensation/created
+
+This event is published when an order should be compensated due to a failed shipment.
+
+```tsx
+{
+  id: string,
+  orderId: string,
+  orderItemIds: string[],
+  triggeredAt: DateTime,
+  amountToCompensate: number
+}
+```
 
 ### Subscribed Defined Events
 
