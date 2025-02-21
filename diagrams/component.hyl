@@ -166,7 +166,7 @@ classDiagram {
     }
 
     Order --> Payment with {
-        over = start(0.226).axisAligned(0, end(0.105))
+        over = start(0.226).axisAligned(0, end(0))
     }
 
     Shipment --> Return with {
@@ -222,7 +222,7 @@ classDiagram {
     }
 
     Shipment --> Order with {
-        over = start(0.987).axisAligned(-1, end(0.311))
+        over = start(0.051).axisAligned(-1, end(0.311))
     }
 
     User --> Order with {
@@ -254,7 +254,7 @@ classDiagram {
     }
 
     Catalog --> Wishlist with {
-        over = start(0.5).axisAligned(0.5, end(0))
+        over = start(0.5).axisAligned(0.5, end(0.952))
     }
 
     Payment --> Notification with {
@@ -269,19 +269,21 @@ classDiagram {
     }
 
     Order ..> Shipment with {
-        over = start(0.353).axisAligned(0, end(0.9))
-    }
-
-    Order ..> Payment with {
-        over = start(0.353).axisAligned(0, end(0.875))
+        over = start(0.353).axisAligned(0, end(0.932))
     }
 
     Order ..> Inventory with {
         over = start(0.806).axisAligned(-0.75, end(0.194))
     }
 
+    orderSyncRelationTempPoint = apos(654, 279)
+
     Order ..> Discount with {
-        over = start(0.659).axisAligned(-0.233, end(0.125))
+        over = start(0.659).axisAligned(0, orderSyncRelationTempPoint, -1, end(0.125))
+    }
+
+    Order ..> Wishlist with {
+        over = start(0.659).axisAligned(0, orderSyncRelationTempPoint, 0, end(0.064))
     }
 
     Invoice --> Payment with {
