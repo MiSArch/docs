@@ -134,7 +134,7 @@ classDiagram {
     }
 
     Catalog --> Order with {
-        over = start(0.125).axisAligned(-0.491, end(0.706))
+        over = start(0.125).axisAligned(-0.491, end(0.723))
     }
 
     User --> Address with {
@@ -163,10 +163,6 @@ classDiagram {
 
     User --> Payment with {
         over = start(0).axisAligned(0.306, end(0.5645))
-    }
-
-    Order --> Payment with {
-        over = start(0.226).axisAligned(0, end(0))
     }
 
     Shipment --> Return with {
@@ -246,7 +242,7 @@ classDiagram {
     }
 
     Catalog --> ShoppingCart with {
-        over = start(0.5).axisAligned(0.5, end(0))
+        over = start(0.5).axisAligned(0.5, end(0.951))
     }
 
     User --> Wishlist with {
@@ -286,8 +282,8 @@ classDiagram {
         over = start(0.659).axisAligned(0, orderSyncRelationTempPoint, 0, end(0.064))
     }
 
-    Invoice --> Payment with {
-        over = start(0.249).axisAligned(-0.29, end(0.678125))
+    Discount --> Payment with {
+        over = start(0.322).axisAligned(-0.08, end(0.678125))
     }
 
     Media --> Catalog with {
@@ -304,6 +300,10 @@ classDiagram {
 
     ExperimentConfigFrontend ..> ExperimentConfig with {
         over = start(Position.Top).line(end(Position.Bottom))
+    }
+
+    Order --> ShoppingCart with {
+        over = start(0.688).axisAligned(0, apos(745, 240), 0, end(0.045))
     }
 
 }
