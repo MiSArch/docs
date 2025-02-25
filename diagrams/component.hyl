@@ -278,8 +278,8 @@ classDiagram {
         over = start(0.659).axisAligned(0, orderSyncRelationTempPoint, -1, end(0.125))
     }
 
-    Order ..> Wishlist with {
-        over = start(0.659).axisAligned(0, orderSyncRelationTempPoint, 0, end(0.064))
+    Order ..> ShoppingCart with {
+        over = start(0.659).axisAligned(0, orderSyncRelationTempPoint, 0, end(0.097))
     }
 
     Discount --> Payment with {
@@ -303,7 +303,7 @@ classDiagram {
     }
 
     Order --> ShoppingCart with {
-        over = start(0.688).axisAligned(0, apos(745, 240), 0, end(0.045))
+        over = start(0.688).axisAligned(0, apos(745, 240), 0, end(0.024))
     }
 
 }
