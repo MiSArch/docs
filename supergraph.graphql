@@ -2234,7 +2234,7 @@ type Product implements Node
   ): ReviewConnection! @join__field(graph: REVIEW)
 
   """Retrieves average rating of product."""
-  averageRating: Float! @join__field(graph: REVIEW)
+  averageRating: Float @join__field(graph: REVIEW)
 }
 
 """A connection to a list of `Product` values."""
@@ -2469,7 +2469,7 @@ type ProductVariant implements Node
   ): ReviewConnection! @join__field(graph: REVIEW)
 
   """Retrieves average rating of product variant."""
-  averageRating: Float! @join__field(graph: REVIEW)
+  averageRating: Float @join__field(graph: REVIEW)
 }
 
 """A connection to a list of `ProductVariant` values."""
