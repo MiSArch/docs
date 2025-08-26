@@ -4,8 +4,38 @@ The Experiment Executor is the core component of the MiSArch Experiment Tool.
 It is responsible for (1) the creation and storage of experiments, (2) the execution of stored experiments by calling the executor components at
 the correctly scheduled time, (3) the collection and transformation of the Gatling metrics, and (4) the creation of the final Grafana dashboard and the report.
 
-## API 
-Lorem Ipsum
+## API
+
+The Experiment Executor exposes the following REST API endpoints to manage and execute experiments.
+
+#### Experiment Management
+- `POST /experiment/generate` - Generate a new experiment with a new UUID
+- `GET /experiment/list` - List all experiments with their versions
+- `GET /experiment/{testUUID}/versions` - List all versions of a specific experiment
+- `POST /experiment/{testUUID}/{testVersion}/newVersion` - Create a new version of an existing experiment
+- `DELETE /experiment/{testUUID}` - Delete an experiment with all its versions
+- `DELETE /experiment/{testUUID}/{testVersion}` - Delete a specific version of an experiment
+
+#### Configuration
+- `GET /experiment/{testUUID}/{testVersion}/chaosToolkitConfig` - Get the Chaos Toolkit configuration of a specific experiment version
+- `PUT /experiment/{testUUID}/{testVersion}/chaosToolkitConfig` - Update the Chaos Toolkit configuration of a specific experiment version
+- `GET /experiment/{testUUID}/{testVersion}/misarchExperimentConfig` - Get the MiSArch Experiment Config of a specific experiment version
+- `PUT /experiment/{testUUID}/{testVersion}/misarchExperimentConfig` - Update the MiSArch Experiment Config of a specific experiment version
+- `GET /experiment/{testUUID}/{testVersion}/gatlingConfig` - Get the Gatling configuration of a specific experiment version
+- `PUT /experiment/{testUUID}/{testVersion}/gatlingConfig` - Update the Gatling configuration of a specific experiment version
+- `GET /experiment/{testUUID}/{testVersion}/config` - Get the global experiment configuration of a specific experiment version
+- `PUT /experiment/{testUUID}/{testVersion}/config` - Update the global experiment configuration of a specific experiment version
+
+#### Execution
+- `POST /experiment/start`
+- `POST /experiment/{testUUID}/{testVersion}/start` - Start the execution of a specific experiment version
+- `POST /experiment/{testUUID}/{testVersion}/stop` - Stop the execution of a specific experiment version
+- `GET /experiment/{testUUID}/{testVersion}/events` - Register for server-sent events to get experiment execution updates
+
+#### Synchronization & Metrics
+- `POST /trigger/{testUUID}/{testVersion}` - Register a component (Gatling Executor, Chaos Toolkit Executor, MiSArch Experiment Config) as ready
+- `GET /trigger/{testUUID}/{testVersion}` - Poll if the experiment can start
+- `POST /experiment/{testUUID}/{testVersion}/gatling/metrics/steadyState` - Forward steady-state metrics from Gatling Executor
 
 ## Technology Stack
 - **Language**: Kotlin
