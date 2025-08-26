@@ -16,22 +16,44 @@ The repository is structured as follows:
 
 - `/configmaps.tf`: Defines ConfigMaps used inside the cluster
 - `/dapr.tf`: Sets up Dapr
-- `/dbs.tf`: Sets up Postgres DBs for the cluster
+- `/dbs-mongodb.tf`: Sets up Mongo DBs for the cluster
+- `/dbs-postgres.tf`: Sets up Postgres DBs for the cluster
+- `/influxdb.tf`: Sets up the InfluxDB used for storing Gatling Metrics of Experiments
+- `/ingress.tf`: Sets up a central cluster ingress to access the cluster
 - `/keycloak`: Keycloak submodule to grep the up to date MiSArch realm file
 - `/keycloak.tf`: Sets up Keycloak
 - `/latest-deployment.tfvars`: (optional, must be enabled (`-var-file="latest-deployment.tfvars"`)) Sets all used containers to the latest available version
 - `/main.tf`: Sets up Terraform itself
+- `/minio.tf`: Sets up minio
 - `/misarch-address.tf`: Sets up the Address deployment
 - `/misarch-catalog.tf`: Sets up the Catalog deployment
+- `/misarch-chaostoolkit-executor.tf`: Sets up the Chaos Toolkit Executor deployment
 - `/misarch-discount.tf`: Sets up the Discount deployment
+- `/misarch-experiment-config-frontend.tf`: Sets up the Experiment Config Frontend deployment
+- `/misarch-experiment-config.tf`: Sets up the Experiment Config deployment
+- `/misarch-experiment-exectuor.tf`: Sets up the Experiment Executor deployment
+- `/misarch-experiment-executor-frontend.tf`: Sets up the Experiment Executor Frontend deployment
 - `/misarch-frontend.tf`: Sets up the Frontend
 - `/misarch-gateway.tf`: Sets up the Gateway
+- `/misarch-gatling-executor.tf`: Sets up the Gatling Executor deployment
+- `/misarch-inventory.tf`: Sets up the Inventory deployment
+- `/misarch-invoice.tf`: Sets up the Invoice deployment
+- `/misarch-media.tf`: Sets up the Media deployment
 - `/misarch-notification.tf`: Sets up the Notification deployment
+- `/misarch-order.tf`: Sets up the Order deployment
+- `/misarch-payment.tf`: Sets up the Payment deployment
+- `/misarch-return.tf`: Sets up the Return deployment
+- `/misarch-review.tf`: Sets up the Review deployment
 - `/misarch-shipment.tf`: Sets up the Shipment deployment
+- `/misarch-shoppingcart.tf`: Sets up the Shopping Cart deployment
+- `/misarch-simulation.tf`: Sets up the Simulation deployment
 - `/misarch-tax.tf`: Sets up the Tax deployment
 - `/misarch-user.tf`: Sets up the User deployment
-- `/otel.tf`: Sets up an Opentelemetry collector
+- `/misarch-wishlist.tf`: Sets up the Wishlist deployment
+- `/otel.tf`: Sets up an OpenTelemetry collector
+- `/passwords-mongodb.tf`: Defines passwords for MongoDBs used by the cluster
 - `/passwords.tf`: Defines passwords used by everything
+- `/rabbitmq.tf`: Sets up RabbitMQ
 - `/test-script.sh`: Script to avoid specifying variables prior to running `terraform apply`
 - `/variables-annotations.tf`: Defines annotations for the platform and for each deployment
 - `/variables-labels.tf`: Defines labels for the platform and for each deployment
