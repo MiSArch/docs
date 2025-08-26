@@ -1,1 +1,49 @@
 # Gatling Executor Service
+
+The Gatling Executor is a wrapper container that, on the one hand, contains a simple web server and web client to communicate with the Experiment
+Executor and, on the other hand, contains the Gatling source files which will be compiled and executed dynamically at runtime using Gradle.
+
+The details of a specific experiment are forwarded from the Experiment Executor
+and executed immediately.
+Finally, the results of the execution that are collected from Gatling are forwarded back to the Experiment Executor for finalization.
+It is useful to deploy this service to a dedicated infrastructure environment, as resource consumption for load generation can be significant, so the
+deployment of the Gatling Executor should be isolated.
+
+## Technology Stack
+
+- **Language**: Kotlin
+- **Framework**: Spring Boot
+- **Build Tool**: Gradle
+- **Load Testing Tool**: [Gatling](https://gatling.io/)
+- **Kotlin DSL for Gatling**: [Kotlin DSL](https://gatling.io/docs/gatling/reference/current/extensions/kotlin-dsl/)
+
+## API
+The Gatling Executor exposes the following REST API endpoints to manage and execute Gatling load tests.
+
+- `POST /start-experiment` - Start the execution of a Gatling load test
+- `POST /stop-experiment` - Start the execution
+- `GET /gatling/{testUUID}/{testVersion}/stop` - Stop the execution
+
+
+## Repository Structure
+
+<div className="repository-structure" >
+
+    - `/gatling-server/src`: Source code of the web server Spring Boot component
+    - `controller/`: Package that includes the REST controller
+    - `service/`: Package for all service classes containing the actual business logic
+
+    - `/gatling-test/src`: Source code of the Gatling load testing component
+    - `kotlin`: Kotlin source files that are compiled on experiment start by Gradle, which will be extend by the dynamic Kotlin files received from the API
+    - `resources`: Template files for reference
+
+</div>
+
+## Functionality Overview
+
+Important to note is that the Gatling Executor creates a new Gradle job for each experiment execution.
+This job compiles the Gatling test source code, which consists of static template files and dynamic files received from the Experiment Executor via the API.
+After the compilation, the Gradle job executes the Gatling test, which generates a report that is sent back to the Experiment Executor after the
+execution is finished in another dedicated Gradle Job.
+
+If a steady-state hypothesis or warm-up is configured, those are executed first before the actual load test starts in dedicated Gatling jobs.
