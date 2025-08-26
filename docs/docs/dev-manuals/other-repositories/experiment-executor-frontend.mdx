@@ -1,0 +1,75 @@
+# Experiment Executor Frontend Service
+
+The Experiment Executor Frontend is the web frontend used to create, modify, and execute experiments.
+It has minimal state, as it only keeps changes in the local browser state until they are saved or the website is closed.
+However, experiment management is performed by the Experiment Executor.
+Therefore, the frontend dynamically loads and stores the different parts of the experiment configurations via the API of the Experiment Executor.
+
+## Technology Stack
+- **Language**: JavaScript
+- **Framework**: Vue.js
+- **Package Manager**: Yarn
+- **Builder**: Vite
+
+## Repository Structure
+
+The repository is structured as follows:
+
+<div className="repository-structure">
+
+    - `/src/`: The source code
+    - `components/`: [Single-File Components](https://vuejs.org/glossary/#single-file-component) that can be reused -- this is basically an internal UI components library.
+    - `model/`: Data models used in the frontend.
+    - `types/`: TypeScript types.
+    - `util/`: Utility source code.
+
+</div>
+
+## Important Components
+
+The most important components are:
+
+- The Graph / Experiment Overview
+- The MiSArch Experiment Config Editor
+- The Chaos Toolkit Editor
+- The Gatling Work Editor
+- The Goal Editor
+- Overlay
+
+### Graph / Experiment Overview
+
+- The graph component is the main visualization component of the frontend.
+- It uses [chart.js](https://www.chartjs.org/) to visualize the different experiment components.
+
+### MiSArch Experiment Config Editor and Chaos Toolkit Editor
+- The editors are based on [Monaco Editor](https://microsoft.github.io/monaco-editor/).
+- They both can be switched between a code view and a form view.
+- The form view is dynamically generated based on the JSON schema of the respective configuration.
+
+### Gatling Work Editor
+- The Gatling Work Editor is a Monaco Editor that allows the user to create and modify Gatling Work scenarios.
+- It lets write users Kotlin code for the Gatling scenarios.
+
+### Goal Editor
+- The Goal Editor is a simple visual area that allows the user to define the goals of the experiment.
+
+### Overlay
+- The overlay component is used to display the
+
+## Known Issues / Open Bugs
+
+There are several known issues and open bugs in the experiment executor frontend:
+- Help texts are often black on black background in other operating systems then macOS.
+- When there are large experiments the graph can become slow and unresponsive.
+- Technical debt and code smells.
+
+## Technical Debt
+
+:::info
+This section is written from the personal perspective of the experiment tool developer during the time of the Master Thesis.
+:::
+Sadly, there is already some technical debt. Why? Because at the beginning of the thesis I was still a complete beginner when it came to frontend
+development with Vue, TypeScript, and JavaScript in general.
+Some things I only understood and learned to use properly over time meaning issue by issue.
+As we did not have the time to refactor everything as soon as possible, we had to prioritize the implementation of additional features to ensure that the frontend would be at least somehow feature-complete at the end of the project.
+
