@@ -1,0 +1,30 @@
+# Chaos Toolkit Executor Service
+
+The Chaos Toolkit Executor is a wrapper container, containing a web-server for communication with the Experiment Executor, written in Python,
+which matches the technology Chaos Toolkit.
+In addition, it has the Chaos Toolkit CLI and all common Chaos Toolkit extensions, including our custom extension for Docker installed.
+This allows for executing a wide range of chaos experiments using the Chaos Toolkit.
+
+## Technology Stack
+
+- **Language**: Python
+- **Framework**: Flask
+- **Chaos Engineering Tool**: [Chaos Toolkit](https://chaostoolkit.org/)
+
+## API
+
+- `POST /start-experiment` - Start the execution of a Chaos Toolkit chaos experiment
+- `POST /stop-experiment` - Stop the execution
+
+## Repository Structure
+
+<div className="repository-structure" >
+
+    - `/misarch_chaostoolkit`: Python package of the extension for Chaos Toolkit to inject failure in local Docker containers and the web server
+
+</div>
+
+## Functionality Overview
+
+The Chaos Toolkit Executor exposes a REST API to start and stop chaos experiments.
+When an experiment is started, the Chaos Toolkit Executor uses the Chaos Toolkit CLI to execute the provided experiment configuration.
