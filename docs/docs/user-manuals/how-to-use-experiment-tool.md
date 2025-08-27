@@ -69,7 +69,7 @@ You’ll work with these pieces:
 
 When opening the tool you can either **load** an existing experiment version or **generate** a new one.
 
-![Experiment Selection](/images/experiment-exeuctor-frontend-screenshots/Frontend_select.png)
+![Experiment Selection](/images/experiment-executor-frontend-screenshots/Frontend_select.png)
 
 **Generating a new experiment** provides initial presets:
 
@@ -84,7 +84,7 @@ When opening the tool you can either **load** an existing experiment version or 
   - MiSArch Config: HTTP 404 with 1000 ms delay on **catalog** service for 1/6 of the experiment after the Chaos failure.
 - Default **goals**: max response time **2000 ms**, mean **1000 ms** (adjust as needed).
 
-![Load Patterns](/images/experiment-exeuctor-frontend-screenshots/load_patterns.svg)
+![Load Patterns](/images/experiment-executor-frontend-screenshots/load_patterns.svg)
 
 ---
 
@@ -99,7 +99,7 @@ The single-page UI has these segments:
 5. **MiSArch Experiment Configuration** (visual editor or raw JSON editor).
 6. **Goal Configuration** (manual thresholds or auto goal definition).
 
-![Entire User Interface](/images/experiment-exeuctor-frontend-screenshots/Frontend_Entire.png)
+![Entire User Interface](/images/experiment-executor-frontend-screenshots/Frontend_Entire.png)
 
 ---
 

@@ -87,7 +87,57 @@ The following steps describe the workflow that is executed when an experiment is
 
 ### Synchronization & Registration
 
-TODO mermaid
+```mermaid
+sequenceDiagram
+    participant EE as Experiment Executor
+    participant MEC as MiSArch Experiment Config
+    participant CTE as Chaos Toolkit Executor
+    participant GE as Gatling Executor
+    participant GR as Grafana
+
+    EE->>MEC: Reset All Configurations
+    EE->>EE: Register MiSArch Experiment Config as Ready
+    EE->>CTE: Send Failure Injection Configuration
+    CTE->>CTE: Load Failure Configuration and Prepare Execution
+    EE->>GE: Send Load Test Configuration
+    GE->>GE: Load Load Test Configuration and Prepare Execution
+
+    loop Poll Experiment Trigger
+        EE->>EE: Check Trigger Condition
+    end
+
+    CTE->>EE: Register Chaos Toolkit as Ready
+    loop Poll Experiment Trigger
+        CTE->>EE: Check Trigger Condition
+    end
+
+
+    GE->>EE: Register Gatling as Ready
+    loop Poll Experiment Trigger
+        GE->>EE: Check Trigger Condition
+    end
+
+    EE->>CTE: Start Chaos Toolkit Execution
+    EE->>GE: Start Load Execution
+    EE->>EE: Start MiSArch Experiment Execution
+
+    loop Configure Failure
+        EE->>MEC: Apply Failure Configuration
+    end
+
+    loop Configure Failure
+        CTE->>CTE: Apply Failure Configuration
+    end
+
+
+    loop Execute Workload
+        GE->>GE: Execute Workload against SuT
+    end
+
+    GE->>EE: Load Test Metrics
+    EE->>EE: Aggregate and Store Results
+    EE->>GR: Forward Result Dashboard
+```
 
 - Endpoints Provided:
   1. Register component as ready.
