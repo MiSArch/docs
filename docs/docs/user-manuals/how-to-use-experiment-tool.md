@@ -1,0 +1,311 @@
+# How to Use the MiSArch Experiment Tool
+
+> This page walks you through **every step** of designing, executing, and analyzing experiments with the MiSArch Experiment Tool.
+
+---
+
+## Contents
+
+1. [What is an Experiment?](#what-is-an-experiment)
+2. [Before You Start (Artifacts & Concepts)](#before-you-start-artifacts--concepts)
+3. [Create or Load an Experiment](#create-or-load-an-experiment)
+4. [Tour of the User Interface](#tour-of-the-user-interface)
+5. [Configure Work (Gatling Kotlin DSL)](#configure-work-gatling-kotlin-dsl)
+6. [Configure Load (Open-Load Model)](#configure-load-open-load-model)
+7. [Optional: Configure a Warm-Up](#optional-configure-a-warm-up)
+8. [Configure Failures](#configure-failures)
+   - [Chaos Toolkit Failures](#chaos-toolkit-failures)
+   - [MiSArch Experiment Configuration Failures](#misarch-experiment-configuration-failures)
+9. [Define Experiment Goals](#define-experiment-goals)
+   - [Manual Goals](#manual-goals)
+   - [Automated Goal Definition](#automated-goal-definition)
+10. [Visualize with the Experiment Graph](#visualize-with-the-experiment-graph)
+11. [Run, Stop, Save, and Version Experiments](#run-stop-save-and-version-experiments)
+12. [Analyze Results in Grafana Dashboards](#analyze-results-in-grafana-dashboards)
+13. [Tips, Constraints, and Gotchas](#tips-constraints-and-gotchas)
+14. [Storage Structure & Files](#appendix-storage-structure--files)
+
+---
+
+## What is an Experiment?
+
+An **experiment** is a versioned bundle of configurations identified by **Test-UUID** and **Test-Version**. It can contain:
+
+- **Work** (the user/session _behavior_ scripted in Gatling Kotlin DSL).
+- **Load** (the _arrival pattern_ of users for each work scenario, modeled as open load).
+- **Failures** via:
+  - **Chaos Toolkit** (standard experiments/probes/actions),
+  - **MiSArch Experiment Configuration** (service-level deterioration and resource stress).
+- **Goals** (thresholds for client-facing performance metrics).
+- An optional **warm-up** phase.
+
+Experiments live as files in the Experiment Executor’s storage, grouped by Test-UUID and version.
+
+<CustomImage path="/diagrams/usingMiSArchExperimentBPMN" width="1668" height="828" />
+
+---
+
+## Before You Start (Artifacts & Concepts)
+
+You’ll work with these pieces:
+
+- **Gatling Work**: Kotlin DSL scenarios describing the sequence of requests and expected data, plus pauses to mimic user behavior.
+- **Gatling Load**: Open-load arrivals (users per second) for each scenario; duration is in seconds.
+- **Chaos Toolkit**: Optional steady-state hypothesis (probes) and a sequence of actions/probes (with pauses) to inject failures.
+- **MiSArch Experiment Configuration**: Time-ordered sets of failures for specific services:
+  - Pub-sub deterioration (delay/error on dapr pub-sub),
+  - Service-invocation deterioration (delay/error on HTTP),
+  - Artificial **memory** or **CPU** usage.
+  - Failures **persist until overwritten** by the next failure set.
+- **Goals & Warm-Up**:
+  - **Goals**: e.g., max/mean response time thresholds.
+  - **Warm-up**: constant _closed_ load per scenario for a configured time before the actual experiment.
+
+---
+
+## Create or Load an Experiment
+
+When opening the tool you can either **load** an existing experiment version or **generate** a new one.
+
+![Experiment Selection](/images/experiment-exeuctor-frontend-screenshots/Frontend_select.png)
+
+**Generating a new experiment** provides initial presets:
+
+- Choose a **load pattern**:
+  1. **Realistic** (sampled from a real web-shop day pattern, scaled by your max-arrivals),
+  2. **Scalability** (monotonic increase),
+  3. **Elasticity** (three spikes with cool-downs),
+  4. **Resilience** (slow ramp, cool-down, big spike, cool-down, high plateau).
+- Default **work scenarios** (e.g., `buyProcessScenario`, `abortedBuyProcessScenario`) for realistic/resilience; `buyProcessScenario` for resilience/scalability.
+- Default **failures** (example):
+  - Chaos Toolkit: check gateway healthy, then terminate it at experiment start (Kubernetes/Docker variants).
+  - MiSArch Config: HTTP 404 with 1000 ms delay on **catalog** service for 1/6 of the experiment after the Chaos failure.
+- Default **goals**: max response time **2000 ms**, mean **1000 ms** (adjust as needed).
+
+![Load Patterns](/images/experiment-exeuctor-frontend-screenshots/load_patterns.svg)
+
+---
+
+## Tour of the User Interface
+
+The single-page UI has these segments:
+
+1. **Header** (save, delete, load/new, new version, execute/stop, global help).
+2. **Experiment Graph** (arrivals/requests plus failure timelines; toggle between load and warm-up view).
+3. **Work Configuration** (code editor with tabs per scenario).
+4. **Chaos Toolkit Configuration** (visual editor or raw JSON editor).
+5. **MiSArch Experiment Configuration** (visual editor or raw JSON editor).
+6. **Goal Configuration** (manual thresholds or auto goal definition).
+
+![Entire User Interface](/images/experiment-exeuctor-frontend-screenshots/Frontend_Entire.png)
+
+---
+
+## Configure Work (Gatling Kotlin DSL)
+
+Open **Work** in the top-right editor. Each **scenario** is a tab:
+
+- Add / rename / delete scenarios via the UI controls.
+- Script _requests_, _checks_, and _pauses_ (Durations) to approximate realistic behavior.
+- Keep work and load **separate** (load is configured elsewhere).
+
+> **Note:** Only the **Gatling Kotlin DSL** is supported for work scripts.
+
+**Example code:**
+
+```kotlin
+val abortedBuyProcessScenario = scenario("abortedBuyProcessScenario")
+  .exec { session ->
+    session.set("targetUrl", "http://misarch-gateway.misarch.svc.cluster.local:8080/graphql")
+  }
+  .exec(
+    http("Get Access Token")
+      .post("http://keycloak.misarch.svc.cluster.local:80/keycloak/realms/Misarch/protocol/openid-connect/token")
+      .check(jsonPath("$.access_token").saveAs("accessToken"))
+  )
+  .pause(Duration.ofMillis(0), Duration.ofMillis(0))
+```
+
+## Configure Load (Open-Load Model)
+
+Click the **gear** icon in the graph to open the Load Configuration.
+
+<!-- IMAGE PLACEHOLDER -->
+
+For each scenario:
+
+- **Duration (s):** total time during which users arrive.
+- **Arrivals (users/s):** specify how many new users start the scenario each second.
+  > **Example (10 s):** 3, 4, 0, 0, 0, 0, 0, 0, 0, 5
+  > This does not imply no requests in “zero” seconds—users that arrived earlier are still completing work.
+
+---
+
+## Optional: Configure a Warm-Up
+
+Open the **hamburger menu** to configure a warm-up:
+
+- **Duration**
+- **Constant users per scenario** (closed load)
+
+This helps stabilize the system so your actual experiment measurements start under steady conditions.
+
+<!-- IMAGE PLACEHOLDER -->
+
+Replace with your warm-up dialog screenshot.
+
+---
+
+## Configure Failures
+
+You can define failures in two places. Both offer:
+
+- A **simplified form** to add/remove/edit failures quickly.
+- A **raw JSON** editor if you prefer direct DSL editing.
+- Both views stay in sync.
+
+### Chaos Toolkit Failures
+
+- Optional **steady-state hypothesis** (probes) to assert system health before failure.
+- **Method** actions and/or probes that inject failures; pauses available before/after.
+- Examples: check a Kubernetes deployment is healthy, then terminate pods matching a label; or Docker container termination and restart.
+
+```json
+{
+  "title": "your-uuid:vX",
+  "steady-state-hypothesis": {
+    /* probes */
+  },
+  "method": [
+    {
+      "type": "action",
+      "name": "Your Action",
+      "provider": {
+        /* module/func + args */
+      },
+      "pauses": { "before": 0, "after": 0 }
+    }
+  ]
+}
+```
+
+### MiSArch Experiment Configuration Failures
+
+- Define **failure sets** for one or more services at specific times, with optional pauses between sets:
+  - **pubSubDeterioration** (delay/error probability),
+  - **serviceInvocationDeterioration** (delay/error code/probabilities),
+  - **artificialMemoryUsage**,
+  - **artificialCPUUsage**.
+- Important: A failure **persists** until an ensuing set overwrites it—this enables overlapping, time-boxed failure compositions.
+
+```json
+[
+  {
+    "failures": [
+      {
+        "name": "catalog",
+        "pubSubDeterioration": null,
+        "serviceInvocationDeterioration": [
+          { "path": "/", "delay": 1000, "delayProbability": 1, "errorProbability": 1, "errorCode": 404 }
+        ],
+        "artificialMemoryUsage": null,
+        "artificialCPUUsage": null
+      }
+    ],
+    "pauses": { "before": 10, "after": 5 }
+  },
+  {
+    "failures": [{ "name": "catalog", "serviceInvocationDeterioration": null }],
+    "pauses": { "before": 0, "after": 0 }
+  }
+]
+```
+
+---
+
+## Define Experiment Goals
+
+You can set goals manually or automatically.
+
+### Manual Goals
+
+- For each goal, specify:
+  - **Metric** (dropdown),
+  - **Threshold** (number),
+  - **Highlight color** for violations in dashboards.
+
+### Automated Goal Definition
+
+- Provide:
+  - Duration of the steady-state measurement,
+  - Static users during measurement,
+  - Factor applied to measured metrics to derive thresholds (e.g., mean response time 1000 ms × 1.5 → threshold 1500 ms).
+
+<!-- IMAGE PLACEHOLDER -->
+
+Replace with your auto-goal UI screenshot.
+
+---
+
+## Visualize with the Experiment Graph
+
+The Experiment Graph shows:
+
+- **Arriving users** and **approximate total requests** over time per scenario.
+- Vertical markers when Chaos Toolkit and MiSArch failures occur (sequential timing with configured pauses).
+- **Buttons** to switch to **Load** and **Warm-Up** views.
+  > Note: Request/arrival estimates assume no delays/failures; actual execution may stretch scenarios when the system degrades. Use this graph to
+  > reason about when failures strike relative to load.
+
+---
+
+## Run, Stop, Save, and Version Experiments
+
+In the **Header**:
+
+- Save pending changes.
+- Delete the current experiment or version.
+- Load an existing experiment or generate a new one.
+- Create a new version (makes a copy to tweak safely).
+- Execute or Stop the experiment.
+- Access General Help and context help for each section.
+
+---
+
+## Analyze Results in Grafana Dashboards
+
+After each run, a version-specific Grafana dashboard is created/updated. Features include:
+
+- Run comparison: every metric appears twice—Now vs. N seconds ago—aligning the previous run’s start time to the latest run for apples-to-apples
+  viewing.
+- Sections:
+
+1. Gatling Total: active users per scenario; responses (success/failed); key stats (min/mean/max latency, throughput, request rate). Goal breaches
+   are highlighted.
+2. Gatling Errors: concrete error breakdowns (timeouts, server errors, failed checks).
+3. Gatling Requests: per-request percentiles, throughput (RPS), success ratio—pinpoint bottlenecks.
+4. Service Metrics: CPU/memory and internal latencies per MiSArch service (from cAdvisor, Dapr, and service OpenTelemetry), selectable by component.
+
+---
+
+## Tips, Constraints, and Gotchas
+
+- Work DSL: Only **Gatling Kotlin DSL** for scenarios.
+- **Open load only** for experiments (arrivals model).
+- **Time unit** for load durations is seconds.
+- **Failure persistence:** MiSArch failure settings persist until overwritten by a later failure set.
+- **Chaos Toolkit extensions:** Custom extensions not pre-installed on the Executor may be unavailable—prefer common, pre-installed ones.
+- **Approximations:** Graphed requests/arrivals are estimates—real runs with delays/failures will deviate.
+- **Realistic pattern:** For long runs, realistic load is sampled from a real 24-hour dataset subset and scaled by your configured max arrivals.
+
+---
+
+## Storage Structure & Files
+
+- Experiments are stored by **Test-UUID** and **Test-Version**.
+- Each experiment bundles:
+  - Work scripts (Kotlin DSL),
+  - Per-scenario load configuration,
+  - Chaos Toolkit JSON,
+  - MiSArch Experiment Config JSON,
+  - General config JSON (goals, optional warm-up, Test-UUID/version).
